@@ -1,6 +1,6 @@
 package models
 
-import "rara-ms-models/src/models/order"
+import "github.com/RaRa-Delivery/rara-ms-models/src/models/order"
 
 type StatusWorkerInput struct {
 	RequestedSt        DeliveryStatusDto    `json:"requestedSt" bson:"requestedSt"`
