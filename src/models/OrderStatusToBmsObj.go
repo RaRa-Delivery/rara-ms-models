@@ -5,7 +5,7 @@ import "github.com/RaRa-Delivery/rara-ms-models/src/models/order"
 type OrderStatusToBmsObj struct {
 	TrackingId  string            `json:"trackingId" bson:"trackingId"`
 	Status      string            `json:"status" bson:"status"`
-	Driver      Driver            `json:"driver" bson:"driver"`
+	Driver      order.Driver      `json:"driver" bson:"driver"`
 	OrderStatus order.OrderStatus `json:"orderStatus" bson:"orderStatus"`
 	Creator     Creator           `json:"creator" bson:"creator"`
 	Attempt     int               `json:"attempt" bson:"attempt"`
