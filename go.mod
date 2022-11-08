@@ -1,4 +1,4 @@
-module rara-ms-models
+module github.com/RaRa-Delivery/rara-ms-models
 
 go 1.18
 
