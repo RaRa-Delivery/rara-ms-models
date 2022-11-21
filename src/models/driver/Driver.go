@@ -15,6 +15,9 @@ type Driver struct {
 	FirebaseAuthKey        string                  `json:"firebaseAuthKey" bson:"firebaseAuthKey"`
 	DriverTrainingAttempts []DriverTrainingAttempt `json:"driverTrainingAttempts" bson:"driverTrainingAttempts"`
 	RabbitType             string                  `json:"rabbitType" bson:"rabbitType"`
+	Documents              Documents               `json:"documents" bson:"documents"`
+	DocumentsCompleted     DocumentsCompleted      `json:"documentsCompleted" bson:"documentsCompleted"`
+	Preferences            []Preference            `json:"preferences" bson:"preferences"`
 	LastBatch              string                  `json:"lastBatch" bson:"lastBatch"`
 	ActiveBatch            string                  `json:"activeBatch" bson:"activeBatch"`
 	LastEarnings           float64                 `json:"lastEarnings" bson:"lastEarnings"`
