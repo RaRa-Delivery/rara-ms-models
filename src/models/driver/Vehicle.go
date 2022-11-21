@@ -13,4 +13,5 @@ type Vehicle struct {
 	FuelType        string      `json:"fuelType" bson:"fuelType"`
 	FuelCapacity    int         `json:"fuelCapacity" bson:"fuelCapacity"`
 	VehicleBrand    int         `json:"brand" bson:"brand"`
+	CreatedAt       int64       `json:"created_at,omitempty" bson:"created_at,omitempty"`
 }
