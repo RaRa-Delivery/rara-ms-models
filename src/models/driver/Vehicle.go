@@ -1,17 +1,18 @@
 package models
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 type Vehicle struct {
-	Id              int         `json:"id" bson:"id"`
-	City            []int       `json:"city" bson:"city"`
-	Mileage         int         `json:"mileage" bson:"mileage"`
-	Status          string      `json:"status" bson:"status"`
-	IsShow          int         `json:"isShow" bson:"isShow"`
-	Name            VehicleName `json:"name" bson:"name"`
-	EngineCapacity  int         `json:"engineCapacity" bson:"engineCapacity"`
-	SeatingCapacity int         `json:"seatingCapacity" bson:"seatingCapacity"`
-	LoadingCapacity int         `json:"loadingCapacity" bson:"loadingCapacity"`
-	FuelType        string      `json:"fuelType" bson:"fuelType"`
-	FuelCapacity    int         `json:"fuelCapacity" bson:"fuelCapacity"`
-	VehicleBrand    int         `json:"brand" bson:"brand"`
-	CreatedAt       int64       `json:"created_at,omitempty" bson:"created_at,omitempty"`
+	Id              primitive.ObjectID `json:"_id" bson:"_id"`
+	Brand           string             `json:"brand" bson:"brand"`
+	Mileage         int                `json:"mileage" bson:"mileage"`
+	Status          string             `json:"status" bson:"status"`
+	IsShow          int                `json:"isShow" bson:"isShow"`
+	Name            VehicleName        `json:"name" bson:"name"`
+	EngineCapacity  int                `json:"engineCapacity" bson:"engineCapacity"`
+	SeatingCapacity int                `json:"seatingCapacity" bson:"seatingCapacity"`
+	LoadingCapacity int                `json:"loadingCapacity" bson:"loadingCapacity"`
+	FuelType        string             `json:"fuelType" bson:"fuelType"`
+	FuelCapacity    int                `json:"fuelCapacity" bson:"fuelCapacity"`
+	CreatedAt       int64              `json:"created_at,omitempty" bson:"created_at,omitempty"`
 }

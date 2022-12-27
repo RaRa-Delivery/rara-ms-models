@@ -14,13 +14,16 @@ type Driver struct {
 	VehicleDetails         VehicleDetails          `json:"vehicleDetails" bson:"vehicleDetails"`
 	FirebaseAuthKey        string                  `json:"firebaseAuthKey" bson:"firebaseAuthKey"`
 	DriverTrainingAttempts []DriverTrainingAttempt `json:"driverTrainingAttempts" bson:"driverTrainingAttempts"`
+	DriverTrainings        []Exam                  `json:"driverTrainings" bson:"driverTrainings"`
 	RabbitType             string                  `json:"rabbitType" bson:"rabbitType"`
 	Documents              Documents               `json:"documents" bson:"documents"`
 	DocumentsCompleted     DocumentsCompleted      `json:"documentsCompleted" bson:"documentsCompleted"`
-	Preferences            []Preference            `json:"preferences" bson:"preferences"`
 	LastBatch              string                  `json:"lastBatch" bson:"lastBatch"`
 	ActiveBatch            string                  `json:"activeBatch" bson:"activeBatch"`
-	LastEarnings           float64                 `json:"lastEarnings" bson:"lastEarnings"`
+	DriverEarnings         DriverEarnings          `json:"driverEarnings" bson:"driverEarnings"`
+	CreatedAt              int                     `json:"createdAt" bson:"createdAt"`
+	Miscellaneous          Miscellaneous           `json:"miscellaneous" bson:"miscellaneous"`
+	StatusDetails          interface{}             `json:"statusDetails" bson:"statusDetails"`
 }
 
 type DriverTrainingAttempt struct {

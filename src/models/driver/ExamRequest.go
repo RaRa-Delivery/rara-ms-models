@@ -13,8 +13,11 @@ type Exam struct {
 	AllowTraningAfterDays int                `json:"allowTraningAfterDays" bson:"allowTraningAfterDays"`
 	Status                string             `json:"status" bson:"status"`
 	BusinessType          string             `json:"businessType" bson:"businessType"`
-	CreatedBy             int                `json:"createdBy" bson:"createdBy"`
-	UpdatedBy             int                `json:"updatedBy" bson:"updatedBy"`
+	CreatedBy             string             `json:"createdBy" bson:"createdBy"`
+	UpdatedBy             string             `json:"updatedBy" bson:"updatedBy"`
+
+	CreatedAt int64 `json:"createdAt" bson:"createdAt"`
+	UpdatedAt int64 `json:"updatedAt" bson:"updatedAt"`
 }
 
 type ExamRequest struct {
