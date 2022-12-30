@@ -26,10 +26,10 @@ type NewOrderObject struct {
 }
 
 type BusinessDetails struct {
-	BusinessName  string  `json:"businessName" bson:"businessName"`
-	AccountNumber float64 `json:"accountNumber" bson:"accountNumber"`
-	ServiceType   string  `json:"serviceType" bson:"serviceType"`
-	ServiceID     string  `json:"serviceId" bson:"serviceId"`
+	BusinessId    int64  `json:"businessId" bson:"businessId"`
+	AccountNumber int64  `json:"accountNumber" bson:"accountNumber"`
+	ServiceType   string `json:"serviceType" bson:"serviceType"`
+	ServiceID     string `json:"serviceId" bson:"serviceId"`
 }
 
 type OrderDetails struct {
