@@ -31,3 +31,43 @@ type ExamRequest struct {
 	Status                string `json:"status" bson:"status"`
 	BusinessType          string `json:"businessType" bson:"businessType"`
 }
+
+type DriverExam struct {
+	ID                     string      `json:"id"`
+	NumberOfOrders         int         `json:"numberOfOrders"`
+	ExamName               string      `json:"examName"`
+	JotFormLink            string      `json:"jotFormLink"`
+	MinScore               int         `json:"minScore"`
+	MaxAttempts            int         `json:"maxAttempts"`
+	ExamDuration           int         `json:"examDuration"`
+	AllowTrainingAfterDays int         `json:"allowTrainingAfterDays"`
+	Status                 string      `json:"status"`
+	Driver                 interface{} `json:"driver"`
+	Allowed                interface{} `json:"allowed"`
+}
+type DriverData struct {
+	Id                  string      `json:"id"`
+	MobileNumber        string      `json:"mobileNumber"`
+	TrainingResult      string      `json:"trainingResult"`
+	TrainingAttempt     int         `json:"trainingAttempt"`
+	Status              string      `json:"status"`
+	UnixDate            int         `json:"unixDate"`
+	CreatedAt           int         `json:"createdAt"`
+	SubmitssionID       string      `json:"submitssionId"`
+	NextAttemptDate     interface{} `json:"nextAttemptDate"`
+	NextAttemptDateUnix interface{} `json:"nextAttemptDateUnix"`
+	DriverExam          DriverExam  `json:"driverExam"`
+}
+type DriverExamResponse struct {
+	ExamId                 string     `json:"examId"`
+	NumberOfOrders         int        `json:"numberOfOrders"`
+	ExamName               string     `json:"examName"`
+	JotFormLink            string     `json:"jotFormLink"`
+	MinScore               int        `json:"minScore"`
+	MaxAttempts            int        `json:"maxAttempts"`
+	ExamDuration           int        `json:"examDuration"`
+	AllowTrainingAfterDays int        `json:"allowTrainingAfterDays"`
+	Status                 string     `json:"status"`
+	Driver                 DriverData `json:"driver"`
+	Allowed                bool       `json:"allowed"`
+}

@@ -16,3 +16,22 @@ type Vehicle struct {
 	FuelCapacity    int                `json:"fuelCapacity" bson:"fuelCapacity"`
 	CreatedAt       int64              `json:"created_at,omitempty" bson:"created_at,omitempty"`
 }
+
+type AdminVehicle struct {
+	Id              primitive.ObjectID `json:"_id" bson:"_id"`
+	Brand           string             `json:"brand" bson:"brand"`
+	Mileage         int                `json:"mileage" bson:"mileage"`
+	Status          string             `json:"status" bson:"status"`
+	IsShow          int                `json:"isShow" bson:"isShow"`
+	Name            VehicleName        `json:"name" bson:"name"`
+	EngineCapacity  int                `json:"engineCapacity" bson:"engineCapacity"`
+	SeatingCapacity int                `json:"seatingCapacity" bson:"seatingCapacity"`
+	LoadingCapacity int                `json:"loadingCapacity" bson:"loadingCapacity"`
+	FuelType        string             `json:"fuelType" bson:"fuelType"`
+	FuelCapacity    int                `json:"fuelCapacity" bson:"fuelCapacity"`
+	VehicleType     struct {
+		Id     primitive.ObjectID `json:"_id" bson:"_id"`
+		Status string             `json:"status" bson:"status"`
+		Name   VehicleName        `json:"name" bson:"name"`
+	} `json:"vehicleType" bson:"vehicleType"`
+}

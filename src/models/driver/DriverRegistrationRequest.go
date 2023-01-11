@@ -7,5 +7,5 @@ type DriverRegistrationRequest struct {
 	Mobileno    string `json:"mobileNo" bson:"mobileNo"`
 	Kecamatan   string `json:"kecamatan" bson:"kecamatan"`
 	CityId      int    `json:"cityId" bson:"cityId"`
-	VehicleType int    `json:"vehicleType" bson:"vehicleType"`
+	VehicleType string `json:"vehicleType" bson:"vehicleType"`
 }

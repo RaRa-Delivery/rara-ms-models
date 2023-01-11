@@ -11,3 +11,8 @@ type Profile struct {
 	UpdatedAt        int64  `json:"updatedAt" bson:"updatedAt"`
 	Status           string `json:"status" bson:"status"`
 }
+
+type DocumentCompletedModel struct {
+	Label       string `json:"label" bson:"label"`
+	IsCompleted bool   `json:"isCompleted" bson:"isCompleted"`
+}

@@ -18,12 +18,12 @@ type Driver struct {
 	RabbitType             string                  `json:"rabbitType" bson:"rabbitType"`
 	Documents              Documents               `json:"documents" bson:"documents"`
 	DocumentsCompleted     DocumentsCompleted      `json:"documentsCompleted" bson:"documentsCompleted"`
-	LastBatch              string                  `json:"lastBatch" bson:"lastBatch"`
-	ActiveBatch            string                  `json:"activeBatch" bson:"activeBatch"`
+	ActiveBatchId          string                  `json:"activeBatch" bson:"activeBatch"`
 	DriverEarnings         DriverEarnings          `json:"driverEarnings" bson:"driverEarnings"`
-	CreatedAt              int                     `json:"createdAt" bson:"createdAt"`
+	CreatedAt              int64                   `json:"createdAt" bson:"createdAt"`
 	Miscellaneous          Miscellaneous           `json:"miscellaneous" bson:"miscellaneous"`
 	StatusDetails          interface{}             `json:"statusDetails" bson:"statusDetails"`
+	LastBatch              string                  `json:"lastBatch" bson:"lastBatch"`
 }
 
 type DriverTrainingAttempt struct {
