@@ -4,7 +4,6 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type Vehicle struct {
 	Id              primitive.ObjectID `json:"_id" bson:"_id"`
-	Brand           string             `json:"brand" bson:"brand"`
 	Mileage         int                `json:"mileage" bson:"mileage"`
 	Status          string             `json:"status" bson:"status"`
 	IsShow          int                `json:"isShow" bson:"isShow"`
@@ -15,6 +14,7 @@ type Vehicle struct {
 	FuelType        string             `json:"fuelType" bson:"fuelType"`
 	FuelCapacity    int                `json:"fuelCapacity" bson:"fuelCapacity"`
 	CreatedAt       int64              `json:"created_at,omitempty" bson:"created_at,omitempty"`
+	City            []int              `json:"city" bson:"city"`
 }
 
 type AdminVehicle struct {
