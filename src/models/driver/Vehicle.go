@@ -19,7 +19,6 @@ type Vehicle struct {
 
 type AdminVehicle struct {
 	Id              primitive.ObjectID `json:"_id" bson:"_id"`
-	Brand           string             `json:"brand" bson:"brand"`
 	Mileage         int                `json:"mileage" bson:"mileage"`
 	Status          string             `json:"status" bson:"status"`
 	IsShow          int                `json:"isShow" bson:"isShow"`
