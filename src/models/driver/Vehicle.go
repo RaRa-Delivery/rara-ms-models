@@ -28,6 +28,7 @@ type AdminVehicle struct {
 	LoadingCapacity int                `json:"loadingCapacity" bson:"loadingCapacity"`
 	FuelType        string             `json:"fuelType" bson:"fuelType"`
 	FuelCapacity    int                `json:"fuelCapacity" bson:"fuelCapacity"`
+	City            []int              `json:"city" bson:"city"`
 	VehicleType     struct {
 		Id     primitive.ObjectID `json:"_id" bson:"_id"`
 		Status string             `json:"status" bson:"status"`
