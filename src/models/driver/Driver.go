@@ -24,6 +24,7 @@ type Driver struct {
 	Miscellaneous          Miscellaneous           `json:"miscellaneous" bson:"miscellaneous"`
 	StatusDetails          interface{}             `json:"statusDetails" bson:"statusDetails"`
 	LastBatch              string                  `json:"lastBatch" bson:"lastBatch"`
+	Token                  string                  `json:"token" bson:"token"`
 }
 
 type DriverTrainingAttempt struct {
