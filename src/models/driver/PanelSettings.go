@@ -8,6 +8,5 @@ type PanelSettings struct {
 	Title  string             `json:"title" bson:"title"`
 	Key    string             `json:"key" bson:"key"`
 	Value  interface{}        `json:"value" bson:"value"`
-	City   string             `json:"city,omitempty" bson:"city,omitempty"`
 	CityId int64              `json:"cityId,omitempty" bson:"cityId,omitempty"`
 }
