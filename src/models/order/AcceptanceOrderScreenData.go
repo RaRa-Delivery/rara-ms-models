@@ -22,30 +22,42 @@ type AcceptanceOrderScreenData struct {
 }
 
 type BatchForDriverApp struct {
-	Id           string             `json:"id"`
-	Type         string             `json:"type"`
-	Address      LocationDetails    `json:"address"`
-	Sla          float64            `json:"nodeSla" bson:"nodeSla"`
-	Prioritize   bool               `json:"prioritize" bson:"prioritize"`
-	BatchId      primitive.ObjectID `json:"batchId" bson:"batchId"`
-	NodeIncharge struct {
+	Id            string          `json:"id"`
+	Type          string          `json:"type"`
+	Address       LocationDetails `json:"address"`
+	Sla           float64         `json:"nodeSla" bson:"nodeSla"`
+	Prioritize    bool            `json:"prioritize" bson:"prioritize"`
+	NodeCompleted bool            `json:"nodeCompleted" bson:"nodeCompleted"`
+	NodeIncharge  struct {
 		Name  string `json:"name" bson:"name"`
 		Phone string `json:"phone" bson:"phone"`
 		Email string `json:"email" bson:"email"`
 	} `json:"nodeIncharge" bson:"nodeIncharge"`
-	Orders []OrdersForDriverApp `json:"orders"`
+	Orders                []OrdersForDriverApp  `json:"orders"`
+	ETA                   int                   `json:"eta" bson:"eta"`
+	DistanceToReach       float64               `json:"distanceToReach" bson:"distanceToReach"`
+	BatchId               primitive.ObjectID    `json:"batchId" bson:"batchId"`
+	SystemActivityStatus  string                `json:"systemActivityStatus"`
+	SystemActivityRemarks SystemActivityRemarks `json:"systemActivityRemarks"`
+	IsBsht                bool                  `json:"isBsht" bson:"isBsht"`
+	BshtTag               string                `json:"bshtTag" bson:"bshtTag"`
+}
+
+type SystemActivityRemarks struct {
+	Completed int `json:"completed" bson:"completed"`
+	Failed    int `json:"failed" bson:"failed"`
 }
 
 type OrdersForDriverApp struct {
-	TrackingId    string                   `json:"trackingId"`
-	Sla           float64                  `json:"sla" bson:"sla"`
-	Address       DriverAppLocationDetails `json:"address"`
-	Status        string                   `json:"status"`
-	PuNote        string                   `json:"puNote" bson:"puNote"`
-	DoNote        string                   `json:"doNote" bson:"doNote"`
-	BshtTag       string                   `json:"bshtTag"`
-	Otp           string                   `json:"otp"`
-	Attempt       int                      `json:"attempt" bson:"attempt"`
+	TrackingId    string          `json:"trackingId"`
+	Sla           float64         `json:"sla" bson:"sla"`
+	Address       LocationDetails `json:"address"`
+	Status        string          `json:"status"`
+	PuNote        string          `json:"puNote" bson:"puNote"`
+	DoNote        string          `json:"doNote" bson:"doNote"`
+	BshtTag       string          `json:"bshtTag"`
+	Otp           string          `json:"otp"`
+	Attempt       int             `json:"attempt" bson:"attempt"`
 	OrderIncharge struct {
 		Name  string `json:"name" bson:"name"`
 		Phone string `json:"phone" bson:"phone"`

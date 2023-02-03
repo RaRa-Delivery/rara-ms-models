@@ -104,7 +104,6 @@ type PersonalDetails struct {
 }
 
 type LocationDetails struct {
-	Id          string   `json:"id" bson:"id"`
 	Name        string   `json:"locationName" bson:"locationName"`
 	Address     string   `json:"address" bson:"address"`
 	SubDistrict string   `json:"subDistrict" bson:"subDistrict"`
