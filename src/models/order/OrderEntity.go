@@ -23,6 +23,12 @@ type NewOrderObject struct {
 	OrderDistanceMatrix OrderDistanceMatrix `json:"orderDistanceMatrix" bson:"orderDistanceMatrix"`
 	Driver              Driver              `json:"driver" bson:"driver"`
 	Attempt             int                 `json:"attempt" bson:"attempt"`
+	CodAmountDetails    CodAmountDetails    `json:"codAmountDetails" bson:"codAmountDetails"`
+}
+
+type CodAmountDetails struct {
+	InitialAmount float64 `json:"initialAmount" bson:"initialAmount"`
+	Amount        float64 `json:"amount" bson:"amount"`
 }
 
 type BusinessDetails struct {
@@ -64,6 +70,12 @@ type NewOrderDeliveryDetails struct {
 	SpecialHandling string      `json:"specialHandling" bson:"specialHandling"`
 	Linehaul        ApiLinehaul `json:"linehaul" bson:"linehaul"`
 	Sla             Sla         `json:"sla" bson:"sla"`
+	Bsht            BshtTag     `json:"bsht" bson:"bsht"`
+}
+
+type BshtTag struct {
+	Id    int64  `json:"id" bson:"id"`
+	Label string `json:"label" bson:"label"`
 }
 
 type ApiLinehaul struct {
