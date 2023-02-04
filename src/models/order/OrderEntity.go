@@ -24,11 +24,17 @@ type NewOrderObject struct {
 	Driver              Driver              `json:"driver" bson:"driver"`
 	Attempt             int                 `json:"attempt" bson:"attempt"`
 	CodAmountDetails    CodAmountDetails    `json:"codAmountDetails" bson:"codAmountDetails"`
+	OperationRegion     OperationRegion     `json:"operationRegion" bson:"operationRegion"`
 }
 
 type CodAmountDetails struct {
 	InitialAmount float64 `json:"initialAmount" bson:"initialAmount"`
 	Amount        float64 `json:"amount" bson:"amount"`
+}
+
+type OperationRegion struct {
+	Id   int64  `json:"id" bson:"id"`
+	Name string `json:"name" bson:"name"`
 }
 
 type BusinessDetails struct {
