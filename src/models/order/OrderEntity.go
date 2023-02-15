@@ -49,9 +49,11 @@ type OrderDetails struct {
 	Status               string                  `json:"status" bson:"status"`
 	TrackingId           string                  `json:"trackingId" bson:"trackingId"`
 	WeightDetails        OrderWeightDetails      `json:"weightDetails" bson:"weightDetails"`
+	PackageId            int64                   `json:"packageId" bson:"packageId"`
 	ParcelSize           string                  `json:"parcelSize" bson:"parcelSize"`
 	Dimensions           OrderDimensions         `json:"dimensions" bson:"dimensions"`
 	WeightIndex          float64                 `json:"weightIndex" bson:"weightIndex"`
+	SpecialHandling      string                  `json:"specialHandling" bson:"specialHandling"`
 	OrderDeliveryDetails NewOrderDeliveryDetails `json:"orderDeliveryDetails" bson:"orderDeliveryDetails"`
 }
 
