@@ -7,4 +7,5 @@ type BSHT struct {
 	Label  string             `json:"label" bson:"label"`
 	Code   string             `json:"code" bson:"code"`
 	Status string             `json:"status" bson:"status"`
+	Id     int64              `json:"id" bson:"id"`
 }
