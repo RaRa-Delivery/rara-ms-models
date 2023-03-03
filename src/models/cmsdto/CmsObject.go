@@ -1,5 +1,14 @@
 package cmsdto
 
+import (
+	"encoding/json"
+	"log"
+	"strings"
+
+	"github.com/Knetic/govaluate"
+	"github.com/RaRa-Delivery/rara-ms-models/src/utility"
+)
+
 type CmsObject struct {
 	BusinessDetails         BusinessDetails        `json:"businessDetails"`
 	LinehaulRequired        bool                   `json:"linehaulRequired"`
@@ -68,4 +77,56 @@ type CmsChatbotNotification struct {
 type CmsChatbotParams struct {
 	Key   string `json:"key" bson:"key"`
 	Value string `json:"value" bson:"value"`
+}
+
+func (cmsResponse CmsObject) EvalueateExpressionByDeliveryFee(input float64, serviceFormulaObj DeliveryFeeDto) (bool, float64) {
+	defer utility.HandlePanic()
+
+	log.Println("serviceFormulaObj.Formula: ", serviceFormulaObj.Formula)
+
+	serviceFormulaObj.Formula = `if (^weight < #a) then {#b} else {#b + ((^weight - #a) * #c))}`
+
+	formulaExpression := strings.ReplaceAll(serviceFormulaObj.Formula, "^", "")
+	formulaExpression = strings.ReplaceAll(formulaExpression, "#", "")
+	metricObj := serviceFormulaObj.Metric[0]
+	inputValue := strings.ReplaceAll(metricObj.Ref, "^", "")
+	log.Println("input", input)
+	if input > metricObj.MaxValue || input < metricObj.MinValue {
+		return false, 0.0
+	}
+
+	log.Println("Delivery fee formula: ", formulaExpression)
+
+	expression, error := govaluate.NewEvaluableExpression(formulaExpression)
+	if error != nil {
+		log.Println(error)
+		return false, 0.0
+	}
+	parameters := make(map[string]interface{}, 8)
+	parameters[inputValue] = input
+
+	for i := 0; i < len(serviceFormulaObj.Variables); i++ {
+		varObj := serviceFormulaObj.Variables[i]
+		variableData := strings.ReplaceAll(varObj.Ref, "#", "")
+		parameters[variableData] = varObj.Value
+
+	}
+
+	eb, _ := json.Marshal(&parameters)
+	log.Println("eb: ", eb)
+
+	result, err := expression.Evaluate(parameters)
+	if err != nil {
+		log.Println(err)
+		return false, 0.0
+	}
+
+	i, ok := result.(float64)
+	log.Println("Checking delivery fee")
+	log.Println(i)
+	if !ok {
+		return false, 0.0
+	}
+
+	return true, i
 }

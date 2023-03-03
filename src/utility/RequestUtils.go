@@ -11,6 +11,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/RaRa-Delivery/rara-ms-models/src/utility/lg"
 )
 
 type Todo struct {
@@ -196,4 +198,12 @@ func ApiResponse(requestMethod string, url string, headers map[string]string, pa
 	}
 	//	log.Println(bodyString)
 
+}
+
+func HandlePanic() {
+
+	if e := recover(); e != nil {
+		err := fmt.Errorf("recovered from panic: %v", e)
+		log.Println(lg.Error("RECOVER_FROM_PANIC", err))
+	}
 }
