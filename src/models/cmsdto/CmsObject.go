@@ -11,8 +11,15 @@ type CmsObject struct {
 	DeliveryPackaging       []PackageData          `json:"deliveryPackaging"`
 	OrderJourneyDetails     []DeliveryStatusDto    `json:"orderJourneyDetails"`
 	CmsChatbotService       CmsChatbotService      `json:"chatbot"`
-	DeliveryFee             []DeliveryFeeDto       `json:"deliveryFee"`
-	SLAservices             []SLAservice           `json:"slaService"`
+	//DeliveryFee             []DeliveryFeeDto       `json:"deliveryFee"`
+	SLAservices []SlaServiceNew `json:"slaService"`
+}
+
+type SlaServiceNew struct {
+	ID          string           `json:"id" bson:"id"`
+	Pickup      SLAservice       `json:"pickup" bson:"pickup"`
+	Dropoff     SLAservice       `json:"dropoff" bson:"dropoff"`
+	DeliveryFee []DeliveryFeeDto `json:"deliveryFee"`
 }
 
 type BusinessDetails struct {

@@ -1,0 +1,291 @@
+[
+	{
+		"index":15,
+		"status":"Validating Order",
+		"code":"VO",
+		"description":"Validating Order",
+		"attempt":0,
+		"prevIndex":[],
+		"nextIndex":[16],
+		"batchStatus":"NEW"
+	},
+	{
+		"index":16,
+		"status":"Validation completed",
+		"code":"VC",
+		"description":"Validation completed",
+		"attempt":0,
+		"prevIndex":[15],
+		"nextIndex":[17],
+		"batchStatus":"NEW"
+	},
+	{
+		"index":17,
+		"status":"Batch created",
+		"code":"BC",
+		"description":"Batch created",
+		"attempt":0,
+		"prevIndex":[16],
+		"nextIndex":[18],
+		"batchStatus":"NEW"
+	},
+	{
+		"index":18,
+		"status":"Accepted",
+		"code":"BA",
+		"description":"Batch accepted",
+		"attempt":0,
+		"prevIndex":[17],
+		"nextIndex":[18.1,19],
+		"batchStatus":"ACCEPTED"
+	},
+	{
+		"index":18.1,
+		"status":"Rejected",
+		"code":"BR",
+		"description":"Batch rejected",
+		"attempt":0,
+		"prevIndex":[18],
+		"nextIndex":[17],
+		"batchStatus":"NEW"
+	},
+	{
+		"index":19,
+		"status":"Start pickup",
+		"code":"PS",
+		"description":"Driver en route to pickup location",
+		"attempt":0,
+		"prevIndex":[18],
+		"nextIndex":[20],
+		"batchStatus":"START-PICKUP"
+	},
+	{
+		"index":20,
+		"status":"Arrived at pickup",
+		"code":"PA",
+		"description":"Driver arrived at pickup location",
+		"attempt":0,
+		"prevIndex":[19],
+		"nextIndex":[21,22],
+		"batchStatus":"START-PICKUP"
+	},
+	{
+		"index":21,
+		"status":"Pickup failed",
+		"code":"PF",
+		"description":"No packages collected from sender",
+		"attempt":0,
+		"prevIndex":[20],
+		"nextIndex":[60],
+		"batchStatus":"START-PICKUP"
+	},
+	{
+		"index":22,
+		"status":"Parcel picked",
+		"code":"PP",
+		"description":"Pickup completed",
+		"attempt":0,
+		"prevIndex":[20],
+		"nextIndex":[23],
+		"batchStatus":"IN-TRANSIT"
+	},
+	{
+		"index":23,
+		"status":"Start delivery",
+		"code":"SD",
+		"description":"Driver going to delivery location",
+		"attempt":0,
+		"prevIndex":[22],
+		"nextIndex":[24],
+		"batchStatus":"IN-TRANSIT"
+	},
+	{
+		"index":24,
+		"status":"Arrived at dropoff",
+		"code":"AD",
+		"description":"Driver arrived at delivery location",
+		"attempt":0,
+		"prevIndex":[23],
+		"nextIndex":[24.1,25],
+		"batchStatus":"IN-TRANSIT"
+	},
+	{
+		"index":24.1,
+		"status":"Delivered",
+		"code":"DL",
+		"description":"Package delivered",
+		"attempt":0,
+		"prevIndex":[24],
+		"nextIndex":[],
+		"batchStatus":"COMPLETED"
+	},
+	{
+		"index":25,
+		"status":"No show",
+		"code":"NS",
+		"description":"Package not delivered",
+		"attempt":0,
+		"prevIndex":[24],
+		"nextIndex":[31,33],
+		"batchStatus":"IN-TRANSIT"
+	},
+	{
+		"index":26,
+		"status":"Returned to Hub",
+		"code":"RTH",
+		"description":"Package returned to Rara hub",
+		"prevIndex":[25],
+		"attempt":1,
+		"nextIndex":[26.1],
+		"batchStatus":"NEW"
+	},
+	{
+		"index":26.1,
+		"status":"Batch created",
+		"code":"BC",
+		"description":"Batch created",
+		"attempt":1,
+		"prevIndex":[26],
+		"nextIndex":[27],
+		"batchStatus":"NEW"
+	},
+	{
+		"index":27,
+		"status":"Accepted",
+		"code":"BA",
+		"description":"Batch accepted",
+		"attempt":1,
+		"prevIndex":[26.1],
+		"nextIndex":[28],
+		"batchStatus":"ACCEPTED"
+	},
+	{
+		"index":27.1,
+		"status":"Rejected",
+		"code":"BR",
+		"description":"Batch rejected",
+		"attempt":1,
+		"prevIndex":[27],
+		"nextIndex":[26.1],
+		"batchStatus":"NEW"
+	},
+	{
+		"index":28,
+		"status":"Start pickup",
+		"code":"PS",
+		"description":"Driver en route to pickup location",
+		"attempt":1,
+		"prevIndex":[27],
+		"nextIndex":[29],
+		"batchStatus":"START-PICKUP"
+	},
+	{
+		"index":29,
+		"status":"Arrived at pickup",
+		"code":"PA",
+		"description":"Driver arrived at pickup location",
+		"attempt":1,
+		"prevIndex":[28],
+		"nextIndex":[30],
+		"batchStatus":"START-PICKUP"
+	},
+	{
+		"index":30,
+		"status":"Parcel picked",
+		"code":"PP",
+		"description":"Pickup completed",
+		"attempt":1,
+		"prevIndex":[29],
+		"nextIndex":[31],
+		"batchStatus":"IN-TRANSIT"
+	},
+	{
+		"index":31,
+		"status":"Start delivery",
+		"code":"SD",
+		"description":"Driver going to delivery location",
+		"attempt":1,
+		"prevIndex":[30,25],
+		"nextIndex":[32],
+		"batchStatus":"IN-TRANSIT"
+	},
+	{
+		"index":32,
+		"status":"Arrived at dropoff",
+		"code":"AD",
+		"description":"Driver arrived at delivery location",
+		"attempt":1,
+		"prevIndex":[31],
+		"nextIndex":[36,33],
+		"batchStatus":"IN-TRANSIT"
+	},
+	{
+		"index":33,
+		"status":"Failed",
+		"code":"DF",
+		"description":"Package delivery failed",
+		"attempt":1,
+		"prevIndex":[32],
+		"nextIndex":[33.1],
+		"batchStatus":"IN-TRANSIT"
+	},
+	{
+		"index":33.1,
+		"status":"Start return",
+		"code":"RS",
+		"description":"Start return",
+		"attempt":2,
+		"prevIndex":[33],
+		"nextIndex":[33.2],
+		"batchStatus":"IN-RETURN"
+	},
+	{
+		"index":33.2,
+		"status":"Arrived at sender",
+		"code":"SA",
+		"description":"Arrived at sender location",
+		"attempt":2,
+		"prevIndex":[33.1],
+		"nextIndex":[33.3],
+		"batchStatus":"IN-RETURN"
+	},
+	{
+		"index":33.3,
+		"status":"Returned to sender",
+		"code":"RTS",
+		"description":"Package returned to sender",
+		"attempt":2,
+		"prevIndex":[33.2],
+		"nextIndex":[],
+		"batchStatus":"IN-RETURN"
+	},
+	{
+		"index":36,
+		"status":"Delivered",
+		"code":"DL",
+		"description":"Package delivered",
+		"attempt":1,
+		"prevIndex":[32],
+		"nextIndex":[],
+		"batchStatus":"COMPLETED"
+	},
+	{
+		"index":35,
+		"status":"Returned to WH",
+		"code":"RTW",
+		"description":"Package returned to business warehouse",
+		"attempt":2,
+		"prevIndex":[34],
+		"nextIndex":[],
+		"batchStatus":"COMPLETED"
+	},
+	{
+		"index":60,
+		"status":"Cancelled",
+		"code":"OC",
+		"description":"Order cancelled",
+		"attempt":0,
+		"nextIndex":[],
+		"batchStatus":"CANCELLED"
+	}
+]
