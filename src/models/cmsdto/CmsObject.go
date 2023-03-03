@@ -56,7 +56,7 @@ type Tag struct {
 }
 
 type CancellationConditions struct {
-	StatusIndex int      `json:"statusIndex"`
+	StatusIndex float32  `json:"statusIndex"`
 	IsEligible  bool     `json:"isEligible"`
 	Type        []string `json:"type"`
 	By          []string `json:"by"`
