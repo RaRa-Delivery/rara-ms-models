@@ -14,7 +14,7 @@ import (
 	"github.com/RaRa-Delivery/rara-ms-models/src/utility/lg"
 )
 
-func StoreNewCmsContract(secretKey string, postalCode string, token string) (cmsdto.CmsObject, error) {
+func StoreNewCmsContract(secretKey string, accountId int64, token string) (cmsdto.CmsObject, error) {
 	//log.Println("secret key: ", secretKey)
 	cmsData := cmsdto.CmsObject{}
 	cmsObj := cmsdto.CmsBasic{}
