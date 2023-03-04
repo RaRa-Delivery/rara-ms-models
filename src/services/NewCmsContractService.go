@@ -14,6 +14,29 @@ import (
 	"github.com/RaRa-Delivery/rara-ms-models/src/utility/lg"
 )
 
+func GetAccountBySecretKey(secretKey string, token string) (int64, error) {
+
+	cmsObj := cmsdto.CmsBasic{}
+	cms := cmsdto.CMS{Token: token}
+
+	res, resE := cms.GetBusinessDetails(secretKey)
+	json.Unmarshal([]byte(res), &cmsObj)
+
+	if resE != nil {
+		log.Println(lg.Error(resE))
+		return 0, resE
+	}
+
+	_, e := json.Marshal(&cmsObj)
+	if e != nil {
+		log.Println(lg.Error(e))
+		return 0, e
+	}
+
+	return int64(cmsObj.Data.ID), nil
+
+}
+
 func StoreNewCmsContract(secretKey string, accountId int64, token string) (cmsdto.CmsObject, error) {
 	//log.Println("secret key: ", secretKey)
 	cmsData := cmsdto.CmsObject{}
