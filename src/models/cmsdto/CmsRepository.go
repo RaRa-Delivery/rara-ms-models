@@ -385,7 +385,8 @@ func (c *CMS) GetZoneByKecamatan(bshtTag int64, kecamatan string, zoneType strin
 	return pickupDto, nil
 }
 
-func (c *CMS) GetOperationRegionByPostalCode(postalCode string) (string, error) {
+func (c *CMS) GetOperationRegionByPostalCode(postalCode string) (OperationRegionByPostalCode, error) {
+	opr := OperationRegionByPostalCode{}
 	url := os.Getenv("MDS_URL") + "/operation-region/postal-code/" + postalCode
 	token := c.Token
 	headers := make(map[string]string)
@@ -393,10 +394,16 @@ func (c *CMS) GetOperationRegionByPostalCode(postalCode string) (string, error) 
 	response, err := utility.GetApiResponse(url, headers)
 	if err != nil {
 		log.Println(lg.Error(err))
-		return "", err
+		return opr, err
+	}
+
+	oprError := json.Unmarshal([]byte(response), &opr)
+	if oprError != nil {
+		log.Println(lg.Error(oprError))
+		return opr, oprError
 	}
 	log.Println("GetOperationRegionByPostalCode: ", response)
-	return response, nil
+	return opr, nil
 
 }
 

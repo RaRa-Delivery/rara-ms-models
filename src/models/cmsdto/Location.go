@@ -21,3 +21,15 @@ type LocationData struct {
 	Province      string `json:"province"`
 	ZipcodeType   string `json:"zipcodeType"`
 }
+
+type OperationRegionByPostalCode struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+	Data    struct {
+		ID          int    `json:"id"`
+		TenantToken string `json:"tenantToken"`
+		Version     int    `json:"version"`
+		IsActive    bool   `json:"isActive"`
+		RegionName  string `json:"regionName"`
+	} `json:"data"`
+}
