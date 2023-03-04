@@ -385,6 +385,21 @@ func (c *CMS) GetZoneByKecamatan(bshtTag int64, kecamatan string, zoneType strin
 	return pickupDto, nil
 }
 
+func (c *CMS) GetOperationRegionByPostalCode(postalCode string) (string, error) {
+	url := os.Getenv("MDS_URL") + "/operation-region/postal-code/" + postalCode
+	token := c.Token
+	headers := make(map[string]string)
+	headers["Authorization"] = "Bearer " + token
+	response, err := utility.GetApiResponse(url, headers)
+	if err != nil {
+		log.Println(lg.Error(err))
+		return "", err
+	}
+	log.Println("GetOperationRegionByPostalCode: ", response)
+	return response, nil
+
+}
+
 // curl -X 'GET' \
 //   'https://rara-saas-ms-mds.dev.rara.delivery/business-pickup-zone-map/details/v2?pickupLocationId=130' \
 //   -H 'accept: */*' \
