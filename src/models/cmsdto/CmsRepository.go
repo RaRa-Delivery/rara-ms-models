@@ -108,7 +108,7 @@ func (c *CMS) GetBusinessDetailsByOperationRegion(secretKey string, operationReg
 	headers := make(map[string]string)
 	headers["secret"] = secretKey
 	headers["Authorization"] = "Bearer " + token
-	response, err := utility.GetApiResponse(url, headers)
+	response, err := utility.ApiResponse("POST", url, headers, "")
 	if err != nil {
 		log.Println(lg.Error(err))
 		return "", err
