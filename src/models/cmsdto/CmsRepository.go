@@ -87,10 +87,26 @@ type WebhookTypeFilter struct {
 
 // }
 
-func (c *CMS) GetBusinessDetails(secretKey string) (string, error) {
-	url := os.Getenv("IAM_URL") + "/business/account/validate?secret=" + secretKey
+func (c *CMS) GetBusinessDetailsByAccountId(accountId int64) (string, error) {
+	url := os.Getenv("CMS_URL") + "/business-account/get/" + fmt.Sprint(accountId)
 	token := c.Token
 	headers := make(map[string]string)
+	headers["Authorization"] = "Bearer " + token
+	response, err := utility.GetApiResponse(url, headers)
+	if err != nil {
+		log.Println(lg.Error(err))
+		return "", err
+	}
+	log.Println("GetBusinessDetails: ", response)
+	return response, nil
+
+}
+
+func (c *CMS) GetBusinessDetailsByOperationRegion(secretKey string, operationRegion int64) (string, error) {
+	url := os.Getenv("IAM_URL") + "/business/secret/validate?operationRegionId=" + fmt.Sprint(operationRegion)
+	token := c.Token
+	headers := make(map[string]string)
+	headers["secret"] = secretKey
 	headers["Authorization"] = "Bearer " + token
 	response, err := utility.GetApiResponse(url, headers)
 	if err != nil {

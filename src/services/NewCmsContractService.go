@@ -14,12 +14,12 @@ import (
 	"github.com/RaRa-Delivery/rara-ms-models/src/utility/lg"
 )
 
-func GetAccountBySecretKey(secretKey string, token string) (int64, error) {
+func GetAccountBySecretKey(secretKey string, token string, operationRegion int64) (int64, error) {
 
 	cmsObj := cmsdto.CmsBasic{}
 	cms := cmsdto.CMS{Token: token}
 
-	res, resE := cms.GetBusinessDetails(secretKey)
+	res, resE := cms.GetBusinessDetailsByOperationRegion(secretKey, operationRegion)
 	json.Unmarshal([]byte(res), &cmsObj)
 
 	if resE != nil {
@@ -37,13 +37,36 @@ func GetAccountBySecretKey(secretKey string, token string) (int64, error) {
 
 }
 
-func StoreNewCmsContract(secretKey string, accountId int64, token string) (cmsdto.CmsObject, error) {
+func GetAccountByAccountId(token string, accountId int64) (int64, error) {
+
+	cmsObj := cmsdto.CmsBasic{}
+	cms := cmsdto.CMS{Token: token}
+
+	res, resE := cms.GetBusinessDetailsByAccountId(accountId)
+	json.Unmarshal([]byte(res), &cmsObj)
+
+	if resE != nil {
+		log.Println(lg.Error(resE))
+		return 0, resE
+	}
+
+	_, e := json.Marshal(&cmsObj)
+	if e != nil {
+		log.Println(lg.Error(e))
+		return 0, e
+	}
+
+	return int64(cmsObj.Data.ID), nil
+
+}
+
+func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error) {
 	//log.Println("secret key: ", secretKey)
 	cmsData := cmsdto.CmsObject{}
 	cmsObj := cmsdto.CmsBasic{}
 	cms := cmsdto.CMS{Token: token}
 
-	res, resE := cms.GetBusinessDetails(secretKey)
+	res, resE := cms.GetBusinessDetailsByAccountId(accountId)
 	json.Unmarshal([]byte(res), &cmsObj)
 
 	if resE != nil {
@@ -431,8 +454,8 @@ func StoreNewCmsContract(secretKey string, accountId int64, token string) (cmsdt
 		return cmsData, resError
 	}
 
-	log.Println("NewCmsContract:"+secretKey, " -- ", string(resByte))
-	log.Println(lg.Green("NewCmsContract:"+secretKey, " -- ", string(resByte)))
+	log.Println("NewCmsContract:"+fmt.Sprint(accountId), " -- ", string(resByte))
+	log.Println(lg.Green("NewCmsContract:"+fmt.Sprint(accountId), " -- ", string(resByte)))
 
 	return cmsData, nil
 
