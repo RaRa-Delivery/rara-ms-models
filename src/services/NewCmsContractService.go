@@ -120,35 +120,35 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 		if ee != nil {
 			return cmsData, ee
 		}
-		purpose := []string{"OR",
-			"OP",
-			"BA",
-			"PS",
-			"PA",
-			"PP",
-			"PF",
-			"SD",
-			"AD",
-			"NS",
-			"RTH",
-			"DF",
-			"DL",
-			"RTW",
-			"PWH",
-			"DTH",
-			"RS",
-			"SA",
-			"RTS",
-			"PWH",
-			"DTH",
+		purpose := []cmsdto.WebhookStatusMap{
+			{Code: "OR", BusinessStatus: "Order rejected"},
+			{Code: "OP", BusinessStatus: "Order placed"},
+			{Code: "BA", BusinessStatus: "Accepted"},
+			{Code: "PS", BusinessStatus: "Start pickup"},
+			{Code: "PA", BusinessStatus: "Arrived at pickup"},
+			{Code: "PP", BusinessStatus: "Parcel picked"},
+			{Code: "PF", BusinessStatus: "Pickup failed"},
+			{Code: "SD", BusinessStatus: "Start delivery"},
+			{Code: "AD", BusinessStatus: "Arrived at dropoff"},
+			{Code: "NS", BusinessStatus: "No show"},
+			{Code: "RTH", BusinessStatus: "Returned to hub"},
+			{Code: "DF", BusinessStatus: "Delivery failed"},
+			{Code: "DL", BusinessStatus: "Delivered"},
+			{Code: "RTW", BusinessStatus: "Returned to WH"},
+			{Code: "PWH", BusinessStatus: "Picked up from WH"},
+			{Code: "DTH", BusinessStatus: "Delivered to Hub"},
+			{Code: "RS", BusinessStatus: "Start return"},
+			{Code: "SA", BusinessStatus: "Arrived at sender"},
+			{Code: "RTS", BusinessStatus: "Returned to sender"},
 		}
 
-		purpose1 := []string{}
+		purpose1 := []cmsdto.WebhookStatusMap{}
 		for _, webhookConfig := range webhookConfigDto.Data {
 
 			code := webhookConfig.OrderStatus.Code
 			if code != "" {
-				purpose1 = append(purpose1, code)
+
+				purpose1 = append(purpose1, cmsdto.WebhookStatusMap{Code: code, BusinessStatus: webhookConfig.WebhookStatusName})
 			}
 
 		}
