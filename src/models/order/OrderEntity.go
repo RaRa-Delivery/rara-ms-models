@@ -1,6 +1,9 @@
 package order
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"github.com/RaRa-Delivery/rara-ms-models/src/models/cmsdto"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type NewOrderObject struct {
 	Id                  primitive.ObjectID  `json:"_id" bson:"_id"`
@@ -252,11 +255,11 @@ type Notification struct {
 }
 
 type Webhook struct {
-	Purpose       []string  `json:"purpose" bson:"purpose"`
-	RequestMethod string    `json:"requestMethod" bson:"requestMethod"`
-	Url           string    `json:"url" bson:"url"`
-	Headers       []Headers `json:"headers" bson:"headers"`
-	Payload       string    `json:"payload" bson:"payload"`
+	Purpose       []cmsdto.WebhookStatusMap `json:"purpose" bson:"purpose"`
+	RequestMethod string                    `json:"requestMethod" bson:"requestMethod"`
+	Url           string                    `json:"url" bson:"url"`
+	Headers       []Headers                 `json:"headers" bson:"headers"`
+	Payload       string                    `json:"payload" bson:"payload"`
 }
 
 type Headers struct {
