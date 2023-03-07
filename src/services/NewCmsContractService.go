@@ -403,15 +403,15 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 
 		packageDef := packageNameObj.PackageDefinitions[0]
 
-		str, _ := cms.GetPackageSchemaDetails(int64(deliveryPackage.PackageTypeScheme.ID))
-		log.Println("str: ", str)
-		log.Println(lg.Yellow(str))
-		packageDto := cmsdto.PackDto{}
-		pe := json.Unmarshal([]byte(str), &packageDto)
-		if pe != nil {
-			log.Println(lg.Error(pe))
-			return cmsData, pe
-		}
+		// str, _ := cms.GetPackageSchemaDetails(int64(deliveryPackage.PackageTypeScheme.ID))
+		// log.Println("str: ", str)
+		// log.Println(lg.Yellow(str))
+		// packageDto := cmsdto.PackDto{}
+		// pe := json.Unmarshal([]byte(str), &packageDto)
+		// if pe != nil {
+		// 	log.Println(lg.Error(pe))
+		// 	return cmsData, pe
+		// }
 
 		//log.Println("deliveryPackage.PackageTypeScheme.Value: ", deliveryPackage.PackageTypeScheme.Value)
 		packageData.Type = packageDef.Metric
