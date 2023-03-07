@@ -32,6 +32,6 @@ type WebhookData struct {
 }
 
 type WebhookStatusMap struct {
-	Code           string `json:"code"`
-	BusinessStatus string `json:"businessStatus"`
+	Code           string `json:"code" bson:"code"`
+	BusinessStatus string `json:"businessStatus" bson:"businessStatus"`
 }
