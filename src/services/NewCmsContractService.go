@@ -116,6 +116,10 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 	}
 	json.Unmarshal(webhookActualDataByte, &cmsData.Webhooks)
 	if len(cmsData.Webhooks) > 0 {
+		webhookConfigDto, ee := cms.GetWebhookConfigDetails(int64(cmsObj.Data.ID))
+		if ee != nil {
+			return cmsData, ee
+		}
 		purpose := []string{"OR",
 			"OP",
 			"BA",
@@ -138,7 +142,22 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 			"PWH",
 			"DTH",
 		}
-		cmsData.Webhooks[0].Purpose = append(cmsData.Webhooks[0].Purpose, purpose...)
+
+		purpose1 := []string{}
+		for _, webhookConfig := range webhookConfigDto.Data {
+
+			code := webhookConfig.OrderStatus.Code
+			if code != "" {
+				purpose1 = append(purpose1, code)
+			}
+
+		}
+		if len(purpose1) > 0 {
+			cmsData.Webhooks[0].Purpose = append(cmsData.Webhooks[0].Purpose, purpose1...)
+		} else {
+			cmsData.Webhooks[0].Purpose = append(cmsData.Webhooks[0].Purpose, purpose...)
+		}
+
 	}
 
 	/**Chatbot**/

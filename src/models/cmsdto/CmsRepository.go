@@ -449,6 +449,28 @@ func (c *CMS) GetPackageNameDetails(id int64) (PackageNameData, error) {
 
 }
 
+func (c *CMS) GetWebhookConfigDetails(accountId int64) (WebhookConfigDto, error) {
+	webhookDto := WebhookConfigDto{}
+	url := os.Getenv("CMS_URL") + "/notifications/config/web-hook/order-status?accountId=" + fmt.Sprint(accountId)
+	token := c.Token
+	headers := make(map[string]string)
+	headers["Authorization"] = "Bearer " + token
+
+	response, err := utility.GetApiResponse(url, headers)
+	if err != nil {
+		log.Println(lg.Error(err))
+		return webhookDto, err
+	}
+
+	eeee := json.Unmarshal([]byte(response), &webhookDto)
+	if eeee != nil {
+		return webhookDto, eeee
+	}
+
+	return webhookDto, nil
+
+}
+
 // curl -X 'GET' \
 //   'https://rara-saas-ms-mds.dev.rara.delivery/business-pickup-zone-map/details/v2?pickupLocationId=130' \
 //   -H 'accept: */*' \
