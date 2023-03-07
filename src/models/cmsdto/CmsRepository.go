@@ -233,7 +233,9 @@ func (c *CMS) GetCommonLabel(id int64) (string, error) {
 		log.Println(lg.Error(reqError))
 		return "", reqError
 	}
-
+	log.Println("url: ", url)
+	log.Println("Headers: ", headers)
+	log.Println("reqStr: ", string(reqStr))
 	response, err := utility.ApiResponse("POST", url, headers, string(reqStr))
 	if err != nil {
 		log.Println(lg.Error(err))
@@ -420,6 +422,30 @@ func (c *CMS) GetOperationRegionByPostalCode(postalCode string) (OperationRegion
 	}
 	log.Println("GetOperationRegionByPostalCode: ", response)
 	return opr, nil
+
+}
+
+func (c *CMS) GetPackageNameDetails(id int64) (PackageNameData, error) {
+	pnDto := PackageNameDto{}
+	pn := PackageNameData{}
+	url := os.Getenv("MDS_URL") + "/package-type/get/" + fmt.Sprint(id)
+	token := c.Token
+	headers := make(map[string]string)
+	headers["Authorization"] = "Bearer " + token
+
+	response, err := utility.GetApiResponse(url, headers)
+	if err != nil {
+		log.Println(lg.Error(err))
+		return pn, err
+	}
+
+	oprError := json.Unmarshal([]byte(response), &pnDto)
+	if oprError != nil {
+		log.Println(lg.Error(oprError))
+		return pn, oprError
+	}
+	log.Println("GetPackageNameDetails: ", response)
+	return pnDto.Data, nil
 
 }
 

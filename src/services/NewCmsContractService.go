@@ -2,7 +2,6 @@ package services
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -389,30 +388,20 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 		//log.Println("deliveryPackage.PackageTypeScheme.Value:", deliveryPackage.PackageTypeScheme.Value)
 		packageData.WeightIndex = float64(weightIndex)
 
-		packageNameObj := cmsdto.BshtDto{}
-		packageRes, packageError := cms.GetCommonLabel(int64(deliveryPackage.PackageName.ID))
+		packageNameObj, packageError := cms.GetPackageNameDetails(int64(deliveryPackage.PackageName.ID))
 
 		if packageError != nil {
-			log.Println(lg.Error(packageError))
+			log.Println(lg.Error("Issue with package name: ", packageError))
 			return cmsData, packageError
 		}
 
 		//	log.Println("packageRes: ", packageRes)
 
-		packageUnmarshalError := json.Unmarshal([]byte(packageRes), &packageNameObj)
-		if packageUnmarshalError != nil {
-			log.Println(lg.Error(packageUnmarshalError))
-			return cmsData, packageUnmarshalError
-		}
-
-		if len(packageNameObj.Data) == 0 {
-			log.Println(lg.Error("No package name found"))
-			return cmsData, errors.New("No package name found")
-		}
-
-		packageName := packageNameObj.Data[0].Label
+		packageName := packageNameObj.PackageName
 		packageData.Name = packageName
-		packageData.Id = int64(deliveryPackage.PackageName.ID)
+		packageData.Id = int64(packageNameObj.ID)
+
+		packageDef := packageNameObj.PackageDefinitions[0]
 
 		str, _ := cms.GetPackageSchemaDetails(int64(deliveryPackage.PackageTypeScheme.ID))
 		log.Println("str: ", str)
@@ -425,13 +414,16 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 		}
 
 		//log.Println("deliveryPackage.PackageTypeScheme.Value: ", deliveryPackage.PackageTypeScheme.Value)
-		packageData.Type = packageDto.Data.Name
-		packageDefDto := cmsdto.PackageDefinitionDto{}
-		packageDefDtoError := json.Unmarshal([]byte(deliveryPackage.PackageTypeScheme.Value), &packageDefDto)
-		if packageDefDtoError != nil {
-			log.Println(lg.Error(packageDefDtoError))
-			return cmsData, packageDefDtoError
+		packageData.Type = packageDef.Metric
+		metrics := []cmsdto.Matric{{Ref: packageDef.Reference}}
+		vars := []cmsdto.Variable{}
+
+		for _, variable := range packageDef.PackageVariables {
+			v := cmsdto.Variable{Ref: variable.Reference, Name: variable.Name, Label: cmsdto.PackageLabel(variable.Label), Type: variable.Type, IsCurrency: variable.IsCurrency, Value: variable.Value}
+			vars = append(vars, v)
 		}
+
+		packageDefDto := cmsdto.PackageDefinitionDto{Formula: packageDef.Formula, Metric: metrics, Variables: vars}
 
 		formula := packageDefDto.Formula
 		formula = strings.ReplaceAll(formula, "\u003c", "<")

@@ -19,21 +19,27 @@ type Dimensions struct {
 }
 
 type PackageDefinitionDto struct {
-	Metric []struct {
-		Ref string `json:"ref"`
-	} `json:"metric"`
-	Variables []struct {
-		Ref   string `json:"ref"`
-		Name  string `json:"name"`
-		Label struct {
-			En string `json:"en"`
-			ID string `json:"id"`
-		} `json:"label"`
-		Type       string `json:"type"`
-		IsCurrency bool   `json:"isCurrency"`
-		Value      string `json:"value"`
-	} `json:"variables"`
-	Formula string `json:"formula"`
+	Metric    []Matric   `json:"metric"`
+	Variables []Variable `json:"variables"`
+	Formula   string     `json:"formula"`
+}
+
+type Matric struct {
+	Ref string `json:"ref"`
+}
+
+type Variable struct {
+	Ref        string       `json:"ref"`
+	Name       string       `json:"name"`
+	Label      PackageLabel `json:"label"`
+	Type       string       `json:"type"`
+	IsCurrency bool         `json:"isCurrency"`
+	Value      string       `json:"value"`
+}
+
+type PackageLabel struct {
+	En string `json:"en"`
+	ID string `json:"id"`
 }
 
 type DeliveryFeeDto struct {
