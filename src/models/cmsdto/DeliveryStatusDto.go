@@ -14,7 +14,7 @@ import (
 
 func GetDeliveryStatusList() ([]DeliveryStatusDto, error) {
 	mydir, _ := os.Getwd()
-	utilsDir := filepath.Join(mydir, "/src/utility")
+	utilsDir := filepath.Join(mydir, "/src/utilities")
 	log.Println("Exec base dir", utilsDir)
 
 	envFileBytes, err := ioutil.ReadFile(filepath.Join(utilsDir, "delivery_status.json"))
