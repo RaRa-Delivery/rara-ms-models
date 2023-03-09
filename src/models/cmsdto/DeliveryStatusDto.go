@@ -15,9 +15,10 @@ import (
 func GetDeliveryStatusList() ([]DeliveryStatusDto, error) {
 	mydir, _ := os.Getwd()
 	utilsDir := filepath.Join(mydir, "/src/utility")
-	//log.Println("Exec base dir", utilsDir)
+	log.Println("Exec base dir", utilsDir)
 
 	envFileBytes, err := ioutil.ReadFile(filepath.Join(utilsDir, "delivery_status.json"))
+	log.Println("string(envFileBytes): ", string(envFileBytes))
 	var deliveryStatusArr []DeliveryStatusDto
 	delErr := json.Unmarshal(envFileBytes, &deliveryStatusArr)
 
