@@ -73,6 +73,7 @@ type CmsChatbotNotification struct {
 	NotificationType string             `json:"notificationType" bson:"notificationType"`
 	TemplateId       string             `json:"templateId" bson:"templateId"`
 	Params           []CmsChatbotParams `json:"params" bson:"params"`
+	ReceiverType     string             `json:"receiverType" bson:"receiverType"`
 }
 
 type CmsChatbotParams struct {

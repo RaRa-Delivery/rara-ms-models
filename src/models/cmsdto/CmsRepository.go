@@ -471,6 +471,28 @@ func (c *CMS) GetWebhookConfigDetails(accountId int64) (WebhookConfigDto, error)
 
 }
 
+func (c *CMS) GetNotificationConfigDetails(accountId int64, notificationType string) (NotificationConfigDto, error) {
+	webhookDto := NotificationConfigDto{}
+	url := os.Getenv("CMS_URL") + "/notifications/config/chat-bot/order-status?accountId=" + fmt.Sprint(accountId) + "&notificationTargetType=" + notificationType
+	token := c.Token
+	headers := make(map[string]string)
+	headers["Authorization"] = "Bearer " + token
+
+	response, err := utility.GetApiResponse(url, headers)
+	if err != nil {
+		log.Println(lg.Error(err))
+		return webhookDto, err
+	}
+
+	eeee := json.Unmarshal([]byte(response), &webhookDto)
+	if eeee != nil {
+		return webhookDto, eeee
+	}
+
+	return webhookDto, nil
+
+}
+
 // curl -X 'GET' \
 //   'https://rara-saas-ms-mds.dev.rara.delivery/business-pickup-zone-map/details/v2?pickupLocationId=130' \
 //   -H 'accept: */*' \

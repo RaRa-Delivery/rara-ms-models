@@ -20,3 +20,17 @@ type WebhookConfigData struct {
 	WebhookStatusName string      `json:"webhookStatusName"`
 	Status            string      `json:"status"`
 }
+
+type NotificationConfigDto struct {
+	Code    string                   `json:"code"`
+	Message string                   `json:"message"`
+	Data    []NotificationConfigData `json:"data"`
+}
+
+type NotificationConfigData struct {
+	ID                     int         `json:"id"`
+	OrderStatus            OrderStatus `json:"orderStatus"`
+	BusinessAccountID      int         `json:"businessAccountId"`
+	Status                 string      `json:"status"`
+	NotificationTargetType string      `json:"notificationTargetType"`
+}

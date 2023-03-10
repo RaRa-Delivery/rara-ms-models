@@ -162,100 +162,167 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 
 	/**Chatbot**/
 
-	chatbot := []byte(`{
-        "language": "id",
-        "notifications": [
-            {
-                "notificationType": "chatStarter",
-                "templateId": "chat_starter_new"
-            },
-            {
-                "notificationType": "csatDelivered",
-                "templateId": "csat_delivery_new"
-            },
-            {
-                "notificationType": "orderCreated",
-                "templateId": "order_tracking_bahasa_2",
-                "params": [
-                    {
-                        "key": "1",
-                        "value": "RECIPIENT_NAME"
-                    },
-                    {
-                        "key": "2",
-                        "value": "TRACKING_ID"
-                    },
-                    {
-                        "key": "3",
-                        "value": "BUSINESS_NAME"
-                    },
-                    {
-                        "key": "4",
-                        "value": "TRACKING_LINK"
-                    }
-                ]
-            },
-            {
-                "notificationType": "startDelivery",
-                "templateId": "start_delivery_2_new",
-                "params": [
-                    {
-                        "key": "1",
-                        "value": "RECIPIENT_NAME"
-                    },
-                    {
-                        "key": "2",
-                        "value": "TRACKING_ID"
-                    },
-                    {
-                        "key": "3",
-                        "value": "BUSINESS_NAME"
-                    },
-                    {
-                        "key": "4",
-                        "value": "ETA"
-                    },
-                    {
-                        "key": "5",
-                        "value": "OTP"
-                    }
-                ]
-            },
-            {
-                "notificationType": "failed",
-                "templateId": "failed_1_new",
-                "params": [
-                    {
-                        "key": "1",
-                        "value": "RECIPIENT_NAME"
-                    },
-                    {
-                        "key": "2",
-                        "value": "TRACKING_ID"
-                    },
-                    {
-                        "key": "3",
-                        "value": "BUSINESS_NAME"
-                    },
-                    {
-                        "key": "4",
-                        "value": "BUSINESS_NAME"
-                    }
-                ]
-            }
-        ],
-        "postBackUrl": "` + os.Getenv("WHATSAPP_CALLBACK_URL") + `"
-    }`)
+	notifArr := []cmsdto.CmsChatbotNotification{}
 
-	cmsChat := cmsdto.CmsChatbotService{}
+	notif := cmsdto.CmsChatbotNotification{ReceiverType: "RECIPIENT", NotificationType: "chatStarter", TemplateId: "chat_starter_new"}
+	notifArr = append(notifArr, notif)
 
-	log.Println(lg.Green("chatbot: ", string(chatbot)))
+	notif = cmsdto.CmsChatbotNotification{ReceiverType: "RECIPIENT", NotificationType: "DL", TemplateId: "raranow_delivered"}
+	notifArr = append(notifArr, notif)
 
-	waError := json.Unmarshal(chatbot, &cmsChat)
-	log.Println("waError: ", waError)
-	if waError != nil {
-		log.Println(lg.Error("waError: ", waError))
+	//RECIPIENT
+	recipientNotifiyConfigDto, rnee := cms.GetNotificationConfigDetails(int64(cmsObj.Data.ID), "RECIPIENT")
+	if rnee == nil {
+
+		for _, recipientNotify := range recipientNotifiyConfigDto.Data {
+			if recipientNotify.Status == "ACTIVE" && recipientNotify.NotificationTargetType == "RECIPIENT" {
+				if recipientNotify.OrderStatus.Code == "OP" {
+
+					params := []cmsdto.CmsChatbotParams{{Key: "1", Value: "RECIPIENT_NAME"}, {Key: "2", Value: "TRACKING_ID"}, {Key: "3", Value: "BUSINESS_NAME"}, {Key: "4", Value: "TRACKING_LINK"}}
+
+					notif = cmsdto.CmsChatbotNotification{ReceiverType: "RECIPIENT", NotificationType: "OP", TemplateId: "raranow_startpickup", Params: params}
+					notifArr = append(notifArr, notif)
+				}
+
+				if recipientNotify.OrderStatus.Code == "PS" {
+
+					params := []cmsdto.CmsChatbotParams{{Key: "1", Value: "RECIPIENT_NAME"}, {Key: "2", Value: "TRACKING_ID"}, {Key: "3", Value: "BUSINESS_NAME"}, {Key: "4", Value: "TRACKING_LINK"}}
+
+					notif = cmsdto.CmsChatbotNotification{ReceiverType: "RECIPIENT", NotificationType: "PS", TemplateId: "raranow_startpickup", Params: params}
+					notifArr = append(notifArr, notif)
+				}
+
+				if recipientNotify.OrderStatus.Code == "SD" {
+
+					params := []cmsdto.CmsChatbotParams{{Key: "1", Value: "RECIPIENT_NAME"}, {Key: "2", Value: "TRACKING_ID"}, {Key: "3", Value: "BUSINESS_NAME"}, {Key: "4", Value: "ETA"}, {Key: "5", Value: "OTP"}}
+
+					notif = cmsdto.CmsChatbotNotification{ReceiverType: "RECIPIENT", NotificationType: "SD", TemplateId: "raranow_startdelivery_noncodhigh", Params: params}
+					notifArr = append(notifArr, notif)
+				}
+
+				if recipientNotify.OrderStatus.Code == "DF" {
+
+					params := []cmsdto.CmsChatbotParams{{Key: "1", Value: "RECIPIENT_NAME"}, {Key: "2", Value: "TRACKING_ID"}, {Key: "3", Value: "BUSINESS_NAME"}, {Key: "4", Value: "BUSINESS_NAME"}}
+
+					notif = cmsdto.CmsChatbotNotification{ReceiverType: "RECIPIENT", NotificationType: "DF", TemplateId: "raranow_failed", Params: params}
+					notifArr = append(notifArr, notif)
+				}
+
+				if recipientNotify.OrderStatus.Code == "PF" {
+
+					params := []cmsdto.CmsChatbotParams{{Key: "1", Value: "RECIPIENT_NAME"}, {Key: "2", Value: "TRACKING_ID"}, {Key: "3", Value: "BUSINESS_NAME"}, {Key: "4", Value: "BUSINESS_NAME"}}
+
+					notif = cmsdto.CmsChatbotNotification{ReceiverType: "RECIPIENT", NotificationType: "PF", TemplateId: "raranow_failpickcancel", Params: params}
+					notifArr = append(notifArr, notif)
+				}
+
+				if recipientNotify.OrderStatus.Code == "PCOD" {
+
+					params := []cmsdto.CmsChatbotParams{{Key: "1", Value: "RECIPIENT_NAME"}, {Key: "2", Value: "TRACKING_ID"}, {Key: "3", Value: "BUSINESS_NAME"}, {Key: "4", Value: "DRIVER"}, {Key: "5", Value: "OTP"}}
+
+					notif = cmsdto.CmsChatbotNotification{ReceiverType: "RECIPIENT", NotificationType: "PF", TemplateId: "raranow_failpickcancel", Params: params}
+					notifArr = append(notifArr, notif)
+				}
+
+			}
+		}
+
 	}
+
+	cmsChat := cmsdto.CmsChatbotService{Notifications: notifArr, Language: "id", PostBackUrl: os.Getenv("WHATSAPP_CALLBACK_URL")}
+
+	// chatbot := []byte(`{
+	//     "language": "id",
+	//     "notifications": [
+	//         {
+	//             "notificationType": "chatStarter",
+	//             "templateId": "chat_starter_new"
+	//         },
+	//         {
+	//             "notificationType": "csatDelivered",
+	//             "templateId": "csat_delivery_new"
+	//         },
+	//         {
+	//             "notificationType": "orderCreated",
+	//             "templateId": "order_tracking_bahasa_2",
+	//             "params": [
+	//                 {
+	//                     "key": "1",
+	//                     "value": "RECIPIENT_NAME"
+	//                 },
+	//                 {
+	//                     "key": "2",
+	//                     "value": "TRACKING_ID"
+	//                 },
+	//                 {
+	//                     "key": "3",
+	//                     "value": "BUSINESS_NAME"
+	//                 },
+	//                 {
+	//                     "key": "4",
+	//                     "value": "TRACKING_LINK"
+	//                 }
+	//             ]
+	//         },
+	//         {
+	//             "notificationType": "startDelivery",
+	//             "templateId": "start_delivery_2_new",
+	//             "params": [
+	//                 {
+	//                     "key": "1",
+	//                     "value": "RECIPIENT_NAME"
+	//                 },
+	//                 {
+	//                     "key": "2",
+	//                     "value": "TRACKING_ID"
+	//                 },
+	//                 {
+	//                     "key": "3",
+	//                     "value": "BUSINESS_NAME"
+	//                 },
+	//                 {
+	//                     "key": "4",
+	//                     "value": "ETA"
+	//                 },
+	//                 {
+	//                     "key": "5",
+	//                     "value": "OTP"
+	//                 }
+	//             ]
+	//         },
+	//         {
+	//             "notificationType": "failed",
+	//             "templateId": "failed_1_new",
+	//             "params": [
+	//                 {
+	//                     "key": "1",
+	//                     "value": "RECIPIENT_NAME"
+	//                 },
+	//                 {
+	//                     "key": "2",
+	//                     "value": "TRACKING_ID"
+	//                 },
+	//                 {
+	//                     "key": "3",
+	//                     "value": "BUSINESS_NAME"
+	//                 },
+	//                 {
+	//                     "key": "4",
+	//                     "value": "BUSINESS_NAME"
+	//                 }
+	//             ]
+	//         }
+	//     ],
+	//     "postBackUrl": "` + os.Getenv("WHATSAPP_CALLBACK_URL") + `"
+	// }`)
+
+	// log.Println(lg.Green("chatbot: ", string(chatbot)))
+
+	// waError := json.Unmarshal(chatbot, &cmsChat)
+	// log.Println("waError: ", waError)
+	// if waError != nil {
+	// 	log.Println(lg.Error("waError: ", waError))
+	// }
 
 	cmsData.CmsChatbotService = cmsChat
 
