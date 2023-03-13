@@ -462,8 +462,11 @@ func (c *CMS) GetWebhookConfigDetails(accountId int64) (WebhookConfigDto, error)
 		return webhookDto, err
 	}
 
+	log.Println(lg.Mg(response))
+
 	eeee := json.Unmarshal([]byte(response), &webhookDto)
 	if eeee != nil {
+		log.Println(eeee)
 		return webhookDto, eeee
 	}
 

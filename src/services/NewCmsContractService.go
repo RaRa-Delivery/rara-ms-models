@@ -107,8 +107,10 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 
 	webhookConfigDto, ee := cms.GetWebhookConfigDetails(int64(cmsObj.Data.ID))
 	if ee != nil {
+		log.Println(lg.Error(ee))
 		return cmsData, ee
 	}
+	log.Println("webhookConfigDto: ", webhookConfigDto)
 	purpose := []cmsdto.WebhookStatusMap{
 		{Code: "OR", BusinessStatus: "Order rejected"},
 		{Code: "OP", BusinessStatus: "Order placed"},
