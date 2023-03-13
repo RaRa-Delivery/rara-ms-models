@@ -480,12 +480,14 @@ func (c *CMS) GetNotificationConfigDetails(accountId int64, notificationType str
 	token := c.Token
 	headers := make(map[string]string)
 	headers["Authorization"] = "Bearer " + token
-
+	log.Println("chatbot url: ", url)
 	response, err := utility.GetApiResponse(url, headers)
 	if err != nil {
 		log.Println(lg.Error(err))
 		return webhookDto, err
 	}
+
+	log.Println(lg.Mg("chatbot: ", response))
 
 	eeee := json.Unmarshal([]byte(response), &webhookDto)
 	if eeee != nil {
