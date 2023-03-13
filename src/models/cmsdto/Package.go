@@ -1,44 +1,44 @@
 package cmsdto
 
 type PackageNameDto struct {
-	Code    string          `json:"code"`
-	Message string          `json:"message"`
-	Data    PackageNameData `json:"data"`
+	Code    string          `json:"code,omitempty"`
+	Message string          `json:"message,omitempty"`
+	Data    PackageNameData `json:"data,omitempty"`
 }
 type Label struct {
-	En string `json:"en"`
-	ID string `json:"id"`
+	En string `json:"en,omitempty"`
+	ID string `json:"id,omitempty"`
 }
 type PackageVariables struct {
-	ID          int    `json:"id"`
-	TenantToken string `json:"tenantToken"`
-	Version     int    `json:"version"`
-	IsActive    bool   `json:"isActive"`
-	Reference   string `json:"reference"`
-	Name        string `json:"name"`
-	Label       Label  `json:"label"`
-	Type        string `json:"type"`
-	IsCurrency  bool   `json:"isCurrency"`
-	Value       string `json:"value"`
+	ID          int    `json:"id,omitempty"`
+	TenantToken string `json:"tenantToken,omitempty"`
+	Version     int    `json:"version,omitempty"`
+	IsActive    bool   `json:"isActive,omitempty"`
+	Reference   string `json:"reference,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Label       Label  `json:"label,omitempty"`
+	Type        string `json:"type,omitempty"`
+	IsCurrency  bool   `json:"isCurrency,omitempty"`
+	Value       string `json:"value,omitempty"`
 }
 type PackageDefinitions struct {
-	ID               int                `json:"id"`
-	TenantToken      string             `json:"tenantToken"`
-	Version          int                `json:"version"`
-	IsActive         bool               `json:"isActive"`
-	Metric           string             `json:"metric"`
-	Reference        string             `json:"reference"`
-	PackageVariables []PackageVariables `json:"packageVariables"`
-	Formula          string             `json:"formula"`
+	ID               int                `json:"id,omitempty"`
+	TenantToken      string             `json:"tenantToken,omitempty"`
+	Version          int                `json:"version,omitempty"`
+	IsActive         bool               `json:"isActive,omitempty"`
+	Metric           string             `json:"metric,omitempty"`
+	Reference        string             `json:"reference,omitempty"`
+	PackageVariables []PackageVariables `json:"packageVariables,omitempty"`
+	Formula          string             `json:"formula,omitempty"`
 }
 type PackageNameData struct {
-	ID                 int                  `json:"id"`
-	TenantToken        string               `json:"tenantToken"`
-	Version            int                  `json:"version"`
-	IsActive           bool                 `json:"isActive"`
-	PackageName        string               `json:"packageName"`
-	WeightIndex        int                  `json:"weightIndex"`
-	PackageStatus      string               `json:"packageStatus"`
-	PackageDefinitions []PackageDefinitions `json:"packageDefinitions"`
-	BusinessID         int                  `json:"businessId"`
+	ID                 int                  `json:"id,omitempty"`
+	TenantToken        string               `json:"tenantToken,omitempty"`
+	Version            int                  `json:"version,omitempty"`
+	IsActive           bool                 `json:"isActive,omitempty"`
+	PackageName        string               `json:"packageName,omitempty"`
+	WeightIndex        int                  `json:"weightIndex,omitempty"`
+	PackageStatus      string               `json:"packageStatus,omitempty"`
+	PackageDefinitions []PackageDefinitions `json:"packageDefinitions,omitempty"`
+	BusinessID         int                  `json:"businessId,omitempty"`
 }

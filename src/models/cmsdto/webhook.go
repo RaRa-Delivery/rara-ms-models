@@ -1,37 +1,37 @@
 package cmsdto
 
 type WebhookBuilder struct {
-	Code    interface{}   `json:"code"`
-	Message string        `json:"message"`
-	Data    []WebhookData `json:"data"`
+	Code    interface{}   `json:"code,omitempty"`
+	Message string        `json:"message,omitempty"`
+	Data    []WebhookData `json:"data,omitempty"`
 }
 type CallBackHeaders struct {
-	ContentType   string `json:"Content-Type"`
-	Authorization string `json:"Authorization"`
+	ContentType   string `json:"Content-Type,omitempty"`
+	Authorization string `json:"Authorization,omitempty"`
 }
 type CallBackBody struct {
 }
 type WebhookData struct {
-	Id                  int64              `json:"id"`
-	TenantToken         string             `json:"tenantToken"`
-	CreatedBy           int                `json:"createdBy"`
-	CreatedOn           int64              `json:"createdOn"`
-	LastUpdatedBy       int                `json:"lastUpdatedBy"`
-	LastUpdatedOn       int64              `json:"lastUpdatedOn"`
-	Version             int                `json:"version"`
-	IsActive            bool               `json:"isActive"`
-	WebhookTemplate     string             `json:"webhookTemplate"`
-	CallBackURL         string             `json:"callBackUrl"`
-	CallBackQuery       string             `json:"callBackQuery"`
-	CallBackHeaders     map[string]string  `json:"callBackHeaders"`
-	CallBackBody        CallBackBody       `json:"callBackBody"`
-	WebhookCallbackType string             `json:"webhookCallbackType"`
-	AuthTokenSource     string             `json:"authTokenSource"`
-	BusinessID          int64              `json:"businessId"`
-	Purpose             []WebhookStatusMap `json:"purpose"`
+	Id                  int64              `json:"id,omitempty"`
+	TenantToken         string             `json:"tenantToken,omitempty"`
+	CreatedBy           int                `json:"createdBy,omitempty"`
+	CreatedOn           int64              `json:"createdOn,omitempty"`
+	LastUpdatedBy       int                `json:"lastUpdatedBy,omitempty"`
+	LastUpdatedOn       int64              `json:"lastUpdatedOn,omitempty"`
+	Version             int                `json:"version,omitempty"`
+	IsActive            bool               `json:"isActive,omitempty"`
+	WebhookTemplate     string             `json:"webhookTemplate,omitempty"`
+	CallBackURL         string             `json:"callBackUrl,omitempty"`
+	CallBackQuery       string             `json:"callBackQuery,omitempty"`
+	CallBackHeaders     map[string]string  `json:"callBackHeaders,omitempty"`
+	CallBackBody        CallBackBody       `json:"callBackBody,omitempty"`
+	WebhookCallbackType string             `json:"webhookCallbackType,omitempty"`
+	AuthTokenSource     string             `json:"authTokenSource,omitempty"`
+	BusinessID          int64              `json:"businessId,omitempty"`
+	Purpose             []WebhookStatusMap `json:"purpose,omitempty"`
 }
 
 type WebhookStatusMap struct {
-	Code           string `json:"code" bson:"code"`
-	BusinessStatus string `json:"businessStatus" bson:"businessStatus"`
+	Code           string `json:"code,omitempty" bson:"code"`
+	BusinessStatus string `json:"businessStatus,omitempty" bson:"businessStatus"`
 }

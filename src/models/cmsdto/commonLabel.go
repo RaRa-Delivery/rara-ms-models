@@ -1,9 +1,9 @@
 package cmsdto
 
 type CommonLabel struct {
-	Code    interface{}       `json:"code"`
-	Message string            `json:"message"`
-	Data    []CommonLableData `json:"data"`
+	Code    interface{}       `json:"code,omitempty"`
+	Message string            `json:"message,omitempty"`
+	Data    []CommonLableData `json:"data,omitempty"`
 }
 type CommonLableData struct {
 	ID               int     `json:"id"`

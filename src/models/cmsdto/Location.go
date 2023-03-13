@@ -3,7 +3,7 @@ package cmsdto
 type LocationDto struct {
 	Code    string       `json:"code"`
 	Message string       `json:"message"`
-	Data    LocationData `json:"data"`
+	Data    LocationData `json:"data,omitempty"`
 }
 type LocationData struct {
 	ID            int    `json:"id"`
@@ -23,13 +23,13 @@ type LocationData struct {
 }
 
 type OperationRegionByPostalCode struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
+	Code    string `json:"code,omitempty"`
+	Message string `json:"message,omitempty"`
 	Data    struct {
-		ID          int    `json:"id"`
-		TenantToken string `json:"tenantToken"`
-		Version     int    `json:"version"`
-		IsActive    bool   `json:"isActive"`
-		RegionName  string `json:"regionName"`
-	} `json:"data"`
+		ID          int    `json:"id,omitempty"`
+		TenantToken string `json:"tenantToken,omitempty"`
+		Version     int    `json:"version,omitempty"`
+		IsActive    bool   `json:"isActive,omitempty"`
+		RegionName  string `json:"regionName,omitempty"`
+	} `json:"data,omitempty"`
 }

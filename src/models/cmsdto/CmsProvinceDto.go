@@ -1,42 +1,42 @@
 package cmsdto
 
 type CmsProvinceDto struct {
-	Code    string          `json:"code"`
-	Message string          `json:"message"`
-	Data    CmsProvinceData `json:"data"`
+	Code    string          `json:"code,omitempty"`
+	Message string          `json:"message,omitempty"`
+	Data    CmsProvinceData `json:"data,omitempty"`
 }
 type CmsProvinceType struct {
-	ID           int    `json:"id"`
-	TenantToken  string `json:"tenantToken"`
-	Version      int    `json:"version"`
-	IsActive     bool   `json:"isActive"`
-	ProvinceType string `json:"provinceType"`
+	ID           int    `json:"id,omitempty"`
+	TenantToken  string `json:"tenantToken,omitempty"`
+	Version      int    `json:"version,omitempty"`
+	IsActive     bool   `json:"isActive,omitempty"`
+	ProvinceType string `json:"provinceType,omitempty"`
 }
 type CmsOperationRegion struct {
-	ID          int    `json:"id"`
-	TenantToken string `json:"tenantToken"`
-	Version     int    `json:"version"`
-	IsActive    bool   `json:"isActive"`
-	RegionName  string `json:"regionName"`
+	ID          int    `json:"id,omitempty"`
+	TenantToken string `json:"tenantToken,omitempty"`
+	Version     int    `json:"version,omitempty"`
+	IsActive    bool   `json:"isActive,omitempty"`
+	RegionName  string `json:"regionName,omitempty"`
 }
 type CmsOperationCity struct {
-	ID              int                `json:"id"`
-	TenantToken     string             `json:"tenantToken"`
-	Version         int                `json:"version"`
-	IsActive        bool               `json:"isActive"`
-	CityName        string             `json:"cityName"`
-	OperationRegion CmsOperationRegion `json:"operationRegion"`
+	ID              int                `json:"id,omitempty"`
+	TenantToken     string             `json:"tenantToken,omitempty"`
+	Version         int                `json:"version,omitempty"`
+	IsActive        bool               `json:"isActive,omitempty"`
+	CityName        string             `json:"cityName,omitempty"`
+	OperationRegion CmsOperationRegion `json:"operationRegion,omitempty"`
 }
 type CmsProvinceData struct {
-	ID                int                `json:"id"`
-	TenantToken       string             `json:"tenantToken"`
-	Version           int                `json:"version"`
-	IsActive          bool               `json:"isActive"`
-	Name              string             `json:"name"`
-	ProvinceType      CmsProvinceType    `json:"provinceType"`
-	ProvinceTypeID    int                `json:"provinceTypeId"`
-	OperationCity     CmsOperationCity   `json:"operationCity"`
-	OperationCityID   int                `json:"operationCityId"`
-	OperationRegion   CmsOperationRegion `json:"operationRegion"`
-	OperationRegionID int                `json:"operationRegionId"`
+	ID                int                `json:"id,omitempty"`
+	TenantToken       string             `json:"tenantToken,omitempty"`
+	Version           int                `json:"version,omitempty"`
+	IsActive          bool               `json:"isActive,omitempty"`
+	Name              string             `json:"name,omitempty"`
+	ProvinceType      CmsProvinceType    `json:"provinceType,omitempty"`
+	ProvinceTypeID    int                `json:"provinceTypeId,omitempty"`
+	OperationCity     CmsOperationCity   `json:"operationCity,omitempty"`
+	OperationCityID   int                `json:"operationCityId,omitempty"`
+	OperationRegion   CmsOperationRegion `json:"operationRegion,omitempty"`
+	OperationRegionID int                `json:"operationRegionId,omitempty"`
 }

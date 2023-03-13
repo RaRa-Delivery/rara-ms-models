@@ -16,8 +16,8 @@ type CMS struct {
 }
 
 type IamToken struct {
-	Token    string `json:"token"`
-	ExpireAt int64  `json:"expireAt"`
+	Token    string `json:"token,omitempty"`
+	ExpireAt int64  `json:"expireAt,omitempty"`
 }
 type WebhookTypeRequest struct {
 	Filters []WebhookTypeFilter `json:"filters"`

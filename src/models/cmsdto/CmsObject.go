@@ -11,74 +11,74 @@ import (
 )
 
 type CmsObject struct {
-	BusinessDetails         BusinessDetails        `json:"businessDetails"`
-	LinehaulRequired        bool                   `json:"linehaulRequired"`
-	SpecialHandlingRequired bool                   `json:"specialHandlingRequired"`
-	OperationRegions        CmsRegion              `json:"operationRegions"`
-	Bsht                    BshtDetails            `json:"bshtDetails"`
-	CancellationConditions  CancellationConditions `json:"cancellationConditions"`
-	Webhooks                []WebhookData          `json:"webhooks"`
-	DeliveryPackaging       []PackageData          `json:"deliveryPackaging"`
-	OrderJourneyDetails     []DeliveryStatusDto    `json:"orderJourneyDetails"`
-	CmsChatbotService       CmsChatbotService      `json:"chatbot"`
+	BusinessDetails         BusinessDetails        `json:"businessDetails,omitempty"`
+	LinehaulRequired        bool                   `json:"linehaulRequired,omitempty"`
+	SpecialHandlingRequired bool                   `json:"specialHandlingRequired,omitempty"`
+	OperationRegions        CmsRegion              `json:"operationRegions,omitempty"`
+	Bsht                    BshtDetails            `json:"bshtDetails,omitempty"`
+	CancellationConditions  CancellationConditions `json:"cancellationConditions,omitempty"`
+	Webhooks                []WebhookData          `json:"webhooks,omitempty"`
+	DeliveryPackaging       []PackageData          `json:"deliveryPackaging,omitempty"`
+	OrderJourneyDetails     []DeliveryStatusDto    `json:"orderJourneyDetails,omitempty"`
+	CmsChatbotService       CmsChatbotService      `json:"chatbot,omitempty"`
 	//DeliveryFee             []DeliveryFeeDto       `json:"deliveryFee"`
-	SLAservices []SlaServiceNew `json:"slaService"`
+	SLAservices []SlaServiceNew `json:"slaService,omitempty"`
 }
 
 type SlaServiceNew struct {
-	ID          string           `json:"id" bson:"id"`
-	Pickup      SLAservice       `json:"pickup" bson:"pickup"`
-	Dropoff     SLAservice       `json:"dropoff" bson:"dropoff"`
-	DeliveryFee []DeliveryFeeDto `json:"deliveryFee"`
+	ID          string           `json:"id,omitempty" bson:"id"`
+	Pickup      SLAservice       `json:"pickup,omitempty" bson:"pickup"`
+	Dropoff     SLAservice       `json:"dropoff,omitempty" bson:"dropoff"`
+	DeliveryFee []DeliveryFeeDto `json:"deliveryFee,omitempty"`
 }
 
 type BusinessDetails struct {
-	BusinessId     int64  `json:"businessId"`
-	AccountId      int64  `json:"accountId"`
-	AccountName    string `json:"accountName"`
-	PicName        string `json:"picName"`
-	PicPhoneNumber string `json:"picPhoneNumber"`
+	BusinessId     int64  `json:"businessId,omitempty"`
+	AccountId      int64  `json:"accountId,omitempty"`
+	AccountName    string `json:"accountName,omitempty"`
+	PicName        string `json:"picName,omitempty"`
+	PicPhoneNumber string `json:"picPhoneNumber,omitempty"`
 }
 
 type CmsRegion struct {
-	Id         int64  `json:"id"`
-	RegionName string `json:"regionName"`
+	Id         int64  `json:"id,omitempty"`
+	RegionName string `json:"regionName,omitempty"`
 }
 
 type BshtDetails struct {
-	IsEnabled bool  `json:"isEnabled"`
-	Tags      []Tag `json:"tags"`
+	IsEnabled bool  `json:"isEnabled,omitempty"`
+	Tags      []Tag `json:"tags,omitempty"`
 }
 
 type Tag struct {
-	Id    int64  `json:"id"`
-	Label string `json:"label"`
+	Id    int64  `json:"id,omitempty"`
+	Label string `json:"label,omitempty"`
 }
 
 type CancellationConditions struct {
-	StatusIndex float32  `json:"statusIndex"`
-	IsEligible  bool     `json:"isEligible"`
-	Type        []string `json:"type"`
-	By          []string `json:"by"`
-	Condition   string   `json:"condition"`
+	StatusIndex float32  `json:"statusIndex,omitempty"`
+	IsEligible  bool     `json:"isEligible,omitempty"`
+	Type        []string `json:"type,omitempty"`
+	By          []string `json:"by,omitempty"`
+	Condition   string   `json:"condition,omitempty"`
 }
 
 type CmsChatbotService struct {
-	Language      string                   `json:"language" bson:"language"`
-	Notifications []CmsChatbotNotification `json:"notifications" bson:"notifications"`
-	PostBackUrl   string                   `json:"postBackUrl" bson:"postBackUrl"`
+	Language      string                   `json:"language,omitempty" bson:"language"`
+	Notifications []CmsChatbotNotification `json:"notifications,omitempty" bson:"notifications"`
+	PostBackUrl   string                   `json:"postBackUrl,omitempty" bson:"postBackUrl"`
 }
 
 type CmsChatbotNotification struct {
-	NotificationType string             `json:"notificationType" bson:"notificationType"`
-	TemplateId       string             `json:"templateId" bson:"templateId"`
-	Params           []CmsChatbotParams `json:"params" bson:"params"`
-	ReceiverType     string             `json:"receiverType" bson:"receiverType"`
+	NotificationType string             `json:"notificationType,omitempty" bson:"notificationType"`
+	TemplateId       string             `json:"templateId,omitempty" bson:"templateId"`
+	Params           []CmsChatbotParams `json:"params,omitempty" bson:"params"`
+	ReceiverType     string             `json:"receiverType,omitempty" bson:"receiverType"`
 }
 
 type CmsChatbotParams struct {
-	Key   string `json:"key" bson:"key"`
-	Value string `json:"value" bson:"value"`
+	Key   string `json:"key,omitempty" bson:"key"`
+	Value string `json:"value,omitempty" bson:"value"`
 }
 
 func (cmsResponse CmsObject) EvalueateExpressionByDeliveryFee(input float64, serviceFormulaObj DeliveryFeeDto) (bool, float64) {

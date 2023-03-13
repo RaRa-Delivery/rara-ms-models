@@ -1,79 +1,79 @@
 package cmsdto
 
 type CmsBasic struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
-	Data    Data   `json:"data"`
+	Code    string `json:"code,omitempty"`
+	Message string `json:"message,omitempty"`
+	Data    Data   `json:"data,omitempty"`
 }
 
 type CmsEntity struct {
-	ID      int `json:"id"`
-	Version int `json:"version"`
+	ID      int `json:"id,omitempty"`
+	Version int `json:"version,omitempty"`
 }
 
 type DeliveryFeeSchemes struct {
-	ID      int    `json:"id"`
-	Value   string `json:"value"`
-	Version int    `json:"version"`
+	ID      int    `json:"id,omitempty"`
+	Value   string `json:"value,omitempty"`
+	Version int    `json:"version,omitempty"`
 }
 type ServiceAndPricingConfig struct {
-	DeliveryService    CmsEntity            `json:"deliveryService"`
-	DeliveryFeeSchemes []DeliveryFeeSchemes `json:"deliveryFeeSchemes"`
+	DeliveryService    CmsEntity            `json:"deliveryService,omitempty"`
+	DeliveryFeeSchemes []DeliveryFeeSchemes `json:"deliveryFeeSchemes,omitempty"`
 }
 type Bsht struct {
-	IsEnabled bool        `json:"isEnabled"`
-	Tags      []CmsEntity `json:"tags"`
+	IsEnabled bool        `json:"isEnabled,omitempty"`
+	Tags      []CmsEntity `json:"tags,omitempty"`
 }
 type SurchargeSchemes struct {
-	ID      int    `json:"id"`
-	Version int    `json:"version"`
-	Value   string `json:"value"`
+	ID      int    `json:"id,omitempty"`
+	Version int    `json:"version,omitempty"`
+	Value   string `json:"value,omitempty"`
 }
 type BusinessAccountProperties struct {
-	IsLineHaul       bool               `json:"isLineHaul"`
-	Bsht             Bsht               `json:"bsht"`
-	SurchargeSchemes []SurchargeSchemes `json:"surchargeSchemes"`
+	IsLineHaul       bool               `json:"isLineHaul,omitempty"`
+	Bsht             Bsht               `json:"bsht,omitempty"`
+	SurchargeSchemes []SurchargeSchemes `json:"surchargeSchemes,omitempty"`
 }
 
 type PackageTypeScheme struct {
-	ID      int    `json:"id"`
-	Value   string `json:"value"`
-	Version int    `json:"version"`
+	ID      int    `json:"id,omitempty"`
+	Value   string `json:"value,omitempty"`
+	Version int    `json:"version,omitempty"`
 }
 type DeliveryPackaging struct {
-	PackageName       CmsEntity         `json:"packageName"`
-	WeightIndex       string            `json:"weightIndex"`
-	PackageTypeScheme PackageTypeScheme `json:"packageTypeScheme"`
+	PackageName       CmsEntity         `json:"packageName,omitempty"`
+	WeightIndex       string            `json:"weightIndex,omitempty"`
+	PackageTypeScheme PackageTypeScheme `json:"packageTypeScheme,omitempty"`
 }
 
 type BillingInfo struct {
-	BillingAddress string    `json:"billingAddress"`
-	InvoiceDate    string    `json:"invoiceDate"`
-	TermsOfPayment CmsEntity `json:"termsOfPayment"`
+	BillingAddress string    `json:"billingAddress,omitempty"`
+	InvoiceDate    string    `json:"invoiceDate,omitempty"`
+	TermsOfPayment CmsEntity `json:"termsOfPayment,omitempty"`
 }
 type Data struct {
-	ID                        int                       `json:"id"`
-	TenantToken               string                    `json:"tenantToken"`
-	CreatedBy                 int                       `json:"createdBy"`
-	CreatedOn                 int                       `json:"createdOn"`
-	LastUpdatedBy             int                       `json:"lastUpdatedBy"`
-	LastUpdatedOn             int64                     `json:"lastUpdatedOn"`
-	Version                   int                       `json:"version"`
-	IsActive                  bool                      `json:"isActive"`
-	BusinessID                int                       `json:"businessId"`
-	AccountName               string                    `json:"accountName"`
-	PicName                   string                    `json:"picName"`
-	PicPhoneNumber            string                    `json:"picPhoneNumber"`
-	PicEmail                  interface{}               `json:"picEmail"`
-	OperationRegionId         int                       `json:"operationRegionId"`
-	Notes                     interface{}               `json:"notes"`
-	AccountStatus             string                    `json:"accountStatus"`
-	SpecialHandlingRequired   bool                      `json:"specialHandlingRequired"`
-	LinehaulRequired          bool                      `json:"linehaulRequired"`
-	ServiceAndPricingConfig   []ServiceAndPricingConfig `json:"serviceAndPricingConfig"`
-	BusinessAccountProperties BusinessAccountProperties `json:"businessAccountProperties"`
-	DeliveryPackaging         []DeliveryPackaging       `json:"deliveryPackaging"`
-	BillingInfo               BillingInfo               `json:"billingInfo"`
-	RegistrationStep          interface{}               `json:"registrationStep"`
-	SeqID                     interface{}               `json:"seqId"`
+	ID                        int                       `json:"id,omitempty"`
+	TenantToken               string                    `json:"tenantToken,omitempty"`
+	CreatedBy                 int                       `json:"createdBy,omitempty"`
+	CreatedOn                 int                       `json:"createdOn,omitempty"`
+	LastUpdatedBy             int                       `json:"lastUpdatedBy,omitempty"`
+	LastUpdatedOn             int64                     `json:"lastUpdatedOn,omitempty"`
+	Version                   int                       `json:"version,omitempty"`
+	IsActive                  bool                      `json:"isActive,omitempty"`
+	BusinessID                int                       `json:"businessId,omitempty"`
+	AccountName               string                    `json:"accountName,omitempty"`
+	PicName                   string                    `json:"picName,omitempty"`
+	PicPhoneNumber            string                    `json:"picPhoneNumber,omitempty"`
+	PicEmail                  interface{}               `json:"picEmail,omitempty"`
+	OperationRegionId         int                       `json:"operationRegionId,omitempty"`
+	Notes                     interface{}               `json:"notes,omitempty"`
+	AccountStatus             string                    `json:"accountStatus,omitempty"`
+	SpecialHandlingRequired   bool                      `json:"specialHandlingRequired,omitempty"`
+	LinehaulRequired          bool                      `json:"linehaulRequired,omitempty"`
+	ServiceAndPricingConfig   []ServiceAndPricingConfig `json:"serviceAndPricingConfig,omitempty"`
+	BusinessAccountProperties BusinessAccountProperties `json:"businessAccountProperties,omitempty"`
+	DeliveryPackaging         []DeliveryPackaging       `json:"deliveryPackaging,omitempty"`
+	BillingInfo               BillingInfo               `json:"billingInfo,omitempty"`
+	RegistrationStep          interface{}               `json:"registrationStep,omitempty"`
+	SeqID                     interface{}               `json:"seqId,omitempty"`
 }
