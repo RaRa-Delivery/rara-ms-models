@@ -101,17 +101,20 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 	cmsData.CancellationConditions = cmsdto.CancellationConditions{StatusIndex: 20, IsEligible: true, Type: []string{"ORDER"}, By: []string{"RARA", "CUSTOMER", "END_CUSTOMER"}, Condition: "LESS_THAN"}
 
 	/**Webhook**/
+	log.Println(lg.Yellow("Webhook"))
 	res, webhookEr := cms.GetWebhookDetails(int64(cmsObj.Data.BusinessID))
 	if webhookEr != nil {
-		log.Println(lg.Error(webhookEr))
+		log.Println(lg.Error("webhookEr: ", webhookEr))
 		return cmsData, webhookEr
 	}
+
+	log.Println(lg.Green("Webhook: ", res))
 	webhookObj := cmsdto.WebhookBuilder{}
 	json.Unmarshal([]byte(res), &webhookObj)
 
 	webhookActualDataByte, webhookActualDataError := json.Marshal(&webhookObj.Data)
 	if webhookActualDataError != nil {
-		log.Println(lg.Error(webhookActualDataError))
+		log.Println(lg.Error("webhookActualDataError: ", webhookActualDataError))
 		return cmsData, webhookActualDataError
 	}
 	json.Unmarshal(webhookActualDataByte, &cmsData.Webhooks)
@@ -158,6 +161,31 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 			cmsData.Webhooks[0].Purpose = append(cmsData.Webhooks[0].Purpose, purpose...)
 		}
 
+	} else {
+		log.Println(lg.Info("No webhook found"))
+		purpose := []cmsdto.WebhookStatusMap{
+			{Code: "OR", BusinessStatus: "Order rejected"},
+			{Code: "OP", BusinessStatus: "Order placed"},
+			{Code: "BA", BusinessStatus: "Accepted"},
+			{Code: "PS", BusinessStatus: "Start pickup"},
+			{Code: "PA", BusinessStatus: "Arrived at pickup"},
+			{Code: "PP", BusinessStatus: "Parcel picked"},
+			{Code: "PF", BusinessStatus: "Pickup failed"},
+			{Code: "SD", BusinessStatus: "Start delivery"},
+			{Code: "AD", BusinessStatus: "Arrived at dropoff"},
+			{Code: "NS", BusinessStatus: "No show"},
+			{Code: "RTH", BusinessStatus: "Returned to hub"},
+			{Code: "DF", BusinessStatus: "Delivery failed"},
+			{Code: "DL", BusinessStatus: "Delivered"},
+			{Code: "RTW", BusinessStatus: "Returned to WH"},
+			{Code: "PWH", BusinessStatus: "Picked up from WH"},
+			{Code: "DTH", BusinessStatus: "Delivered to Hub"},
+			{Code: "RS", BusinessStatus: "Start return"},
+			{Code: "SA", BusinessStatus: "Arrived at sender"},
+			{Code: "RTS", BusinessStatus: "Returned to sender"},
+		}
+
+		cmsData.Webhooks[0].Purpose = append(cmsData.Webhooks[0].Purpose, purpose...)
 	}
 
 	/**Chatbot**/
