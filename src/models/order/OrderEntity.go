@@ -274,18 +274,34 @@ type StatusDetails struct {
 }
 
 type OrderStatus struct {
-	Code                  string    `json:"code" bson:"code"`
-	Status                string    `json:"status" bson:"status"`
-	Languages             Languages `json:"externalStatus" bson:"externalStatus"`
-	CreatedAt             int64     `json:"createdAt" bson:"createdAt"`
-	Attempt               int       `json:"attempt" bson:"attempt"`
-	DriverLatLng          GeoPoint  `json:"driver_latlng" bson:"driver_latlng"`
-	Images                []string  `json:"images" bson:"images"`
-	FailedTime            string    `json:"failedTime" bson:"failedTime"`
-	FailedReason          string    `json:"failedReason" bson:"failedReason"`
-	Comment               string    `json:"comment" bson:"comment"`
-	RecipientName         string    `json:"recipientName" bson:"recipientName"`
-	RecipientRelationship string    `json:"recipientRelationship" bson:"recipientRelationship"`
+	Code                  string               `json:"code" bson:"code"`
+	Status                string               `json:"status" bson:"status"`
+	Languages             Languages            `json:"externalStatus" bson:"externalStatus"`
+	CreatedAt             int64                `json:"createdAt" bson:"createdAt"`
+	Attempt               int                  `json:"attempt" bson:"attempt"`
+	DriverLatLng          GeoPoint             `json:"driver_latlng" bson:"driver_latlng"`
+	Images                []string             `json:"images" bson:"images"`
+	FailedTime            string               `json:"failedTime" bson:"failedTime"`
+	FailedReason          string               `json:"failedReason" bson:"failedReason"`
+	Comment               string               `json:"comment" bson:"comment"`
+	RecipientName         string               `json:"recipientName" bson:"recipientName"`
+	RecipientRelationship string               `json:"recipientRelationship" bson:"recipientRelationship"`
+	WebhookResponse       WebhookResponse      `json:"webhookResponse,omitempty" bson:"webhookResponse"`
+	NotificationResponse  NotificationResponse `json:"notificationResponse,omitempty" bson:"notificationResponse"`
+}
+
+type WebhookResponse struct {
+	WebhookSent     string `json:"webhookSent" bson:"webhookSent"`
+	CreatedAt       int64  `json:"createdAt" bson:"createdAt"`
+	WebhookRequest  string `json:"webhookRequest" bson:"webhookRequest"`
+	WebhookResponse string `json:"webhookResponse" bson:"webhookResponse"`
+}
+
+type NotificationResponse struct {
+	NotificationSent     string `json:"notificationSent" bson:"notificationSent"`
+	CreatedAt            int64  `json:"createdAt" bson:"createdAt"`
+	Template             string `json:"template" bson:"template"`
+	NotificationResponse string `json:"notificationResponse" bson:"notificationResponse"`
 }
 
 type Languages struct {
