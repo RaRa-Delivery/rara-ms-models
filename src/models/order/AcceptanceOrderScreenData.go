@@ -19,6 +19,8 @@ type AcceptanceOrderScreenData struct {
 	StartTime          int64               `json:"startTime" bson:"startTime"`
 	Duration           int64               `json:"duration" bson:"duration"`
 	TimeRemaining      int64               `json:"timeRemaining" bson:"timeRemaining"`
+	StartPickupDuration      int64               `json:"startPickupDuration" bson:"startPickupDuration"`
+	StartPickupTimeRemaining int64               `json:"startPickupTimeRemaining" bson:"startPickupDuration"`
 }
 
 type BatchForDriverApp struct {
