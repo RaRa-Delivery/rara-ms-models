@@ -118,6 +118,7 @@ type DropOffDetails struct {
 	LocationDetails  LocationDetails `json:"locationDetails" bson:"locationDetails"`
 	ReqDlTime        string          `json:"reqDlTime" bson:"reqDlTime"`
 	DlNote           string          `json:"dlNote" bson:"dlNote"`
+	Otp              string          `json:"otp" bson:"otp"`
 }
 
 type PersonalDetails struct {
