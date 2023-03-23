@@ -22,7 +22,12 @@ type CmsObject struct {
 	OrderJourneyDetails     []DeliveryStatusDto    `json:"orderJourneyDetails,omitempty"`
 	CmsChatbotService       CmsChatbotService      `json:"chatbot,omitempty"`
 	//DeliveryFee             []DeliveryFeeDto       `json:"deliveryFee"`
-	SLAservices []SlaServiceNew `json:"slaService,omitempty"`
+	SLAservices      []SlaServiceNew `json:"slaService,omitempty"`
+	OffhoursHandling string          `json:"offhoursHandling,omitempty"`
+
+	IsOtpRequiredDuringDropoff          bool   `json:"isOtpRequiredDuringDropoff,omitempty"`
+	GeoLocationCheck                    string `json:"geoLocationCheck,omitempty"`
+	GeoLocationDropoffDistanceThreshold int    `json:"geoLocationDropoffDistanceThreshold,omitempty"`
 }
 
 type SlaServiceNew struct {

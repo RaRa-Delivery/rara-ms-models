@@ -239,6 +239,8 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 			serviceTypeObj := cmsdto.ServiceTypeObject{}
 			json.Unmarshal([]byte(serviceTypeRes), &serviceTypeObj)
 
+			cmsData.OffhoursHandling = deliveryService.OffhoursHandling
+
 			////////////////////////////////////////////////////////////////
 			log.Println(lg.Yellow("serviceTypeRes:: ", serviceTypeRes))
 			slaService.ID = fmt.Sprint(serviceTypeId)
@@ -320,6 +322,10 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 		}
 
 	}
+
+	cmsData.IsOtpRequiredDuringDropoff = cmsObj.Data.BusinessAccountProperties.IsOtpRequiredDuringDropoff
+	cmsData.GeoLocationCheck = cmsObj.Data.BusinessAccountProperties.GeoLocationCheck
+	cmsData.GeoLocationDropoffDistanceThreshold = cmsObj.Data.BusinessAccountProperties.GeoLocationDropoffDistanceThreshold
 
 	/**Special tags**/
 	if cmsData.SpecialHandlingRequired {
