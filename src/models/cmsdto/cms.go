@@ -19,6 +19,7 @@ type DeliveryFeeSchemes struct {
 type ServiceAndPricingConfig struct {
 	DeliveryService    CmsEntity            `json:"deliveryService,omitempty"`
 	DeliveryFeeSchemes []DeliveryFeeSchemes `json:"deliveryFeeSchemes,omitempty"`
+	OffhoursHandling   string               `json:"offhoursHandling,omitempty"`
 }
 type Bsht struct {
 	IsEnabled bool        `json:"isEnabled,omitempty"`
@@ -33,6 +34,10 @@ type BusinessAccountProperties struct {
 	IsLineHaul       bool               `json:"isLineHaul,omitempty"`
 	Bsht             Bsht               `json:"bsht,omitempty"`
 	SurchargeSchemes []SurchargeSchemes `json:"surchargeSchemes,omitempty"`
+
+	IsOtpRequiredDuringDropoff          bool   `json:"isOtpRequiredDuringDropoff,omitempty"`
+	GeoLocationCheck                    string `json:"geoLocationCheck,omitempty"`
+	GeoLocationDropoffDistanceThreshold int    `json:"geoLocationDropoffDistanceThreshold,omitempty"`
 }
 
 type PackageTypeScheme struct {
