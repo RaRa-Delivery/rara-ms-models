@@ -1,44 +1,47 @@
 package order
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 type Report struct {
-	TrackingID          string  `json:"trackingId" bson:"trackingId,omitempty"`
-	OrderDate           string  `json:"orderDate" bson:"orderDate,omitempty"`
-	OperationRegion     string  `json:"operationRegion" bson:"operationRegion,omitempty"`
-	OperationRegionID   int     `json:"operationRegionId" bson:"operationRegionId,omitempty"`
-	BusinessID          int     `json:"buisnessId" bson:"buisnessId,omitempty"`
-	AccountNumber       int     `json:"accountNumber" bson:"accountNumber,omitempty"`
-	BSHT                string  `json:"bsht" bson:"bsht,omitempty"`
-	BSHTID              int     `json:"bshtId" bson:"bshtId,omitempty"`
-	ServiceType         string  `json:"serviceType" bson:"serviceType,omitempty"`
-	ServiceID           int     `json:"serviceId" bson:"serviceId,omitempty"`
-	OrderDistance       float64 `json:"orderDistance" bson:"orderDistance,omitempty"`
-	Status              string  `json:"status" bson:"status,omitempty"`
-	StatusCode          string  `json:"statusCode" bson:"statusCode,omitempty"`
-	Weight              float64 `json:"weight" bson:"weight,omitempty"`
-	ParcelSize          string  `json:"parcelSize" bson:"parcelSize,omitempty"`
-	PackageID           int     `json:"packageId" bson:"packageId,omitempty"`
-	CODAmount           float64 `json:"codAmount" bson:"codAmount,omitempty"`
-	CODDepositStatus    string  `json:"codDepositStatus" bson:"codDepositStatus,omitempty"`
-	BatchID             string  `json:"batchId" bson:"batchId,omitempty"`
-	DriverID            string  `json:"driverId" bson:"driverId,omitempty"`
-	DriverMobile        string  `json:"driverMobile" bson:"driverMobile,omitempty"`
-	DriverName          string  `json:"driverName" bson:"driverName,omitempty"`
-	SenderName          string  `json:"senderName" bson:"senderName,omitempty"`
-	SenderPhone         string  `json:"senderPhone" bson:"senderPhone,omitempty"`
-	PickupLocationName  string  `json:"pickupLocationName" bson:"pickupLocationName,omitempty"`
-	PickupAddressLine1  string  `json:"pickupAddressLine1" bson:"pickupAddressLine1,omitempty"`
-	PickupKecamatan     string  `json:"pickupKecamatan" bson:"pickupKecamatan,omitempty"`
-	PickupCity          string  `json:"pickupCity" bson:"pickupCity,omitempty"`
-	PickupZipCode       string  `json:"pickupZipCode" bson:"pickupZipCode,omitempty"`
-	PickupZoneType      string  `json:"pickupZoneType" bson:"pickupZoneType,omitempty"`
-	PickupZoneID        int     `json:"pickupZoneId" bson:"pickupZoneId,omitempty"`
-	PickupZoneName      string  `json:"pickupZoneName" bson:"pickupZoneName,omitempty"`
-	PickupLatitude      float64 `json:"pickupLatitude" bson:"pickupLatitude,omitempty"`
-	PickupLongitude     float64 `json:"pickupLongitude" bson:"pickupLongitude,omitempty"`
-	RecipientName       string  `json:"recipientName" bson:"recipientName,omitempty"`
-	RecipientPhone      string  `json:"recipientPhone" bson:"recipientPhone,omitempty"`
-	DropoffAddressLine1 string  `json:"dropoffAddressLine1" bson:"dropoffAddressLine1,omitempty"`
-	DropoffAddressLine2 string  `json:"dropoffAddressLine2" bson:"dropoffAddressLine2,omitempty"`
+	Id                  primitive.ObjectID `json:"_id" bson:"_id"`
+	TrackingID          string             `json:"trackingId" bson:"trackingId,omitempty"`
+	OrderDate           string             `json:"orderDate" bson:"orderDate,omitempty"`
+	OperationRegion     string             `json:"operationRegion" bson:"operationRegion,omitempty"`
+	OperationRegionID   int                `json:"operationRegionId" bson:"operationRegionId,omitempty"`
+	BusinessID          int                `json:"buisnessId" bson:"buisnessId,omitempty"`
+	AccountNumber       int                `json:"accountNumber" bson:"accountNumber,omitempty"`
+	BSHT                string             `json:"bsht" bson:"bsht,omitempty"`
+	BSHTID              int                `json:"bshtId" bson:"bshtId,omitempty"`
+	ServiceType         string             `json:"serviceType" bson:"serviceType,omitempty"`
+	ServiceID           int                `json:"serviceId" bson:"serviceId,omitempty"`
+	OrderDistance       float64            `json:"orderDistance" bson:"orderDistance,omitempty"`
+	Status              string             `json:"status" bson:"status,omitempty"`
+	StatusCode          string             `json:"statusCode" bson:"statusCode,omitempty"`
+	Weight              float64            `json:"weight" bson:"weight,omitempty"`
+	ParcelSize          string             `json:"parcelSize" bson:"parcelSize,omitempty"`
+	PackageID           int                `json:"packageId" bson:"packageId,omitempty"`
+	CODAmount           float64            `json:"codAmount" bson:"codAmount,omitempty"`
+	CODDepositStatus    string             `json:"codDepositStatus" bson:"codDepositStatus,omitempty"`
+	BatchID             string             `json:"batchId" bson:"batchId,omitempty"`
+	DriverID            string             `json:"driverId" bson:"driverId,omitempty"`
+	DriverMobile        string             `json:"driverMobile" bson:"driverMobile,omitempty"`
+	DriverName          string             `json:"driverName" bson:"driverName,omitempty"`
+	SenderName          string             `json:"senderName" bson:"senderName,omitempty"`
+	SenderPhone         string             `json:"senderPhone" bson:"senderPhone,omitempty"`
+	PickupLocationName  string             `json:"pickupLocationName" bson:"pickupLocationName,omitempty"`
+	PickupAddressLine1  string             `json:"pickupAddressLine1" bson:"pickupAddressLine1,omitempty"`
+	PickupKecamatan     string             `json:"pickupKecamatan" bson:"pickupKecamatan,omitempty"`
+	PickupCity          string             `json:"pickupCity" bson:"pickupCity,omitempty"`
+	PickupZipCode       string             `json:"pickupZipCode" bson:"pickupZipCode,omitempty"`
+	PickupZoneType      string             `json:"pickupZoneType" bson:"pickupZoneType,omitempty"`
+	PickupZoneID        int                `json:"pickupZoneId" bson:"pickupZoneId,omitempty"`
+	PickupZoneName      string             `json:"pickupZoneName" bson:"pickupZoneName,omitempty"`
+	PickupLatitude      float64            `json:"pickupLatitude" bson:"pickupLatitude,omitempty"`
+	PickupLongitude     float64            `json:"pickupLongitude" bson:"pickupLongitude,omitempty"`
+	RecipientName       string             `json:"recipientName" bson:"recipientName,omitempty"`
+	RecipientPhone      string             `json:"recipientPhone" bson:"recipientPhone,omitempty"`
+	DropoffAddressLine1 string             `json:"dropoffAddressLine1" bson:"dropoffAddressLine1,omitempty"`
+	DropoffAddressLine2 string             `json:"dropoffAddressLine2" bson:"dropoffAddressLine2,omitempty"`
 
 	DropoffKecamatan  string  `json:"dropoffKecamatan,omitempty" bson:"dropoffKecamatan,omitempty"`
 	DropoffCity       string  `json:"dropoffCity,omitempty" bson:"dropoffCity,omitempty"`
