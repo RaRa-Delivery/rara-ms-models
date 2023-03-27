@@ -59,6 +59,133 @@ func GetAccountByAccountId(token string, accountId int64) (int64, error) {
 
 }
 
+func GetChatbotConfigs(accountId int64, token string) (cmsdto.CmsChatbotService, error) {
+	cmsChat := cmsdto.CmsChatbotService{}
+	cms := cmsdto.CMS{Token: token}
+	notifArr := []cmsdto.CmsChatbotNotification{}
+
+	notif := cmsdto.CmsChatbotNotification{ReceiverType: "RECIPIENT", NotificationType: "chatStarter", TemplateId: "chat_starter_new"}
+	notifArr = append(notifArr, notif)
+
+	notif = cmsdto.CmsChatbotNotification{ReceiverType: "RECIPIENT", NotificationType: "DL", TemplateId: "raranow_delivered"}
+	notifArr = append(notifArr, notif)
+
+	//RECIPIENT
+	recipientNotifiyConfigDto, rnee := cms.GetNotificationConfigDetails(accountId, "RECIPIENT")
+	if rnee == nil {
+
+		for _, recipientNotify := range recipientNotifiyConfigDto.Data {
+			if recipientNotify.Status == "ACTIVE" && recipientNotify.NotificationTargetType == "RECIPIENT" {
+
+				params := []cmsdto.CmsChatbotParams{}
+				if recipientNotify.ChatbotNotificationTemplate.TemplateID != "" {
+					if recipientNotify.ChatbotNotificationTemplate.Params.Num1 != "" {
+						par := cmsdto.CmsChatbotParams{Key: "1", Value: recipientNotify.ChatbotNotificationTemplate.Params.Num1}
+						params = append(params, par)
+					}
+					if recipientNotify.ChatbotNotificationTemplate.Params.Num2 != "" {
+						par := cmsdto.CmsChatbotParams{Key: "2", Value: recipientNotify.ChatbotNotificationTemplate.Params.Num2}
+						params = append(params, par)
+					}
+					if recipientNotify.ChatbotNotificationTemplate.Params.Num3 != "" {
+						par := cmsdto.CmsChatbotParams{Key: "3", Value: recipientNotify.ChatbotNotificationTemplate.Params.Num3}
+						params = append(params, par)
+					}
+					if recipientNotify.ChatbotNotificationTemplate.Params.Num4 != "" {
+						par := cmsdto.CmsChatbotParams{Key: "4", Value: recipientNotify.ChatbotNotificationTemplate.Params.Num4}
+						params = append(params, par)
+					}
+					if recipientNotify.ChatbotNotificationTemplate.Params.Num5 != "" {
+						par := cmsdto.CmsChatbotParams{Key: "5", Value: recipientNotify.ChatbotNotificationTemplate.Params.Num5}
+						params = append(params, par)
+					}
+					if recipientNotify.ChatbotNotificationTemplate.Params.Num6 != "" {
+						par := cmsdto.CmsChatbotParams{Key: "6", Value: recipientNotify.ChatbotNotificationTemplate.Params.Num6}
+						params = append(params, par)
+					}
+					notif = cmsdto.CmsChatbotNotification{ReceiverType: "RECIPIENT", NotificationType: recipientNotify.OrderStatus.Code, TemplateId: recipientNotify.ChatbotNotificationTemplate.TemplateID, Params: params}
+					notifArr = append(notifArr, notif)
+				}
+
+			}
+		}
+
+	} else {
+		return cmsChat, rnee
+	}
+
+	cmsChat = cmsdto.CmsChatbotService{Notifications: notifArr, Language: "id", PostBackUrl: os.Getenv("WHATSAPP_CALLBACK_URL")}
+	return cmsChat, nil
+}
+
+func GetWebhookConfigs(businessId int64, accountId int64, token string) ([]cmsdto.WebhookData, error) {
+	log.Println(lg.Yellow("Webhook"))
+	Webhooks := []cmsdto.WebhookData{}
+	cms := cmsdto.CMS{Token: token}
+	res, webhookEr := cms.GetWebhookDetails(businessId)
+	if webhookEr != nil {
+		log.Println(lg.Error("webhookEr: ", webhookEr))
+		return nil, webhookEr
+	}
+
+	log.Println(lg.Green("Webhook: ", res))
+	webhookObj := cmsdto.WebhookBuilder{}
+	json.Unmarshal([]byte(res), &webhookObj)
+
+	webhookActualDataByte, webhookActualDataError := json.Marshal(&webhookObj.Data)
+	if webhookActualDataError != nil {
+		log.Println(lg.Error("webhookActualDataError: ", webhookActualDataError))
+		return nil, webhookActualDataError
+	}
+	json.Unmarshal(webhookActualDataByte, &Webhooks)
+	if len(Webhooks) > 0 {
+		webhookConfigDto, ee := cms.GetWebhookConfigDetails(accountId)
+		if ee != nil {
+			return nil, ee
+		}
+		purpose := []cmsdto.WebhookStatusMap{
+			{Code: "OR", BusinessStatus: "Order rejected"},
+			{Code: "OP", BusinessStatus: "Order placed"},
+			{Code: "BA", BusinessStatus: "Accepted"},
+			{Code: "PS", BusinessStatus: "Start pickup"},
+			{Code: "PA", BusinessStatus: "Arrived at pickup"},
+			{Code: "PP", BusinessStatus: "Parcel picked"},
+			{Code: "PF", BusinessStatus: "Pickup failed"},
+			{Code: "SD", BusinessStatus: "Start delivery"},
+			{Code: "AD", BusinessStatus: "Arrived at dropoff"},
+			{Code: "NS", BusinessStatus: "No show"},
+			{Code: "RTH", BusinessStatus: "Returned to hub"},
+			{Code: "DF", BusinessStatus: "Delivery failed"},
+			{Code: "DL", BusinessStatus: "Delivered"},
+			{Code: "RTW", BusinessStatus: "Returned to WH"},
+			{Code: "PWH", BusinessStatus: "Picked up from WH"},
+			{Code: "DTH", BusinessStatus: "Delivered to Hub"},
+			{Code: "RS", BusinessStatus: "Start return"},
+			{Code: "SA", BusinessStatus: "Arrived at sender"},
+			{Code: "RTS", BusinessStatus: "Returned to sender"},
+		}
+
+		purpose1 := []cmsdto.WebhookStatusMap{}
+		for _, webhookConfig := range webhookConfigDto.Data {
+
+			code := webhookConfig.OrderStatus.Code
+			if code != "" {
+
+				purpose1 = append(purpose1, cmsdto.WebhookStatusMap{Code: code, BusinessStatus: webhookConfig.WebhookStatusName})
+			}
+
+		}
+		if len(purpose1) > 0 {
+			Webhooks[0].Purpose = append(Webhooks[0].Purpose, purpose1...)
+		} else {
+			Webhooks[0].Purpose = append(Webhooks[0].Purpose, purpose...)
+		}
+
+	}
+
+	return Webhooks, nil
+}
+
 func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error) {
 	//log.Println("secret key: ", secretKey)
 	cmsData := cmsdto.CmsObject{}
