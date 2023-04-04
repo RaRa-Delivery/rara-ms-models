@@ -6,10 +6,12 @@ type Report struct {
 	Id                  primitive.ObjectID `json:"_id" bson:"_id"`
 	TrackingID          string             `json:"trackingId" bson:"trackingId,omitempty"`
 	OrderDate           string             `json:"orderDate" bson:"orderDate,omitempty"`
+	OrderDateUnix       int64              `json:"orderDateUnix" bson:"orderDateUnix,omitempty"`
 	OperationRegion     string             `json:"operationRegion" bson:"operationRegion,omitempty"`
 	OperationRegionID   int                `json:"operationRegionId" bson:"operationRegionId,omitempty"`
 	BusinessID          int                `json:"buisnessId" bson:"buisnessId,omitempty"`
 	AccountNumber       int                `json:"accountNumber" bson:"accountNumber,omitempty"`
+	OrderType           string             `json:"orderType" bson:"orderType,omitempty"`
 	BSHT                string             `json:"bsht" bson:"bsht,omitempty"`
 	BSHTID              int                `json:"bshtId" bson:"bshtId,omitempty"`
 	ServiceType         string             `json:"serviceType" bson:"serviceType,omitempty"`
