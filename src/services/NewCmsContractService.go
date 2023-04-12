@@ -318,6 +318,17 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 						recipientNotifiyConfigDto.Data[k].ChatbotNotificationTemplate = tmpl
 
 					}
+					if strings.EqualFold("PP", recipientNotify.OrderStatus.Code) {
+
+						tmpl := cmsdto.ChatbotNotificationTemplate{}
+						tmpl.TemplateID = "parcel_picked_non_cod_1"
+						tmpl.OrderStatusCode = "PP"
+						para := cmsdto.Params{Num1: "RECIPIENT_NAME", Num2: "TRACKING_ID", Num3: "BUSINESS_NAME", Num4: "TRACKING_LINK"}
+						tmpl.Params = para
+
+						recipientNotifiyConfigDto.Data[k].ChatbotNotificationTemplate = tmpl
+
+					}
 					if strings.EqualFold("AD", recipientNotify.OrderStatus.Code) {
 
 						tmpl := cmsdto.ChatbotNotificationTemplate{}
