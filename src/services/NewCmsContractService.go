@@ -73,6 +73,47 @@ func GetChatbotConfigs(accountId int64, token string) (cmsdto.CmsChatbotService,
 	//RECIPIENT
 	recipientNotifiyConfigDto, rnee := cms.GetNotificationConfigDetails(accountId, "RECIPIENT")
 	if rnee == nil {
+		k := 0
+		for _, recipientNotify := range recipientNotifiyConfigDto.Data {
+			if recipientNotify.Status == "ACTIVE" && recipientNotify.NotificationTargetType == "RECIPIENT" {
+				if recipientNotify.ChatbotNotificationTemplate.TemplateID == "" {
+					if strings.EqualFold("PS", recipientNotify.OrderStatus.Code) {
+
+						tmpl := cmsdto.ChatbotNotificationTemplate{}
+						tmpl.TemplateID = "raranow_startpickup"
+						tmpl.OrderStatusCode = "PS"
+						para := cmsdto.Params{Num1: "RECIPIENT_NAME", Num2: "TRACKING_ID", Num3: "BUSINESS_NAME", Num4: "TRACKING_LINK"}
+						tmpl.Params = para
+
+						recipientNotifiyConfigDto.Data[k].ChatbotNotificationTemplate = tmpl
+
+					}
+					if strings.EqualFold("PP", recipientNotify.OrderStatus.Code) {
+
+						tmpl := cmsdto.ChatbotNotificationTemplate{}
+						tmpl.TemplateID = "parcel_picked_non_cod_1"
+						tmpl.OrderStatusCode = "PP"
+						para := cmsdto.Params{Num1: "RECIPIENT_NAME", Num2: "TRACKING_ID", Num3: "BUSINESS_NAME", Num4: "TRACKING_LINK"}
+						tmpl.Params = para
+
+						recipientNotifiyConfigDto.Data[k].ChatbotNotificationTemplate = tmpl
+
+					}
+					if strings.EqualFold("AD", recipientNotify.OrderStatus.Code) {
+
+						tmpl := cmsdto.ChatbotNotificationTemplate{}
+						tmpl.TemplateID = "arrived_at_dropoff_1"
+						tmpl.OrderStatusCode = "AD"
+						para := cmsdto.Params{Num1: "RECIPIENT_NAME", Num2: "TRACKING_ID", Num3: "BUSINESS_NAME", Num4: "TRACKING_LINK"}
+						tmpl.Params = para
+
+						recipientNotifiyConfigDto.Data[k].ChatbotNotificationTemplate = tmpl
+
+					}
+				}
+			}
+			k++
+		}
 
 		for _, recipientNotify := range recipientNotifiyConfigDto.Data {
 			if recipientNotify.Status == "ACTIVE" && recipientNotify.NotificationTargetType == "RECIPIENT" {
