@@ -11,6 +11,8 @@ type Report struct {
 	OperationRegionID   int                `json:"operationRegionId" bson:"operationRegionId,omitempty"`
 	BusinessID          int                `json:"buisnessId" bson:"buisnessId,omitempty"`
 	AccountNumber       int                `json:"accountNumber" bson:"accountNumber,omitempty"`
+	BusinessName        int                `json:"buisnessName" bson:"buisnessName,omitempty"`
+	AccountName         int                `json:"accountName" bson:"accountName,omitempty"`
 	OrderType           string             `json:"orderType" bson:"orderType,omitempty"`
 	BSHT                string             `json:"bsht" bson:"bsht,omitempty"`
 	BSHTID              int                `json:"bshtId" bson:"bshtId,omitempty"`

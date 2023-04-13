@@ -87,6 +87,29 @@ type WebhookTypeFilter struct {
 
 // }
 
+func (c *CMS) GetBusinessDetailsBusinessId(businessId int64) (BusinessData, error) {
+	url := os.Getenv("CMS_URL") + "/business/get/" + fmt.Sprint(businessId)
+	token := c.Token
+	headers := make(map[string]string)
+	headers["Authorization"] = "Bearer " + token
+	response, err := utility.GetApiResponse(url, headers)
+	if err != nil {
+		log.Println(lg.Error(err))
+		return BusinessData{}, err
+	}
+
+	obj := CmsBusinessDto{}
+
+	eee := json.Unmarshal([]byte(response), &obj)
+	if eee != nil {
+		log.Println(lg.Error(eee))
+		return BusinessData{}, eee
+	}
+	log.Println("GetBusinessDetails: ", response)
+	return obj.Data, nil
+
+}
+
 func (c *CMS) GetBusinessDetailsByAccountId(accountId int64) (string, error) {
 	url := os.Getenv("CMS_URL") + "/business-account/get/" + fmt.Sprint(accountId)
 	token := c.Token
