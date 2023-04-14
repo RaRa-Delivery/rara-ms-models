@@ -448,6 +448,8 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 			serviceTypeObj := cmsdto.ServiceTypeObject{}
 			json.Unmarshal([]byte(serviceTypeRes), &serviceTypeObj)
 
+			serviceId := serviceTypeObj.Data.ServiceType.ID
+
 			cmsData.OffhoursHandling = deliveryService.OffhoursHandling
 
 			////////////////////////////////////////////////////////////////
@@ -476,6 +478,7 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 
 			pickupSla.CutOffTime = "22:00:00"
 			pickupSla.Type = "pickup"
+			pickupSla.ServiceId = int64(serviceId)
 			slaService.Pickup = pickupSla
 			//cmsData.SLAservices = append(cmsData.SLAservices, pickupSla)
 
@@ -502,6 +505,7 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 
 			dropSla.CutOffTime = "22:00:00"
 			dropSla.Type = "dropoff"
+			dropSla.ServiceId = int64(serviceId)
 			slaService.Dropoff = dropSla
 			//cmsData.SLAservices = append(cmsData.SLAservices, dropSla)
 
