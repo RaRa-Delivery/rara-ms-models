@@ -16,6 +16,7 @@ type Report struct {
 	OrderType           string             `json:"orderType" bson:"orderType,omitempty"`
 	BSHT                string             `json:"bsht" bson:"bsht,omitempty"`
 	BSHTID              int                `json:"bshtId" bson:"bshtId,omitempty"`
+	ServiceTypeId       int64              `json:"serviceTypeId" bson:"serviceTypeId,omitempty"`
 	ServiceType         string             `json:"serviceType" bson:"serviceType,omitempty"`
 	ServiceID           int                `json:"serviceId" bson:"serviceId,omitempty"`
 	OrderDistance       float64            `json:"orderDistance" bson:"orderDistance,omitempty"`
