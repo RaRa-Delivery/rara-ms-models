@@ -521,6 +521,30 @@ func (c *CMS) GetNotificationConfigDetails(accountId int64, notificationType str
 
 }
 
+func (c *CMS) GetOperationRegionByKecamatan(kec string) (OperationRegionData, error) {
+
+	url := os.Getenv("MDS_URL") + "/operation-region/by-kecametan/" + kec
+	token := c.Token
+	headers := make(map[string]string)
+	headers["Authorization"] = "Bearer " + token
+
+	response, err := utility.GetApiResponse(url, headers)
+	if err != nil {
+		log.Println(lg.Error(err))
+		return OperationRegionData{}, err
+	}
+
+	operationRegionDto := OperationRegionDto{}
+	eee := json.Unmarshal([]byte(response), &operationRegionDto)
+	if err != nil {
+		log.Println(lg.Error(err))
+		return OperationRegionData{}, eee
+	}
+
+	return operationRegionDto.Data, nil
+
+}
+
 // curl -X 'GET' \
 //   'https://rara-saas-ms-mds.dev.rara.delivery/business-pickup-zone-map/details/v2?pickupLocationId=130' \
 //   -H 'accept: */*' \
