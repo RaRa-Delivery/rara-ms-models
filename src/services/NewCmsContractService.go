@@ -467,10 +467,10 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 				endDateTime := serviceTypeObj.Data.OperationEndTime / 1000
 
 				startDateTimeUnix := time.Unix(startDateTime, 0)
-				st := startDateTimeUnix.UTC().Format("15:04:05")
+				st := startDateTimeUnix.Format("15:04:05")
 
 				endDateTimeUnix := time.Unix(endDateTime, 0)
-				ed := endDateTimeUnix.UTC().Format("15:04:05")
+				ed := endDateTimeUnix.Format("15:04:05")
 
 				pickupSla.StartTime = st
 				pickupSla.EndTime = ed
@@ -494,10 +494,10 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 				endDateTime := serviceTypeObj.Data.OperationEndTime / 1000
 
 				startDateTimeUnix := time.Unix(startDateTime, 0)
-				st := startDateTimeUnix.UTC().Format("15:04:05")
+				st := startDateTimeUnix.Format("15:04:05")
 
 				endDateTimeUnix := time.Unix(endDateTime, 0)
-				ed := endDateTimeUnix.UTC().Format("15:04:05")
+				ed := endDateTimeUnix.Format("15:04:05")
 
 				dropSla.StartTime = st
 				dropSla.EndTime = ed
