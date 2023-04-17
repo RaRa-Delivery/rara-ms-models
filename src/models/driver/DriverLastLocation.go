@@ -1,14 +1,14 @@
 package models
 
 type DriverLastLocation struct {
-	DriverID     string   `json:"driverId"`
-	Mobile       string   `json:"mobile"`
-	Location     Location `json:"location"`
-	RecordedTime string   `json:"recordedTime"`
-	Availability bool     `json:"availability"`
-	RabbitName   string   `json:"rabbitName"`
-	Model        string   `json:"model"`
-	City         City     `json:"city"`
+	DriverID     string         `json:"driverId"`
+	Mobile       string         `json:"mobile"`
+	Location     DriverLocation `json:"location"`
+	RecordedTime string         `json:"recordedTime"`
+	Availability bool           `json:"availability"`
+	RabbitName   string         `json:"rabbitName"`
+	Model        string         `json:"model"`
+	City         City           `json:"city"`
 }
 type DriverLocation struct {
 	Latitude  float64 `json:"latitude"`
