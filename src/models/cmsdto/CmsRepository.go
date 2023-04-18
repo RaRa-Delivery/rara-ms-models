@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/url"
 	"os"
 	"strings"
 
@@ -331,6 +332,9 @@ func (c *CMS) GetPickupLocation(locationId string) (CmsPickupDto, error) {
 }
 
 func (c *CMS) GetPickupDetailsByDropoffKecamatan(accountId int64, kecamatan string) (PickupByDropoffDto, error) {
+
+	kecamatan = url.QueryEscape(kecamatan)
+
 	url := os.Getenv("MDS_URL") + "/business-pickup-zone-map/reverse-mapping/dropoff-province?dropoffProvince=" + kecamatan + "&accountId=" + fmt.Sprint(accountId)
 	token := c.Token
 	headers := make(map[string]string)
@@ -353,6 +357,7 @@ func (c *CMS) GetPickupDetailsByDropoffKecamatan(accountId int64, kecamatan stri
 }
 
 func (c *CMS) GetDropoffZoneByDropoffKecamatan(bshtTag int64, kecamatan string) (DropoffZoneDto, error) {
+	kecamatan = url.QueryEscape(kecamatan)
 	url := os.Getenv("MDS_URL") + "global-zone/search/district-name?districtName=" + kecamatan + "&zoneType=DROPOFF"
 	if bshtTag > 0 {
 		url = url + "&bshtTagId=" + fmt.Sprint(bshtTag)
@@ -377,6 +382,7 @@ func (c *CMS) GetDropoffZoneByDropoffKecamatan(bshtTag int64, kecamatan string) 
 }
 
 func (c *CMS) GetPickupZoneByPickupKecamatan(bshtTag int64, kecamatan string) (DropoffZoneDto, error) {
+	kecamatan = url.QueryEscape(kecamatan)
 	url := os.Getenv("MDS_URL") + "global-zone/search/district-name?districtName=" + kecamatan + "&zoneType=PICKUP"
 	if bshtTag > 0 {
 		url = url + "&bshtTagId=" + fmt.Sprint(bshtTag)
@@ -401,6 +407,7 @@ func (c *CMS) GetPickupZoneByPickupKecamatan(bshtTag int64, kecamatan string) (D
 }
 
 func (c *CMS) GetZoneByKecamatan(bshtTag int64, kecamatan string, zoneType string) (DropoffZoneDto, error) {
+	kecamatan = url.QueryEscape(kecamatan)
 	kecamatan = strings.ReplaceAll(kecamatan, " ", "%20")
 	url := os.Getenv("MDS_URL") + "/global-zone/search/district-name?districtName=" + kecamatan + "&zoneType=" + zoneType
 	if bshtTag > 0 {
@@ -522,6 +529,8 @@ func (c *CMS) GetNotificationConfigDetails(accountId int64, notificationType str
 }
 
 func (c *CMS) GetOperationRegionByKecamatan(kec string) (OperationRegionData, error) {
+
+	kec = url.QueryEscape(kec)
 
 	url := os.Getenv("MDS_URL") + "/operation-region/by-kecametan/" + kec
 	token := c.Token
