@@ -10,6 +10,7 @@ type BatchMilestoneDto struct {
 	DriverLoc      BmsDriverLoc `json:"driverLoc"`
 	DriverDistance string       `json:"driverDistance"`
 	Notes          string       `json:"notes"`
+	Logs           string       `json:"logs"`
 }
 type BmsActor struct {
 	Name   string `json:"name"`
