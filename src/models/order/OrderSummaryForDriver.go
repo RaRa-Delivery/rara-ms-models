@@ -25,6 +25,8 @@ type OrderSummaryForDriver struct {
 			Location struct {
 				Name        string `json:"locationName" bson:"locationName"`
 				Address     string `json:"address" bson:"address"`
+				Address1    string `json:"address1" bson:"address1"`
+				Address2    string `json:"address2" bson:"address2"`
 				SubDistrict string `json:"subDistrict" bson:"subDistrict"`
 				District    string `json:"district" bson:"district"`
 				City        string `json:"city" bson:"city"`
