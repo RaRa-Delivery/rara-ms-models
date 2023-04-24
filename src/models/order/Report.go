@@ -35,6 +35,7 @@ type Report struct {
 	SenderPhone         string             `json:"senderPhone" bson:"senderPhone,omitempty"`
 	PickupLocationName  string             `json:"pickupLocationName" bson:"pickupLocationName,omitempty"`
 	PickupAddressLine1  string             `json:"pickupAddressLine1" bson:"pickupAddressLine1,omitempty"`
+	PickupAddressLine2  string             `json:"pickupAddressLine2" bson:"pickupAddressLine2,omitempty"`
 	PickupKecamatan     string             `json:"pickupKecamatan" bson:"pickupKecamatan,omitempty"`
 	PickupCity          string             `json:"pickupCity" bson:"pickupCity,omitempty"`
 	PickupZipCode       string             `json:"pickupZipCode" bson:"pickupZipCode,omitempty"`
