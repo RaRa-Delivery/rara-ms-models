@@ -420,8 +420,8 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 			pickupSla.SLAUnit = "minutes"
 
 			if serviceTypeObj.Data.OperationStartTime > 0 && serviceTypeObj.Data.OperationEndTime > 0 {
-				startDateTime := serviceTypeObj.Data.OperationStartTime / 1000
-				endDateTime := serviceTypeObj.Data.OperationEndTime / 1000
+				startDateTime := serviceTypeObj.Data.OperationStartTime
+				endDateTime := serviceTypeObj.Data.OperationEndTime
 
 				startDateTimeUnix := time.Unix(startDateTime, 0)
 				st := startDateTimeUnix.Format("15:04:05")
@@ -447,8 +447,8 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 			dropSla.SLAUnit = serviceTypeObj.Data.SLAType.DurationUnitLabel.Label
 
 			if serviceTypeObj.Data.OperationStartTime > 0 && serviceTypeObj.Data.OperationEndTime > 0 {
-				startDateTime := serviceTypeObj.Data.OperationStartTime / 1000
-				endDateTime := serviceTypeObj.Data.OperationEndTime / 1000
+				startDateTime := serviceTypeObj.Data.OperationStartTime
+				endDateTime := serviceTypeObj.Data.OperationEndTime
 
 				startDateTimeUnix := time.Unix(startDateTime, 0)
 				st := startDateTimeUnix.Format("15:04:05")
