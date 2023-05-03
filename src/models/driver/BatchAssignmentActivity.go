@@ -22,4 +22,19 @@ type BatchAssignmentActivity struct {
 	AcceptedAt            int64              `json:"acceptedAt" bson:"acceptedAt"`
 	CompletedAt           int64              `json:"completedAt" bson:"completedAt"`
 	StartPickupAt         int64              `json:"startPickupAt" bson:"startPickupAt"`
+	OperationRegion       int64              `json:"operationRegion" bson:"operationRegion"`
+	PickupZone            PnZone             `json:"pickupZone" bson:"pickupZone"`
+	DropoffZone           PnZone             `json:"dropoffZone" bson:"dropoffZone"`
+	BatchAddedAt          int64              `json:"batchAddedAt" bson:"batchAddedAt"`
+	BussinessIds          []int64            `json:"bussinessIds" bson:"bussinessIds"`
+	BussinessAccounts     []int64            `json:"bussinessAccounts" bson:"bussinessAccounts"`
+	Bsht                  int64              `json:"bsht" bson:"bsht"`
+	OrderCount            int64              `json:"orderCount" bson:"orderCount"`
+	Active                bool               `json:"active" bson:"active" default:"true"`
+	BshtSeen              int64              `json:"bshtSeen" bson:"bshtSeen"`
+}
+
+type PnZone struct {
+	Id   int64  `json:"id" bson:"id"`
+	Name string `json:"name" bson:"name"`
 }
