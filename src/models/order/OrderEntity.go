@@ -45,6 +45,7 @@ type BusinessDetails struct {
 	AccountNumber int64  `json:"accountNumber" bson:"accountNumber"`
 	ServiceType   string `json:"serviceType" bson:"serviceType"`
 	ServiceID     string `json:"serviceId" bson:"serviceId"`
+	ServiceTypeId int64  `json:"serviceTypeId" bson:"serviceTypeId"`
 }
 
 type OrderDetails struct {
