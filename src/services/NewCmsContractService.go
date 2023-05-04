@@ -169,7 +169,7 @@ func GetWebhookConfigs(businessId int64, accountId int64, token string) ([]cmsdt
 		return nil, webhookEr
 	}
 
-	log.Println(lg.Green("Webhook: ", res))
+	//log.Println(lg.Green("Webhook: ", res))
 	webhookObj := cmsdto.WebhookBuilder{}
 	json.Unmarshal([]byte(res), &webhookObj)
 
@@ -220,9 +220,9 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 		return cmsData, resE
 	}
 
-	bbb, _ := json.Marshal(&cmsObj)
+	//bbb, _ := json.Marshal(&cmsObj)
 
-	log.Println(lg.Green("resresres: ", string(bbb)))
+	//log.Println(lg.Green("resresres: ", string(bbb)))
 	/**Business details**/
 	cmsData.BusinessDetails = cmsdto.BusinessDetails{BusinessId: int64(cmsObj.Data.BusinessID), AccountId: int64(cmsObj.Data.ID), AccountName: cmsObj.Data.AccountName, PicName: cmsObj.Data.PicName, PicPhoneNumber: cmsObj.Data.PicPhoneNumber}
 
@@ -242,7 +242,7 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 	}
 	json.Unmarshal([]byte(cityRes), &cityObj)
 	cmsData.OperationRegions = cmsdto.CmsRegion{Id: int64(cityObj.Data.ID), RegionName: cityObj.Data.RegionName}
-	log.Println(lg.Yellow(cityRes))
+	//log.Println(lg.Yellow(cityRes))
 
 	/**Cancellation policy**/
 	cmsData.CancellationConditions = cmsdto.CancellationConditions{StatusIndex: 20, IsEligible: true, Type: []string{"ORDER"}, By: []string{"RARA", "CUSTOMER", "END_CUSTOMER"}, Condition: "LESS_THAN"}
@@ -255,7 +255,7 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 		return cmsData, webhookEr
 	}
 
-	log.Println(lg.Green("Webhook: ", res))
+	//log.Println(lg.Green("Webhook: ", res))
 	webhookObj := cmsdto.WebhookBuilder{}
 	json.Unmarshal([]byte(res), &webhookObj)
 
@@ -410,7 +410,7 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 			cmsData.OffhoursHandling = deliveryService.OffhoursHandling
 
 			////////////////////////////////////////////////////////////////
-			log.Println(lg.Yellow("serviceTypeRes:: ", serviceTypeRes))
+			//log.Println(lg.Yellow("serviceTypeRes:: ", serviceTypeRes))
 			slaService.ID = fmt.Sprint(serviceTypeId)
 			//pickup sla
 			pickupSla := cmsdto.SLAservice{}
@@ -471,7 +471,7 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 			deliveryFeeArray := []cmsdto.DeliveryFeeDto{}
 
 			for _, l := range deliveryService.DeliveryFeeSchemes {
-				log.Println("l.Value:", l.Value)
+				//log.Println("l.Value:", l.Value)
 				delVal := strings.ReplaceAll(l.Value, "\u003c", "<")
 				delVal = strings.ReplaceAll(delVal, "\u003e", ">")
 				delFee := cmsdto.DeliveryFeeDto{}
@@ -587,7 +587,7 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 
 		packageData.PackageDef = packageDefDto
 
-		log.Println(lg.Yellow("packageData.PackageDef: ", packageData.PackageDef))
+		//log.Println(lg.Yellow("packageData.PackageDef: ", packageData.PackageDef))
 
 		packageDataArray = append(packageDataArray, packageData)
 
@@ -595,14 +595,14 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 
 	cmsData.DeliveryPackaging = packageDataArray
 
-	resByte, resError := json.Marshal(&cmsData)
+	_, resError := json.Marshal(&cmsData)
 	if resError != nil {
 		log.Println(lg.Error(resError))
 		return cmsData, resError
 	}
 
-	log.Println("NewCmsContract:"+fmt.Sprint(accountId), " -- ", string(resByte))
-	log.Println(lg.Green("NewCmsContract:"+fmt.Sprint(accountId), " -- ", string(resByte)))
+	//log.Println("NewCmsContract:"+fmt.Sprint(accountId), " -- ", string(resByte))
+	//log.Println(lg.Green("NewCmsContract:"+fmt.Sprint(accountId), " -- ", string(resByte)))
 
 	return cmsData, nil
 
