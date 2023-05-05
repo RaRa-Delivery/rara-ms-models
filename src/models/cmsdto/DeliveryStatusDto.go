@@ -45,7 +45,7 @@ func GetStatus(code string, attempt int) (DeliveryStatusDto, error) {
 		return strings.EqualFold(st.Code, code) && st.Attempt == attempt
 	})
 
-	log.Println("selectedStatus: ", selectedStatus)
+	//log.Println("selectedStatus: ", selectedStatus)
 
 	if len(selectedStatus) == 0 {
 		return DeliveryStatusDto{}, errors.New("No status found")

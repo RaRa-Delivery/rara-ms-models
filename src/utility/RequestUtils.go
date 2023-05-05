@@ -45,7 +45,7 @@ func Post() {
 }
 
 func ApiResponseUtility(requestMethod string, url string, headers map[string]string, payload string, reqId string, desc string) ([]byte, error) {
-	log.Println(reqId+": ", desc, " ", "URL:", url)
+	//log.Println(reqId+": ", desc, " ", "URL:", url)
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
@@ -74,8 +74,8 @@ func ApiResponseUtility(requestMethod string, url string, headers map[string]str
 
 	// Convert response body to string
 	bodyString := string(bodyBytes)
-	log.Println(reqId+": ", desc, " ", bodyString)
-	log.Println("response.StatusCode: ", response.StatusCode)
+	//log.Println(reqId+": ", desc, " ", bodyString)
+	//log.Println("response.StatusCode: ", response.StatusCode)
 	if response.StatusCode >= 200 && response.StatusCode < 300 {
 		return bodyBytes, nil
 	} else {
@@ -90,10 +90,10 @@ func GetApiResponse(url string, headers map[string]string) (string, error) {
 		Timeout: time.Second * 10,
 	}
 
-	head, _ := json.Marshal(&headers)
+	//head, _ := json.Marshal(&headers)
 
-	log.Println("headers: ", string(head))
-	log.Println("URL: ", url)
+	//log.Println("headers: ", string(head))
+	//log.Println("URL: ", url)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func GetApiResponse(url string, headers map[string]string) (string, error) {
 	}
 
 	for k, v := range headers {
-		log.Println(k, " : ", v)
+		//log.Println(k, " : ", v)
 		req.Header.Add(k, v)
 	}
 
@@ -114,7 +114,7 @@ func GetApiResponse(url string, headers map[string]string) (string, error) {
 
 	// Convert response body to string
 	bodyString := string(bodyBytes)
-	log.Println("response.StatusCode: ", response.StatusCode)
+	//log.Println("response.StatusCode: ", response.StatusCode)
 	if response.StatusCode >= 200 && response.StatusCode < 300 {
 		return bodyString, nil
 	} else {
@@ -144,7 +144,7 @@ func PostApiResponse(url string, headers http.Header, payload string) (string, e
 	bodyBytes, _ := ioutil.ReadAll(response.Body)
 
 	bodyString := string(bodyBytes)
-	log.Println("response.StatusCode: ", response.StatusCode)
+	//log.Println("response.StatusCode: ", response.StatusCode)
 	if response.StatusCode >= 200 && response.StatusCode < 300 {
 		return bodyString, nil
 	} else {
@@ -163,12 +163,12 @@ func ApiResponse(requestMethod string, url string, headers map[string]string, pa
 	if payload == "no" {
 		str = nil
 	} else {
-		log.Println("payload:", payload)
+		//log.Println("payload:", payload)
 		str = strings.NewReader(payload)
 	}
-	log.Println("requestMethod:", requestMethod)
-	log.Println("URL:", url)
-	log.Println("headers:", headers)
+	//log.Println("requestMethod:", requestMethod)
+	//log.Println("URL:", url)
+	//log.Println("headers:", headers)
 	req, err := http.NewRequest(requestMethod, url, str)
 	if err != nil {
 		return "", err
@@ -188,7 +188,7 @@ func ApiResponse(requestMethod string, url string, headers map[string]string, pa
 
 	// Convert response body to string
 	bodyString := string(bodyBytes)
-	log.Println("response.StatusCode: ", response.StatusCode)
+	//("response.StatusCode: ", response.StatusCode)
 	if response.StatusCode >= 200 && response.StatusCode < 300 {
 		return bodyString, nil
 	} else {

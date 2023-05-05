@@ -105,7 +105,7 @@ func (c *CMS) GetBusinessDetailsBusinessId(businessId int64) (BusinessData, erro
 		log.Println(lg.Error(eee))
 		return BusinessData{}, eee
 	}
-	log.Println("GetBusinessDetails: ", response)
+	//log.Println("GetBusinessDetails: ", response)
 	return obj.Data, nil
 
 }
@@ -120,7 +120,7 @@ func (c *CMS) GetBusinessDetailsByAccountId(accountId int64) (string, error) {
 		log.Println(lg.Error(err))
 		return "", err
 	}
-	log.Println("GetBusinessDetails: ", response)
+	//log.Println("GetBusinessDetails: ", response)
 	return response, nil
 
 }
@@ -136,7 +136,7 @@ func (c *CMS) GetBusinessDetailsByOperationRegion(secretKey string, operationReg
 		log.Println(lg.Error(err))
 		return "", err
 	}
-	log.Println("GetBusinessDetails: ", response)
+	//log.Println("GetBusinessDetails: ", response)
 	return response, nil
 
 }
@@ -181,7 +181,7 @@ func (c *CMS) GetSpecialHandlingDetails(id int64) (string, error) {
 		return "", err
 	}
 
-	log.Println("GetSpecialHandlingDetails: ", response)
+	//log.Println("GetSpecialHandlingDetails: ", response)
 
 	return response, nil
 
@@ -200,7 +200,7 @@ func (c *CMS) GetOperationalRegionDetails(id int64) (string, error) {
 		log.Println(lg.Error(err))
 		return "", err
 	}
-	log.Println("GetOperationalRegionDetails: ", response)
+	//log.Println("GetOperationalRegionDetails: ", response)
 
 	return response, nil
 
@@ -256,9 +256,9 @@ func (c *CMS) GetCommonLabel(id int64) (string, error) {
 		log.Println(lg.Error(reqError))
 		return "", reqError
 	}
-	log.Println("url: ", url)
-	log.Println("Headers: ", headers)
-	log.Println("reqStr: ", string(reqStr))
+	//log.Println("url: ", url)
+	//log.Println("Headers: ", headers)
+	//log.Println("reqStr: ", string(reqStr))
 	response, err := utility.ApiResponse("POST", url, headers, string(reqStr))
 	if err != nil {
 		log.Println(lg.Error(err))
@@ -315,7 +315,7 @@ func (c *CMS) GetPickupLocation(locationId string) (CmsPickupDto, error) {
 	headers["Authorization"] = "Bearer " + token
 	pickupDto := CmsPickupDto{}
 	response, err := utility.GetApiResponse(url, headers)
-	log.Println(response)
+	//log.Println(response)
 	if err != nil {
 		log.Println(lg.Error(err))
 		return pickupDto, err
@@ -340,7 +340,7 @@ func (c *CMS) GetPickupDetailsByDropoffKecamatan(accountId int64, kecamatan stri
 	headers["Authorization"] = "Bearer " + token
 	pickupDto := PickupByDropoffDto{}
 	response, err := utility.GetApiResponse(url, headers)
-	log.Println(response)
+	//log.Println(response)
 	if err != nil {
 		log.Println(lg.Error(err))
 		return pickupDto, err
@@ -370,7 +370,7 @@ func (c *CMS) GetDropoffZoneByDropoffKecamatan(bshtTag int64, kecamatan string) 
 		log.Println(lg.Error(err))
 		return pickupDto, err
 	}
-	log.Println(response)
+	//log.Println(response)
 	error := json.Unmarshal([]byte(response), &pickupDto)
 	if error != nil {
 		log.Println(lg.Error(error))
@@ -395,7 +395,7 @@ func (c *CMS) GetPickupZoneByPickupKecamatan(bshtTag int64, kecamatan string) (D
 		log.Println(lg.Error(err))
 		return pickupDto, err
 	}
-	log.Println(response)
+	//(response)
 	error := json.Unmarshal([]byte(response), &pickupDto)
 	if error != nil {
 		log.Println(lg.Error(error))
@@ -416,7 +416,7 @@ func (c *CMS) GetZoneByKecamatan(bshtTag int64, kecamatan string, zoneType strin
 	headers["Authorization"] = "Bearer " + token
 	pickupDto := DropoffZoneDto{}
 	response, err := utility.GetApiResponse(url, headers)
-	log.Println(response)
+	//log.Println(response)
 	if err != nil {
 		log.Println(lg.Error(err))
 		return pickupDto, err
@@ -448,7 +448,7 @@ func (c *CMS) GetOperationRegionByPostalCode(postalCode string) (OperationRegion
 		log.Println(lg.Error(oprError))
 		return opr, oprError
 	}
-	log.Println("GetOperationRegionByPostalCode: ", response)
+	//log.Println("GetOperationRegionByPostalCode: ", response)
 	return opr, nil
 
 }
@@ -472,7 +472,7 @@ func (c *CMS) GetPackageNameDetails(id int64) (PackageNameData, error) {
 		log.Println(lg.Error(oprError))
 		return pn, oprError
 	}
-	log.Println("GetPackageNameDetails: ", response)
+	//("GetPackageNameDetails: ", response)
 	return pnDto.Data, nil
 
 }
@@ -490,7 +490,7 @@ func (c *CMS) GetWebhookConfigDetails(accountId int64) (WebhookConfigDto, error)
 		return webhookDto, err
 	}
 
-	log.Println(lg.Mg(response))
+	//log.Println(lg.Mg(response))
 
 	eeee := json.Unmarshal([]byte(response), &webhookDto)
 	if eeee != nil {
@@ -508,14 +508,14 @@ func (c *CMS) GetNotificationConfigDetails(accountId int64, notificationType str
 	token := c.Token
 	headers := make(map[string]string)
 	headers["Authorization"] = "Bearer " + token
-	log.Println("chatbot url: ", url)
+	//log.Println("chatbot url: ", url)
 	response, err := utility.GetApiResponse(url, headers)
 	if err != nil {
 		log.Println(lg.Error(err))
 		return webhookDto, err
 	}
 
-	log.Println(lg.Mg("chatbot: ", response))
+	//log.Println(lg.Mg("chatbot: ", response))
 
 	eeee := json.Unmarshal([]byte(response), &webhookDto)
 	if eeee != nil {

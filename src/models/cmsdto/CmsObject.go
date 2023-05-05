@@ -1,7 +1,6 @@
 package cmsdto
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"strings"
@@ -89,7 +88,7 @@ type CmsChatbotParams struct {
 func (cmsResponse CmsObject) EvalueateExpressionByDeliveryFee(input float64, serviceFormulaObj DeliveryFeeDto) (bool, float64) {
 	defer utility.HandlePanic()
 
-	log.Println("serviceFormulaObj.Formula: ", serviceFormulaObj.Formula)
+	//log.Println("serviceFormulaObj.Formula: ", serviceFormulaObj.Formula)
 
 	serviceFormulaObj.Formula = `if (^weight < #a) then {#b} else {#b + ((^weight - #a) * #c))}`
 
@@ -97,12 +96,12 @@ func (cmsResponse CmsObject) EvalueateExpressionByDeliveryFee(input float64, ser
 	formulaExpression = strings.ReplaceAll(formulaExpression, "#", "")
 	metricObj := serviceFormulaObj.Metric[0]
 	inputValue := strings.ReplaceAll(metricObj.Ref, "^", "")
-	log.Println("input", input)
+	//log.Println("input", input)
 	if input > metricObj.MaxValue || input < metricObj.MinValue {
 		return false, 0.0
 	}
 
-	log.Println("Delivery fee formula: ", formulaExpression)
+	//log.Println("Delivery fee formula: ", formulaExpression)
 
 	expression, error := govaluate.NewEvaluableExpression(formulaExpression)
 	if error != nil {
@@ -119,8 +118,8 @@ func (cmsResponse CmsObject) EvalueateExpressionByDeliveryFee(input float64, ser
 
 	}
 
-	eb, _ := json.Marshal(&parameters)
-	log.Println("eb: ", eb)
+	//eb, _ := json.Marshal(&parameters)
+	//log.Println("eb: ", eb)
 
 	result, err := expression.Evaluate(parameters)
 	if err != nil {
@@ -129,8 +128,8 @@ func (cmsResponse CmsObject) EvalueateExpressionByDeliveryFee(input float64, ser
 	}
 
 	i, ok := result.(float64)
-	log.Println("Checking delivery fee")
-	log.Println(i)
+	//log.Println("Checking delivery fee")
+	//log.Println(i)
 	if !ok {
 		return false, 0.0
 	}
@@ -142,12 +141,12 @@ func (cmsResponse *CmsObject) EvalueateExpressionByDeliveryFeeByType(input float
 	//input is the distance
 	serviceFormulaObj := cmsResponse.SLAservices[0].DeliveryFee[0]
 
-	log.Println(serviceFormulaObj)
+	//	log.Println(serviceFormulaObj)
 	formulaExpression := strings.ReplaceAll(serviceFormulaObj.Formula, "^", "")
 	formulaExpression = strings.ReplaceAll(formulaExpression, "#", "")
 	metricObj := serviceFormulaObj.Metric[0]
 	inputValue := strings.ReplaceAll(metricObj.Ref, "^", "")
-	log.Println("input", input)
+	//	log.Println("input", input)
 	if input > metricObj.MaxValue || input < metricObj.MinValue {
 		errorMessage := "<SHIPPING_TYPE> should be in the range of <L>-<M> in <UNIT>"
 		errorMessage = strings.Replace(errorMessage, "<SHIPPING_TYPE>", shippingType, 1)
@@ -157,7 +156,7 @@ func (cmsResponse *CmsObject) EvalueateExpressionByDeliveryFeeByType(input float
 
 		return false, 0.0, errorMessage, "SH40001"
 	}
-	log.Println("formulaExpression: ", formulaExpression)
+	//log.Println("formulaExpression: ", formulaExpression)
 	expression, error := govaluate.NewEvaluableExpression(formulaExpression)
 	if error != nil {
 		log.Println(error)
@@ -173,7 +172,7 @@ func (cmsResponse *CmsObject) EvalueateExpressionByDeliveryFeeByType(input float
 
 	}
 
-	log.Println("parameters: ", parameters)
+	//log.Println("parameters: ", parameters)
 
 	result, err := expression.Evaluate(parameters)
 	if err != nil {
@@ -182,8 +181,8 @@ func (cmsResponse *CmsObject) EvalueateExpressionByDeliveryFeeByType(input float
 	}
 
 	i, ok := result.(float64)
-	log.Println("Checking delivery fee")
-	log.Println(i)
+	//	log.Println("Checking delivery fee")
+	//	log.Println(i)
 	if !ok {
 		return false, 0.0, "", "SH40004"
 	}
