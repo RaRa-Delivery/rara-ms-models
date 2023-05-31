@@ -38,6 +38,10 @@ type BusinessAccountProperties struct {
 	IsOtpRequiredDuringDropoff          bool   `json:"isOtpRequiredDuringDropoff,omitempty"`
 	GeoLocationCheck                    string `json:"geoLocationCheck,omitempty"`
 	GeoLocationDropoffDistanceThreshold int    `json:"geoLocationDropoffDistanceThreshold,omitempty"`
+	
+	IsOtpRequiredDuringPickup           bool   `json:"isOtpRequiredDuringPickup, omitempty"`
+	PickupGeoLocationCheck              string `json:"pickupGeoLocationCheck,omitempty"`
+	GeoLocationPickupDistanceThreshold  int    `json:"geoLocationPickupDistanceThreshold,omitempty"`
 }
 
 type PackageTypeScheme struct {
