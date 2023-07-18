@@ -64,6 +64,7 @@ type Dimensions struct {
 	Height float64 `json:"height"`
 }
 type Packages struct {
+	Name       string     `json:"name"`
 	Weight     float64    `json:"weight"`
 	Dimensions Dimensions `json:"dimensions"`
 }
