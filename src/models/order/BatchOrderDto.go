@@ -6,3 +6,8 @@ type BatchOrderDto struct {
 	OrderDistanceMatrix OrderDistanceMatrix `json:"orderDistanceMatrix" bson:"orderDistanceMatrix"`
 	Driver              Driver              `json:"driver" bson:"driver"`
 }
+
+type WebhookOrderDto struct {
+	TrackingId string   `json:"trackingId" bson:"trackingId"`
+	Codes      []string `json:"codes" bson:"codes"`
+}
