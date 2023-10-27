@@ -80,6 +80,8 @@ type Report struct {
 	PopfImages          string             `json:"popfImages,omitempty" bson:"popfImages,omitempty"`
 	PodImages           string             `json:"podImages,omitempty" bson:"podImages,omitempty"`
 	PodfImages          string             `json:"podfImages,omitempty" bson:"podfImages,omitempty"`
+	DropSla             int64              `json:"dropSla" bson:"dropSla,omitempty"`
+	DeliveryUnix        int64              `json:"deliveryUnix" bson:"deliveryUnix,omitempty"`
 }
 
 func (f *Report) GetStructFieldBsonFieldNameMap() map[string]string {
@@ -160,6 +162,7 @@ func (f *Report) GetStructFieldBsonFieldNameMap() map[string]string {
 	m["popfImages"] = "PopfImages"
 	m["podImages"] = "PodImages"
 	m["podfImages"] = "PodfImages"
-
+	m["dropSla"] = "dropSla"
+	m["deliveryUnix"] = "deliveryUnix"
 	return m
 }
