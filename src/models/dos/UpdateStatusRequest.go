@@ -14,4 +14,6 @@ type UpdateStatusRequest struct {
 	RecipientName     string   `json:"recipientName" bson:"recipientName"`
 	RecipientRelation string   `json:"recipientRelation" bson:"recipientRelation"`
 	Images            []string `json:"images" bson:"images"`
+	PickId            string   `json:"pickId" bson:"pickId"`
+	DropId            string   `json:"dropId" bson:"dropId"`
 }
