@@ -3,22 +3,22 @@ package order
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type AcceptanceOrderScreenData struct {
-	DriverLoc          Geo                 `json:"driverLoc" bson:"driverLoc"`
-	BatchId            string              `json:"batchId" bson:"batchId"`
-	BshtTag            string              `json:"bshtTag" bson:"bshtTag"`
-	Orders             []BatchForDriverApp `json:"nodes" bson:"nodes"`
-	FpuName            string              `json:"fpuName" bson:"fpuName"`
-	FpuAddress         string              `json:"fpuAddress" bson:"fpuAddress"`
-	FpuReachTime       float64             `json:"fpuReachTime" bson:"fpuReachTime"`
-	FpuReachDistance   float64             `json:"fuReachDistance" bson:"fpuReachDistance"`
-	TotalBatchOrders   int                 `json:"totalBatchOrders" bson:"totalBatchOrders"`
-	TotalBatchDistance float64             `json:"totalBatchDistance" bson:"totalBatchDistance"`
-	TotalBatchFee      float64             `json:"totalBatchFee" bson:"totalBatchFee"`
-	EarningType        string              `json:"earningType" bson:"earningType"`
-	Earning            Earning             `json:"earning" bson:"earning"`
-	StartTime          int64               `json:"startTime" bson:"startTime"`
-	Duration           int64               `json:"duration" bson:"duration"`
-	TimeRemaining      int64               `json:"timeRemaining" bson:"timeRemaining"`
+	DriverLoc                Geo                 `json:"driverLoc" bson:"driverLoc"`
+	BatchId                  string              `json:"batchId" bson:"batchId"`
+	BshtTag                  string              `json:"bshtTag" bson:"bshtTag"`
+	Orders                   []BatchForDriverApp `json:"nodes" bson:"nodes"`
+	FpuName                  string              `json:"fpuName" bson:"fpuName"`
+	FpuAddress               string              `json:"fpuAddress" bson:"fpuAddress"`
+	FpuReachTime             float64             `json:"fpuReachTime" bson:"fpuReachTime"`
+	FpuReachDistance         float64             `json:"fuReachDistance" bson:"fpuReachDistance"`
+	TotalBatchOrders         int                 `json:"totalBatchOrders" bson:"totalBatchOrders"`
+	TotalBatchDistance       float64             `json:"totalBatchDistance" bson:"totalBatchDistance"`
+	TotalBatchFee            float64             `json:"totalBatchFee" bson:"totalBatchFee"`
+	EarningType              string              `json:"earningType" bson:"earningType"`
+	Earning                  Earning             `json:"earning" bson:"earning"`
+	StartTime                int64               `json:"startTime" bson:"startTime"`
+	Duration                 int64               `json:"duration" bson:"duration"`
+	TimeRemaining            int64               `json:"timeRemaining" bson:"timeRemaining"`
 	StartPickupDuration      int64               `json:"startPickupDuration" bson:"startPickupDuration"`
 	StartPickupTimeRemaining int64               `json:"startPickupTimeRemaining" bson:"startPickupDuration"`
 }
@@ -43,6 +43,13 @@ type BatchForDriverApp struct {
 	SystemActivityRemarks SystemActivityRemarks `json:"systemActivityRemarks"`
 	IsBsht                bool                  `json:"isBsht" bson:"isBsht"`
 	BshtTag               string                `json:"bshtTag" bson:"bshtTag"`
+	AvoidPickups          []PickupInfo          `json:"avoidPickups" bson:"avoidPickups"`
+}
+
+type PickupInfo struct {
+	Name    string   `json:"name" bson:"name"`
+	Address string   `json:"address" bson:"address"`
+	LatLng  GeoPoint `json:"latlng" bson:"latlng"`
 }
 
 type SystemActivityRemarks struct {
