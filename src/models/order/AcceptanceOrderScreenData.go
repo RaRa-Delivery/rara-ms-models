@@ -60,6 +60,7 @@ type PickupInfo struct {
 type SystemActivityRemarks struct {
 	Completed int `json:"completed" bson:"completed"`
 	Failed    int `json:"failed" bson:"failed"`
+	Cancelled int `json:"cancelled" bson:"cancelled"`
 }
 
 type OrdersForDriverApp struct {
@@ -69,8 +70,8 @@ type OrdersForDriverApp struct {
 	Status        string          `json:"status"`
 	PuNote        string          `json:"puNote" bson:"puNote"`
 	DoNote        string          `json:"doNote" bson:"doNote"`
+	Otp           string          `json:"otp" bson:"otp"`
 	BshtTag       string          `json:"bshtTag"`
-	Otp           string          `json:"otp"`
 	Attempt       int             `json:"attempt" bson:"attempt"`
 	OrderIncharge struct {
 		Name  string `json:"name" bson:"name"`

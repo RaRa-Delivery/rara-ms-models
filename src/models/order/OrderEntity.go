@@ -130,17 +130,18 @@ type PersonalDetails struct {
 }
 
 type LocationDetails struct {
-	Name        string   `json:"locationName" bson:"locationName"`
-	Address     string   `json:"address" bson:"address"`
-	Address1    string   `json:"address1" bson:"address1"`
-	Address2    string   `json:"address2" bson:"address2"`
-	SubDistrict string   `json:"subDistrict" bson:"subDistrict"`
-	District    string   `json:"district" bson:"district"`
-	City        string   `json:"city" bson:"city"`
-	PostalCode  string   `json:"postalCode" bson:"postalCode"`
-	LatLng      GeoPoint `json:"geoPoint" bson:"geoPoint"`
-	Type        string   `json:"type" bson:"type"`
-	Province    string   `json:"province" bson:"province"`
+	LocationName string   `json:"locationName" bson:"locationName"`
+	Address      string   `json:"address" bson:"address"`
+	Address1     string   `json:"address1" bson:"address1"`
+	Address2     string   `json:"address2" bson:"address2"`
+	SubDistrict  string   `json:"subDistrict" bson:"subDistrict"`
+	District     string   `json:"district" bson:"district"`
+	City         string   `json:"city" bson:"city"`
+	PostalCode   string   `json:"postalCode" bson:"postalCode"`
+	GeoPoint     GeoPoint `json:"geoPoint" bson:"geoPoint"`
+	Type         string   `json:"type" bson:"type"`
+	Province     string   `json:"province" bson:"province"`
+	Id           int64    `json:"id" bson:"id"`
 }
 
 type GeoPoint struct {
