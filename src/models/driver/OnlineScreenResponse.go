@@ -1,11 +1,13 @@
 package models
 
 import (
+	"encoding/base64"
 	"fmt"
 	"log"
 	"strings"
 
 	"github.com/RaRa-Delivery/rara-ms-models/src/models/order"
+	"github.com/RaRa-Delivery/rara-ms-models/src/utility/lg"
 	"github.com/samber/lo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -292,4 +294,130 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 	}
 
 	return batchNavigation
+}
+
+func StatusMapping(code string) int {
+	val := 0
+	switch code {
+	case "BA":
+		val = 1
+	case "PS":
+		val = 2
+	case "PA":
+		val = 3
+	case "PP":
+		val = 4
+	case "PF":
+		val = 5
+	case "SD":
+		val = 6
+	case "AD":
+		val = 7
+	case "DL":
+		val = 8
+	case "DF":
+		val = 9
+	case "RS":
+		val = 10
+	case "SA":
+		val = 11
+	case "RTS":
+		val = 12
+	}
+
+	return val
+}
+
+func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId string, pollingInterVal, pollingStopInterVal int32) (BatchNavigation, error) {
+	log.Println(reqId, ": ", lg.Mg("GenerateBatchNavigation"))
+	pickId := ""
+	dropId := ""
+	st := ""
+	stCode := 0
+	track := ""
+
+	ns := lo.Filter(d, func(n order.BatchForDriverApp, i int) bool {
+		return strings.EqualFold(n.Type, "PICKUP")
+	})
+
+	avoidPickups := d[0].AvoidPickups
+	avoidPickupId := ""
+	if len(avoidPickups) > 0 {
+		avoidPickup := avoidPickups[len(avoidPickups)-1]
+		avoidPickupId = base64.StdEncoding.EncodeToString([]byte(fmt.Sprint("PICK@@@", strings.ToLower(avoidPickup.Name), "@@@", strings.ToLower(avoidPickup.Address))))
+		s := 0
+
+		log.Println(lg.Green("len(ns): ", len(ns)))
+		if len(ns) > 0 {
+			log.Println(lg.Info("================================"))
+			log.Println(lg.Info("Batch navigation: ", pickId))
+
+			for i, nso := range ns {
+				if strings.EqualFold(nso.Id, avoidPickupId) && i < len(ns) {
+					s++
+				}
+				if s > 0 {
+
+					ds := lo.Filter(d, func(n order.BatchForDriverApp, i int) bool {
+						return strings.EqualFold(n.Type, "DROPOFF") && strings.EqualFold(n.PickupId, nso.Id)
+					})
+
+					for _, ord := range ds {
+
+						log.Println(lg.Info("================================"))
+						ind := StatusMapping(ord.Orders[0].Status)
+						if ind >= stCode && ind != 8 && ind != 12 {
+							log.Println(lg.Info("================================"))
+							stCode = ind
+							st = ord.Orders[0].Status
+							track = ord.Orders[0].TrackingId
+							pickId = ord.PickupId
+							dropId = ord.Id
+						}
+						log.Println(lg.Info("================================"))
+
+					}
+
+				}
+			}
+		}
+
+	} else {
+
+		log.Println(lg.Green("len(ns): ", len(ns)))
+		if len(ns) > 0 {
+			log.Println(lg.Info("================================"))
+			log.Println(lg.Info("Batch navigation: ", pickId))
+
+			ds := lo.Filter(d, func(n order.BatchForDriverApp, i int) bool {
+				return strings.EqualFold(n.Type, "DROPOFF") && strings.EqualFold(n.PickupId, ns[0].Id)
+			})
+
+			for _, ord := range ds {
+
+				log.Println(lg.Info("================================"))
+				ind := StatusMapping(ord.Orders[0].Status)
+				if ind >= stCode && ind != 8 && ind != 12 {
+					log.Println(lg.Info("================================"))
+					stCode = ind
+					st = ord.Orders[0].Status
+					track = ord.Orders[0].TrackingId
+					pickId = ord.PickupId
+					dropId = ord.Id
+				}
+				log.Println(lg.Info("================================"))
+
+			}
+
+		}
+	}
+
+	bn := BatchNavigation{}
+	bn.BatchId = batchId
+	bn.DropId = dropId
+	bn.PickId = pickId
+	bn.Status = st
+	bn.TrackingIds = []string{track}
+
+	return bn, nil
 }

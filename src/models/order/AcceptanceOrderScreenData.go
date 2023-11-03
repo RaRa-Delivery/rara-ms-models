@@ -1,6 +1,8 @@
 package order
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type AcceptanceOrderScreenData struct {
 	DriverLoc                Geo                 `json:"driverLoc" bson:"driverLoc"`
