@@ -35,16 +35,20 @@ type BatchForDriverApp struct {
 		Phone string `json:"phone" bson:"phone"`
 		Email string `json:"email" bson:"email"`
 	} `json:"nodeIncharge" bson:"nodeIncharge"`
-	Orders                []OrdersForDriverApp  `json:"orders"`
-	ETA                   int                   `json:"eta" bson:"eta"`
-	DistanceToReach       float64               `json:"distanceToReach" bson:"distanceToReach"`
-	BatchId               primitive.ObjectID    `json:"batchId" bson:"batchId"`
-	SystemActivityStatus  string                `json:"systemActivityStatus"`
-	SystemActivityRemarks SystemActivityRemarks `json:"systemActivityRemarks"`
-	IsBsht                bool                  `json:"isBsht" bson:"isBsht"`
-	BshtTag               string                `json:"bshtTag" bson:"bshtTag"`
-	AvoidPickups          []PickupInfo          `json:"avoidPickups" bson:"avoidPickups"`
-	PickupId              string                `json:"pickupId"`
+	Orders                              []OrdersForDriverApp  `json:"orders"`
+	ETA                                 int                   `json:"eta" bson:"eta"`
+	DistanceToReach                     float64               `json:"distanceToReach" bson:"distanceToReach"`
+	BatchId                             primitive.ObjectID    `json:"batchId" bson:"batchId"`
+	SystemActivityStatus                string                `json:"systemActivityStatus"`
+	SystemActivityRemarks               SystemActivityRemarks `json:"systemActivityRemarks"`
+	IsBsht                              bool                  `json:"isBsht" bson:"isBsht"`
+	BshtTag                             string                `json:"bshtTag" bson:"bshtTag"`
+	AccountId                           int64                 `json:"accountId" bson:"accountId"`
+	IsOtpRequiredDuringDropoff          bool                  `json:"isOtpRequiredDuringDropoff" bson:"isOtpRequiredDuringDropoff"`
+	GeoLocationCheck                    string                `json:"geoLocationCheck" bson:"geoLocationCheck"`
+	GeoLocationDropoffDistanceThreshold int                   `json:"geoLocationDropoffDistanceThreshold" bson:"geoLocationDropoffDistanceThreshold"`
+	AvoidPickups                        []PickupInfo          `json:"avoidPickups" bson:"avoidPickups"`
+	PickupId                            string                `json:"pickupId"`
 }
 
 type PickupInfo struct {
