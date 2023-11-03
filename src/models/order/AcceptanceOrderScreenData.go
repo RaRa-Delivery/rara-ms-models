@@ -44,6 +44,7 @@ type BatchForDriverApp struct {
 	IsBsht                bool                  `json:"isBsht" bson:"isBsht"`
 	BshtTag               string                `json:"bshtTag" bson:"bshtTag"`
 	AvoidPickups          []PickupInfo          `json:"avoidPickups" bson:"avoidPickups"`
+	PickupId              string                `json:"pickupId"`
 }
 
 type PickupInfo struct {
@@ -76,7 +77,6 @@ type OrdersForDriverApp struct {
 		PaymentMethod string  `json:"paymentMethod" bson:"paymentMethod"`
 		Price         float64 `json:"price" bson:"price"`
 	} `json:"paymentDetails" bson:"paymentDetails"`
-	PickupId string `json:"pickupId"`
 }
 
 type DriverAppLocationDetails struct {
