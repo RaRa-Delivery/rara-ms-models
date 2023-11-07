@@ -65,6 +65,14 @@ func calculateHexagonCoordinates(centroid []float64, gridSize float64) [][]float
 		coordinates[i] = []float64{x, y}
 	}
 
+	// find and print the coordinates of the vertices of the hexagonal area
+	vertices := HexagonVertices(centroid[0], centroid[1], gridSize)
+	fmt.Println("The coordinates of the vertices of the hexagonal area are:")
+	for i, v := range vertices {
+		fmt.Printf("Vertex %d: (%f, %f)\n", i+1, v[0], v[1])
+		coordinates[i] = []float64{v[0], v[1]}
+	}
+
 	return coordinates
 }
 
@@ -579,4 +587,88 @@ func (es *ElasticSearchRest) DeleteDoc(driverId string) error {
 	fmt.Println(string(body))
 	return nil
 
+}
+
+// ToRadians converts degrees to radians
+func ToRadians(degrees float64) float64 {
+	return degrees * math.Pi / 180
+}
+
+// ToDegrees converts radians to degrees
+func ToDegrees(radians float64) float64 {
+	return radians * 180 / math.Pi
+}
+
+// HaversineDistance returns the great circle distance between two points
+// on a sphere using the Haversine formula
+func HaversineDistance(lat1, lon1, lat2, lon2 float64) float64 {
+	// convert degrees to radians
+	lat1 = ToRadians(lat1)
+	lon1 = ToRadians(lon1)
+	lat2 = ToRadians(lat2)
+	lon2 = ToRadians(lon2)
+
+	// calculate the angular distance between the points
+	dlat := lat2 - lat1
+	dlon := lon2 - lon1
+	a := math.Sin(dlat/2)*math.Sin(dlat/2) + math.Cos(lat1)*math.Cos(lat2)*math.Sin(dlon/2)*math.Sin(dlon/2)
+	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
+
+	// assume the earth's radius is 6371 km
+	r := 6371000.0
+
+	// return the distance in meters
+	return c * r
+}
+
+// VincentyDistance returns the latitude and longitude of a point given the latitude and longitude of another point, the distance between them, and the initial bearing angle
+func VincentyDistance(lat1, lon1, distance, bearing float64) (float64, float64) {
+	// convert degrees to radians
+	lat1 = ToRadians(lat1)
+	lon1 = ToRadians(lon1)
+	bearing = ToRadians(bearing)
+
+	// assume the earth's radius is 6371 km
+	r := 6371000.0
+
+	// calculate the angular distance
+	angularDistance := distance / r
+
+	// calculate the latitude of the second point
+	lat2 := math.Asin(math.Sin(lat1)*math.Cos(angularDistance) + math.Cos(lat1)*math.Sin(angularDistance)*math.Cos(bearing))
+
+	// calculate the longitude of the second point
+	lon2 := lon1 + math.Atan2(math.Sin(bearing)*math.Sin(angularDistance)*math.Cos(lat1), math.Cos(angularDistance)-math.Sin(lat1)*math.Sin(lat2))
+
+	// convert radians to degrees
+	lat2 = ToDegrees(lat2)
+	lon2 = ToDegrees(lon2)
+
+	// return the latitude and longitude of the second point
+	return lat2, lon2
+}
+
+// HexagonVertices returns the latitude and longitude of the vertices of a regular hexagonal area on the earth
+func HexagonVertices(lat, lon, distance float64) [][2]float64 {
+	// initialize an empty slice of coordinates
+	vertices := [][2]float64{}
+
+	// assume that the first vertex is at the same longitude as the centroid
+	// and calculate its latitude using the Haversine formula
+	lat1 := lat + ToDegrees(distance/6371000)
+
+	// append the first vertex to the slice
+	vertices = append(vertices, [2]float64{lat1, lon})
+
+	// calculate the angle between each vertex and the centroid, which is 60 degrees for a regular hexagon
+	angle := 60.0
+
+	// iterate over the remaining vertices and calculate their latitude and longitude using the Vincenty formula
+	for i := 1; i < 6; i++ {
+		lat2, lon2 := VincentyDistance(lat, lon, distance, angle*float64(i))
+		vertices = append(vertices, [2]float64{lat2, lon2})
+	}
+
+	// return the slice of coordinates
+	return vertices
 }
