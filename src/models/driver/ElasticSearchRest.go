@@ -292,6 +292,119 @@ func (es *ElasticSearchRest) SearchDriversWithInBoundary(topLeft []float64, bott
 	return dlArr, nil, true
 }
 
+func (es *ElasticSearchRest) SearchDriversWithInHexagonalBoundary(boundary [][]float64, onlineOffline string, status string, city string, timeRange string, driverId string) ([]DriverLocationDto, error, bool) {
+	searchQuery := DriverSearchQuery{}
+	dlArr := []DriverLocationDto{}
+
+	if onlineOffline != "" {
+
+		match1 := make(map[string]interface{})
+		m1 := make(map[string]interface{})
+		m1["onlineOfflineStatus"] = onlineOffline
+		match1["match"] = m1
+		searchQuery.Query.Bool.Must = append(searchQuery.Query.Bool.Must, match1)
+
+	}
+
+	if status != "" {
+
+		match2 := make(map[string]interface{})
+		m2 := make(map[string]interface{})
+		m2["status"] = "available"
+		match2["match"] = m2
+
+		searchQuery.Query.Bool.Must = append(searchQuery.Query.Bool.Must, match2)
+
+	}
+
+	if city != "" {
+		match3 := make(map[string]interface{})
+		m3 := make(map[string]interface{})
+		m3["city"] = city
+		match3["match"] = m3
+
+		searchQuery.Query.Bool.Must = append(searchQuery.Query.Bool.Must, match3)
+
+	}
+
+	if driverId != "" {
+		match5 := make(map[string]interface{})
+		m5 := make(map[string]interface{})
+		m5["driverId"] = driverId
+		match5["match"] = m5
+
+		searchQuery.Query.Bool.Must = append(searchQuery.Query.Bool.Must, match5)
+
+	}
+
+	match4 := make(map[string]interface{})
+	m4 := make(map[string]interface{})
+	m44 := make(map[string]interface{})
+	m44["gte"] = timeRange
+	m44["lte"] = "now"
+	m4["timestamp"] = m44
+	match4["range"] = m4
+
+	searchQuery.Query.Bool.Must = append(searchQuery.Query.Bool.Must, match4)
+
+	log.Println(searchQuery)
+
+	searchQuery.Query.Bool.Filter.Shape.Location.Relation = "within"
+	searchQuery.Query.Bool.Filter.Shape.Location.Shape.Type = "polygon"
+	searchQuery.Query.Bool.Filter.Shape.Location.Shape.Coordinates = boundary
+
+	queryByte, queryErr := json.Marshal(&searchQuery)
+	log.Println(string(queryByte))
+	log.Println("queryErr: ", queryErr)
+
+	url := os.Getenv("ELASTIC_URL") + "/" + os.Getenv("LOCATION_INDEX") + "/_search"
+	method := "GET"
+
+	payload := strings.NewReader(string(queryByte))
+
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, payload)
+
+	if err != nil {
+		fmt.Println(err)
+		return dlArr, err, false
+	}
+
+	req.Header.Add("Content-Type", "application/json")
+
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return dlArr, err, false
+	}
+	defer res.Body.Close()
+
+	r := make(map[string]interface{})
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		return dlArr, err, false
+	}
+	fmt.Println(string(body))
+	ee := json.Unmarshal(body, &r)
+
+	if ee != nil {
+		return dlArr, ee, false
+	}
+
+	for _, hit := range r["hits"].(map[string]interface{})["hits"].([]interface{}) {
+		dl := DriverLocationDto{}
+		a := hit.(map[string]interface{})["_source"]
+		bb, _ := json.Marshal(&a)
+		log.Println(string(bb))
+		json.Unmarshal(bb, &dl)
+		dlArr = append(dlArr, dl)
+	}
+
+	return dlArr, nil, true
+}
+
 type DriverShortSearchQuery struct {
 	Query struct {
 		Bool struct {
