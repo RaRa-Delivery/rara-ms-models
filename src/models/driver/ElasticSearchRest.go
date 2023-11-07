@@ -165,7 +165,24 @@ type DriverSearchQuery struct {
 		} `json:"bool"`
 	} `json:"query"`
 }
-
+type DriverSearchHexagonQuery struct {
+	Query struct {
+		Bool struct {
+			Must   []map[string]interface{} `json:"must"`
+			Filter struct {
+				Shape struct {
+					Location struct {
+						Shape struct {
+							Type        string        `json:"type"`
+							Coordinates [][][]float64 `json:"coordinates"`
+						} `json:"shape"`
+						Relation string `json:"relation"`
+					} `json:"location"`
+				} `json:"shape"`
+			} `json:"filter"`
+		} `json:"bool"`
+	} `json:"query"`
+}
 type DriverLocationDto struct {
 	DriverID    string `json:"driverId"`
 	City        string `json:"city"`
@@ -293,7 +310,7 @@ func (es *ElasticSearchRest) SearchDriversWithInBoundary(topLeft []float64, bott
 }
 
 func (es *ElasticSearchRest) SearchDriversWithInHexagonalBoundary(boundary [][]float64, onlineOffline string, status string, city string, timeRange string, driverId string) ([]DriverLocationDto, error, bool) {
-	searchQuery := DriverSearchQuery{}
+	searchQuery := DriverSearchHexagonQuery{}
 	dlArr := []DriverLocationDto{}
 
 	if onlineOffline != "" {
@@ -351,7 +368,9 @@ func (es *ElasticSearchRest) SearchDriversWithInHexagonalBoundary(boundary [][]f
 
 	searchQuery.Query.Bool.Filter.Shape.Location.Relation = "within"
 	searchQuery.Query.Bool.Filter.Shape.Location.Shape.Type = "polygon"
-	searchQuery.Query.Bool.Filter.Shape.Location.Shape.Coordinates = boundary
+	coord := [][][]float64{}
+	coord = append(coord, boundary)
+	searchQuery.Query.Bool.Filter.Shape.Location.Shape.Coordinates = coord
 
 	queryByte, queryErr := json.Marshal(&searchQuery)
 	log.Println(string(queryByte))
