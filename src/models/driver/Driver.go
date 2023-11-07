@@ -38,3 +38,8 @@ type DriverTrainingAttempt struct {
 	NextAttemptDateUnix int64  `json:"next_attempt_date_unix" bson:"next_attempt_date_unix"`
 	DriverExam          Exam   `json:"driver_exam" bson:"driver_exam"`
 }
+
+type ActiveInactiveDriverLocations struct {
+	AvailableDrivers []LocationData `json:"availableDrivers"`
+	OccupiedDrivers  []LocationData `json:"occupiedDrivers"`
+}
