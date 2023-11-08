@@ -595,6 +595,8 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 
 	cmsData.DeliveryPackaging = packageDataArray
 
+	cmsData.AutoCancellation = 10
+
 	_, resError := json.Marshal(&cmsData)
 	if resError != nil {
 		log.Println(lg.Error(resError))

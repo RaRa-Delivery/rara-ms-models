@@ -27,6 +27,7 @@ type CmsObject struct {
 	IsOtpRequiredDuringDropoff          bool   `json:"isOtpRequiredDuringDropoff,omitempty"`
 	GeoLocationCheck                    string `json:"geoLocationCheck,omitempty"`
 	GeoLocationDropoffDistanceThreshold int    `json:"geoLocationDropoffDistanceThreshold,omitempty"`
+	AutoCancellation                    int    `json:"autoCancellation,omitempty"`
 }
 
 type SlaServiceNew struct {
