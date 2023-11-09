@@ -496,7 +496,7 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 	cmsData.IsOtpRequiredDuringDropoff = cmsObj.Data.BusinessAccountProperties.IsOtpRequiredDuringDropoff
 	cmsData.GeoLocationCheck = cmsObj.Data.BusinessAccountProperties.GeoLocationCheck
 	cmsData.GeoLocationDropoffDistanceThreshold = cmsObj.Data.BusinessAccountProperties.GeoLocationDropoffDistanceThreshold
-
+	cmsData.AutoCancellation = cmsObj.Data.BusinessAccountProperties.AutoCancellationTime
 	/**Special tags**/
 	if cmsData.SpecialHandlingRequired {
 		bsht := cmsObj.Data.BusinessAccountProperties.Bsht
@@ -594,8 +594,6 @@ func StoreNewCmsContract(accountId int64, token string) (cmsdto.CmsObject, error
 	}
 
 	cmsData.DeliveryPackaging = packageDataArray
-
-	cmsData.AutoCancellation = 10
 
 	_, resError := json.Marshal(&cmsData)
 	if resError != nil {
