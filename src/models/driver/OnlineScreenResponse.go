@@ -414,10 +414,11 @@ func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId str
 	avoidPickupId := ""
 	if len(avoidPickups) > 0 {
 		avoidPickup := avoidPickups[len(avoidPickups)-1]
-		avoidPickupId = base64.StdEncoding.EncodeToString([]byte(fmt.Sprint("PICK@@@", strings.ToLower(avoidPickup.Name), "@@@", strings.ToLower(avoidPickup.Address))))
+		avoidPickupStr := fmt.Sprint("PICK@@@", strings.ToLower(avoidPickup.Name), "@@@", strings.ToLower(avoidPickup.Address))
+		avoidPickupId = base64.StdEncoding.EncodeToString([]byte(avoidPickupStr))
 		s := 0
-
 		log.Println(lg.Debug(reqId, ": "), lg.Green("len(ns): ", len(ns)))
+		log.Println(lg.Debug(reqId, ": "), lg.Green("Avoid pickup: ", avoidPickupStr))
 		if len(ns) > 0 {
 			log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
 			log.Println(lg.Info("Batch navigation: ", pickId))
@@ -437,19 +438,21 @@ func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId str
 
 					for _, ord := range ds {
 
-						log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
-						ind := StatusMapping(ord.Orders[0].Status)
-						log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code before check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
+						for j, od := range ord.Orders {
 
-						if ind >= stCode && ind != 8 && ind != 12 {
-							log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code after check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
-							stCode = ind
-							st = ord.Orders[0].Status
-							track = ord.Orders[0].TrackingId
-							pickId = ord.PickupId
-							dropId = ord.Id
+							log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
+							ind := StatusMapping(od.Status)
+							log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code before check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
+							if ind >= stCode && ind != 8 && ind != 12 {
+								log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code after check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
+								stCode = ind
+								st = od.Status
+								track = od.TrackingId
+								pickId = ord.PickupId
+								dropId = ord.Id
+							}
+							log.Println(lg.Debug(reqId, ": "), lg.Info("==============", j, "=================="))
 						}
-						log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
 
 					}
 
