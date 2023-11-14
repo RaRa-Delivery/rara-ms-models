@@ -66,7 +66,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 		if strings.EqualFold(statusCode, "BA") {
 			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 			batchNavigation.Polling = int(pollingStopInterVal)
-			batchNavigation.PickId = batchRes.Nodes[0].Id
+			batchNavigation.PickId = pickId
 			batchNavigation.NextStatus = "PS"
 			batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/START_PICK_UP")
 		}
