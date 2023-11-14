@@ -440,10 +440,10 @@ func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId str
 
 						for j, od := range ord.Orders {
 
-							log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
+							log.Println(lg.Debug(reqId, ": "), lg.Info("==============", od.Status, "=================="))
 							ind := StatusMapping(od.Status)
 							log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code before check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
-							if ind >= stCode && ind != 8 && ind != 12 {
+							if ind > stCode && ind != 8 && ind != 12 {
 								log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code after check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
 								stCode = ind
 								st = od.Status
@@ -456,8 +456,13 @@ func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId str
 
 					}
 
+					log.Println(lg.Debug(reqId, ": "), lg.Yellow("=====Pickup ID: =====", pickId, "========Status code: ====", st, "===dropID===", dropId))
+
 				}
 			}
+
+			log.Println(lg.Debug(reqId, ": "), lg.Mg("=====Pickup ID: =====", pickId, "========Status code: ====", st, "===dropID===", dropId))
+
 		}
 
 	} else {
@@ -475,7 +480,7 @@ func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId str
 
 				log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
 				ind := StatusMapping(ord.Orders[0].Status)
-				if ind >= stCode && ind != 8 && ind != 12 {
+				if ind > stCode && ind != 8 && ind != 12 {
 					log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
 					stCode = ind
 					st = ord.Orders[0].Status
@@ -486,6 +491,8 @@ func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId str
 				log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
 
 			}
+
+			log.Println(lg.Debug(reqId, ": "), lg.Yellow("=====Pickup ID: =====", pickId, "========Status code: ====", st, "===dropID===", dropId))
 
 		}
 	}
