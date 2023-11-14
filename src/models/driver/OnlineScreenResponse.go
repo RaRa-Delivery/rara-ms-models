@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"log"
 	"strings"
@@ -465,6 +466,8 @@ func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId str
 
 		}
 
+		log.Println(lg.Debug(reqId, ": "), lg.Dl("=====Pickup ID: =====", pickId, "========Status code: ====", st, "===dropID===", dropId))
+
 	} else {
 
 		log.Println(lg.Debug(reqId, ": "), lg.Green("len(ns): ", len(ns)))
@@ -503,6 +506,9 @@ func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId str
 	bn.PickId = pickId
 	bn.Status = st
 	bn.TrackingIds = []string{track}
+
+	bnByte, _ := json.Marshal(&bn)
+	log.Println(lg.Green(string(bnByte)))
 
 	return bn, nil
 }
