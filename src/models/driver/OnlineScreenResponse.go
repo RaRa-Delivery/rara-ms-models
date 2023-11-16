@@ -481,17 +481,21 @@ func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId str
 
 			for _, ord := range ds {
 
-				log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
-				ind := StatusMapping(ord.Orders[0].Status)
-				if ind > stCode && ind != 8 && ind != 12 {
-					log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
-					stCode = ind
-					st = ord.Orders[0].Status
-					track = ord.Orders[0].TrackingId
-					pickId = ord.PickupId
-					dropId = ord.Id
+				for j, od := range ord.Orders {
+
+					log.Println(lg.Debug(reqId, ": "), lg.Info("==============", od.Status, "=================="))
+					ind := StatusMapping(od.Status)
+					log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code before check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
+					if ind > stCode && ind != 8 && ind != 12 {
+						log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code after check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
+						stCode = ind
+						st = od.Status
+						track = od.TrackingId
+						pickId = ord.PickupId
+						dropId = ord.Id
+					}
+					log.Println(lg.Debug(reqId, ": "), lg.Info("==============", j, "=================="))
 				}
-				log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
 
 			}
 
