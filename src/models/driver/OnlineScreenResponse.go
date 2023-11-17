@@ -95,7 +95,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 
 				log.Println(lg.Debug(reqId, ":"), lg.Info(" pp.Status: ", pp.Status))
 				log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-				if !strings.EqualFold(pp.Status, "PP") && !strings.EqualFold(pp.Status, "PF") {
+				if !strings.EqualFold(pp.Status, "PP") && !strings.EqualFold(pp.Status, "PF") && strings.EqualFold(pp.Status, "PA") {
 					log.Println(lg.Debug(reqId, ":"), " All parcels are not picked yet. Stay at pickup list screen")
 					batchNavigation.Polling = int(pollingInterVal)
 					batchNavigation.PickId = pickId
@@ -176,7 +176,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 			for _, pp := range pplist {
 				//If all parcels are not picked yet
 				log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-				if !strings.EqualFold(pp.Status, "PP") && !strings.EqualFold(pp.Status, "PF") {
+				if !strings.EqualFold(pp.Status, "PP") && !strings.EqualFold(pp.Status, "PF") && strings.EqualFold(pp.Status, "PA") {
 					log.Println(lg.Debug(reqId, ":"), " All parcels are not picked yet. Stay at pickup list screen")
 					batchNavigation.Polling = int(pollingInterVal)
 					batchNavigation.PickId = pickId
