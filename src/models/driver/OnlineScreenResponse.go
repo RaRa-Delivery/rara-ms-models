@@ -168,6 +168,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 			}
 
 		}
+		log.Println("Pickup failed scenerio:")
 		if strings.EqualFold(statusCode, "PF") {
 			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 			pplist := lo.Filter(batchRes.Nodes, func(n *BNode, i int) bool {
