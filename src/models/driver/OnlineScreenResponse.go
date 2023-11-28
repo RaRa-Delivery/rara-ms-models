@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"strings"
@@ -43,8 +44,9 @@ type BatchNavigation struct {
 }
 
 type BatchResponse struct {
-	BatchId string   `json:"batchId,omitempty"`
-	Nodes   []*BNode `json:"nodes,omitempty"`
+	BatchId      string   `json:"batchId,omitempty"`
+	Nodes        []*BNode `json:"nodes,omitempty"`
+	AvoidPickups []string `json:"avoidPickups,omitempty"`
 }
 
 type BNode struct {
@@ -53,6 +55,52 @@ type BNode struct {
 	Status     string `json:"status,omitempty"`
 	TrackingId string `json:"trackingId,omitempty"`
 	PickupId   string `json:"pickupId,omitempty"`
+}
+
+// Use this function to check if all nodes have one of the following statuses: DL/DF/PF/OC/RTS
+// Returns true if all nodes have one of the these statuses. at least one node has status: DF
+func CheckAllOrdersAreDLDFPFOCRTS(batchRes *BatchResponse) (*BNode, error) {
+	bns := lo.Filter(batchRes.Nodes, func(item *BNode, index int) bool {
+		return item.Type == "DROP"
+	})
+
+	totalBns := len(bns)
+	if totalBns == 0 {
+		return nil, errors.New("No drop nodes found")
+	}
+	tot := 0
+	isDf := false
+	for _, bn := range bns {
+		if bn.Status == "DL" || bn.Status == "DF" || bn.Status == "PF" || bn.Status == "OC" || bn.Status == "RTS" {
+			tot++
+		}
+		if bn.Status == "DF" {
+			isDf = true
+		}
+	}
+
+	if tot != totalBns || !isDf {
+		return nil, errors.New("Some drop nodes are not in correct status")
+	}
+
+	for i := len(batchRes.AvoidPickups) - 1; i >= 0; i-- {
+		bnode, bnErr := GetDfOrder(batchRes.AvoidPickups[i], batchRes.Nodes)
+		if bnErr == nil {
+			return bnode, nil
+		}
+	}
+
+	return nil, errors.New("unknown error")
+}
+
+func GetDfOrder(pickupId string, nodes []*BNode) (*BNode, error) {
+	for _, n := range nodes {
+		if n.Type == "DROP" && n.Status == "DF" {
+			return n, nil
+		}
+	}
+
+	return nil, errors.New("No drop node found")
 }
 
 func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, trackingIds []string, pollingInterVal, pollingStopInterVal int32, batchRes *BatchResponse) BatchNavigation {
@@ -170,70 +218,80 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 		}
 		log.Println("Pickup failed scenerio:")
 		if strings.EqualFold(statusCode, "PF") {
-			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-			pplist := lo.Filter(batchRes.Nodes, func(n *BNode, i int) bool {
-				return strings.EqualFold(pickId, n.PickupId) && strings.EqualFold(n.Type, "DROP")
-			})
-			for _, pp := range pplist {
-				//If all parcels are not picked yet
+
+			retNode, chkErr := CheckAllOrdersAreDLDFPFOCRTS(batchRes)
+			if chkErr == nil {
+				//TODO: Initiate Returns
+				batchNavigation.Polling = int(pollingStopInterVal)
+				batchNavigation.PickId = retNode.PickupId
+				batchNavigation.NextStatus = "RS"
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
+			} else {
+
 				log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-				if !strings.EqualFold(pp.Status, "PP") && !strings.EqualFold(pp.Status, "PF") && strings.EqualFold(pp.Status, "PA") {
-					log.Println(lg.Debug(reqId, ":"), " All parcels are not picked yet. Stay at pickup list screen")
-					batchNavigation.Polling = int(pollingInterVal)
-					batchNavigation.PickId = pickId
-					batchNavigation.NextStatus = "PP"
-					batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/PICK_UP_CHECKLIST")
-				} else {
-					log.Println(lg.Debug(reqId, ":"), " All parcels are picked up. Check the next node pickup or dropoff")
-					pickNodeIndex := -1
-					for i, po := range batchRes.Nodes {
-						if strings.EqualFold(pickId, po.PickupId) && strings.EqualFold(po.Type, "PICK") {
-							pickNodeIndex = i
-							break
-						}
-					}
+				pplist := lo.Filter(batchRes.Nodes, func(n *BNode, i int) bool {
+					return strings.EqualFold(pickId, n.PickupId) && strings.EqualFold(n.Type, "DROP")
+				})
+				for _, pp := range pplist {
+					//If all parcels are not picked yet
 					log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-					nextNodeIndex := pickNodeIndex + 1
-
-					//Check the next node exists or not
-					if nextNodeIndex < 0 || nextNodeIndex >= len(batchRes.Nodes) {
-						log.Println(lg.Debug(reqId, ":"), " Next node does not exist")
-						// Handle the index out of bounds error
+					if !strings.EqualFold(pp.Status, "PP") && !strings.EqualFold(pp.Status, "PF") && strings.EqualFold(pp.Status, "PA") {
+						log.Println(lg.Debug(reqId, ":"), " All parcels are not picked yet. Stay at pickup list screen")
+						batchNavigation.Polling = int(pollingInterVal)
 						batchNavigation.PickId = pickId
-						batchNavigation.NextStatus = "NONE"
-						batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/NONE")
+						batchNavigation.NextStatus = "PP"
+						batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/PICK_UP_CHECKLIST")
 					} else {
-						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-						nodeType := batchRes.Nodes[nextNodeIndex].Type
-
-						if strings.EqualFold(nodeType, "PICK") {
-							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-							batchNavigation.PickId = batchRes.Nodes[nextNodeIndex].PickupId
-							batchNavigation.NextStatus = "PS"
-							batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/START_PICK_UP")
-
-						}
-						if strings.EqualFold(nodeType, "DROP") {
-							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-							batchNavigation.Polling = int(pollingInterVal)
-							batchNavigation.PickId = pickId
-							for _, n := range batchRes.Nodes {
-
-								if strings.EqualFold(n.PickupId, pickId) && strings.EqualFold(n.Type, "DROP") && strings.EqualFold(n.Status, "PP") {
-									batchNavigation.NextStatus = "SD"
-									batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", n.Id, "/START_DROP_OFF?trackingIds=", n.TrackingId)
-									break
-								}
+						log.Println(lg.Debug(reqId, ":"), " All parcels are picked up. Check the next node pickup or dropoff")
+						pickNodeIndex := -1
+						for i, po := range batchRes.Nodes {
+							if strings.EqualFold(pickId, po.PickupId) && strings.EqualFold(po.Type, "PICK") {
+								pickNodeIndex = i
+								break
 							}
+						}
+						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+						nextNodeIndex := pickNodeIndex + 1
 
+						//Check the next node exists or not
+						if nextNodeIndex < 0 || nextNodeIndex >= len(batchRes.Nodes) {
+							log.Println(lg.Debug(reqId, ":"), " Next node does not exist")
+							// Handle the index out of bounds error
+							batchNavigation.PickId = pickId
+							batchNavigation.NextStatus = "NONE"
+							batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/NONE")
+						} else {
+							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+							nodeType := batchRes.Nodes[nextNodeIndex].Type
+
+							if strings.EqualFold(nodeType, "PICK") {
+								log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+								batchNavigation.PickId = batchRes.Nodes[nextNodeIndex].PickupId
+								batchNavigation.NextStatus = "PS"
+								batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/START_PICK_UP")
+
+							}
+							if strings.EqualFold(nodeType, "DROP") {
+								log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+								batchNavigation.Polling = int(pollingInterVal)
+								batchNavigation.PickId = pickId
+								for _, n := range batchRes.Nodes {
+
+									if strings.EqualFold(n.PickupId, pickId) && strings.EqualFold(n.Type, "DROP") && strings.EqualFold(n.Status, "PP") {
+										batchNavigation.NextStatus = "SD"
+										batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", n.Id, "/START_DROP_OFF?trackingIds=", n.TrackingId)
+										break
+									}
+								}
+
+							}
+							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 						}
 						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 					}
 					log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 				}
-				log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 			}
-
 		}
 		if strings.EqualFold(statusCode, "SD") {
 			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
@@ -251,70 +309,142 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 		}
 		if strings.EqualFold(statusCode, "DL") {
 			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-			nodeIndex := -1
-			for i, po := range batchRes.Nodes {
-				if strings.EqualFold(dropId, po.Id) && strings.EqualFold(po.Type, "DROP") {
-					nodeIndex = i
-					break
-				}
-			}
 
-			nextIndex := nodeIndex + 1
-			//Check the next node exists or not
-			if nextIndex < 0 || nextIndex >= len(batchRes.Nodes) {
-				log.Println(lg.Debug(reqId, ":"), " Next node does not exist")
-				// Handle the index out of bounds error
+			retNode, chkErr := CheckAllOrdersAreDLDFPFOCRTS(batchRes)
+			if chkErr == nil {
+				//TODO: Initiate Returns
 				batchNavigation.Polling = int(pollingStopInterVal)
-				batchNavigation.PickId = pickId
-				batchNavigation.NextStatus = "NONE"
-				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/NONE")
+				batchNavigation.PickId = retNode.PickupId
+				batchNavigation.NextStatus = "RS"
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
 			} else {
-				isAd := false
-				log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-				for _, po := range batchRes.Nodes {
-					log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-					if strings.EqualFold(dropId, po.Id) && strings.EqualFold(po.Type, "DROP") && strings.EqualFold(po.Status, "AD") {
-						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-						batchNavigation.Polling = int(pollingStopInterVal)
-						batchNavigation.PickId = pickId
-						batchNavigation.NextStatus = "DROP_LIST"
-						batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/DROP_OFF_CHECKLIST?trackingIds=", strings.Join(trackingIds, ","))
-						isAd = true
+
+				nodeIndex := -1
+				for i, po := range batchRes.Nodes {
+					if strings.EqualFold(dropId, po.Id) && strings.EqualFold(po.Type, "DROP") {
+						nodeIndex = i
 						break
 					}
 				}
-				if !isAd {
-					log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-					nextNode := batchRes.Nodes[nextIndex]
-					if strings.EqualFold(nextNode.Type, "PICK") {
-						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-						batchNavigation.Polling = int(pollingStopInterVal)
-						batchNavigation.PickId = nextNode.PickupId
-						batchNavigation.NextStatus = "PS"
-						batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/START_PICK_UP")
 
-					}
-					if strings.EqualFold(nextNode.Type, "DROP") {
+				nextIndex := nodeIndex + 1
+				//Check the next node exists or not
+				if nextIndex < 0 || nextIndex >= len(batchRes.Nodes) {
+					log.Println(lg.Debug(reqId, ":"), " Next node does not exist")
+					// Handle the index out of bounds error
+					batchNavigation.Polling = int(pollingStopInterVal)
+					batchNavigation.PickId = pickId
+					batchNavigation.NextStatus = "NONE"
+					batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/NONE")
+				} else {
+					isAd := false
+					log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+					for _, po := range batchRes.Nodes {
 						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-						batchNavigation.Polling = int(pollingStopInterVal)
-						batchNavigation.PickId = nextNode.PickupId
-						batchNavigation.NextStatus = "SD"
-						batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", nextNode.Id, "/START_DROP_OFF?trackingIds=", nextNode.TrackingId)
+						if strings.EqualFold(dropId, po.Id) && strings.EqualFold(po.Type, "DROP") && strings.EqualFold(po.Status, "AD") {
+							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+							batchNavigation.Polling = int(pollingStopInterVal)
+							batchNavigation.PickId = pickId
+							batchNavigation.NextStatus = "DROP_LIST"
+							batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/DROP_OFF_CHECKLIST?trackingIds=", strings.Join(trackingIds, ","))
+							isAd = true
+							break
+						}
+					}
+					if !isAd {
+						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+						nextNode := batchRes.Nodes[nextIndex]
+						if strings.EqualFold(nextNode.Type, "PICK") {
+							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+							batchNavigation.Polling = int(pollingStopInterVal)
+							batchNavigation.PickId = nextNode.PickupId
+							batchNavigation.NextStatus = "PS"
+							batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/START_PICK_UP")
+
+						}
+						if strings.EqualFold(nextNode.Type, "DROP") {
+							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+							batchNavigation.Polling = int(pollingStopInterVal)
+							batchNavigation.PickId = nextNode.PickupId
+							batchNavigation.NextStatus = "SD"
+							batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", nextNode.Id, "/START_DROP_OFF?trackingIds=", nextNode.TrackingId)
+						}
+						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 					}
 					log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+
 				}
-				log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-
 			}
 			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 
 		}
 		if strings.EqualFold(statusCode, "DF") {
 			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-			batchNavigation.Polling = int(pollingStopInterVal)
-			batchNavigation.PickId = pickId
-			batchNavigation.NextStatus = "RS"
-			batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/START_RETURN?trackingIds=", strings.Join(trackingIds, ","))
+			retNode, chkErr := CheckAllOrdersAreDLDFPFOCRTS(batchRes)
+			if chkErr == nil {
+
+				batchNavigation.Polling = int(pollingStopInterVal)
+				batchNavigation.PickId = retNode.PickupId
+				batchNavigation.NextStatus = "RS"
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
+			} else {
+
+				nodeIndex := -1
+				for i, po := range batchRes.Nodes {
+					if strings.EqualFold(dropId, po.Id) && strings.EqualFold(po.Type, "DROP") {
+						nodeIndex = i
+						break
+					}
+				}
+
+				nextIndex := nodeIndex + 1
+				//Check the next node exists or not
+				if nextIndex < 0 || nextIndex >= len(batchRes.Nodes) {
+					log.Println(lg.Debug(reqId, ":"), " Next node does not exist")
+					// Handle the index out of bounds error
+					batchNavigation.Polling = int(pollingStopInterVal)
+					batchNavigation.PickId = pickId
+					batchNavigation.NextStatus = "NONE"
+					batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/NONE")
+				} else {
+					isAd := false
+					log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+					for _, po := range batchRes.Nodes {
+						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+						if strings.EqualFold(dropId, po.Id) && strings.EqualFold(po.Type, "DROP") && strings.EqualFold(po.Status, "AD") {
+							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+							batchNavigation.Polling = int(pollingStopInterVal)
+							batchNavigation.PickId = pickId
+							batchNavigation.NextStatus = "DROP_LIST"
+							batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/DROP_OFF_CHECKLIST?trackingIds=", strings.Join(trackingIds, ","))
+							isAd = true
+							break
+						}
+					}
+					if !isAd {
+						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+						nextNode := batchRes.Nodes[nextIndex]
+						if strings.EqualFold(nextNode.Type, "PICK") {
+							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+							batchNavigation.Polling = int(pollingStopInterVal)
+							batchNavigation.PickId = nextNode.PickupId
+							batchNavigation.NextStatus = "PS"
+							batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/START_PICK_UP")
+
+						}
+						if strings.EqualFold(nextNode.Type, "DROP") {
+							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+							batchNavigation.Polling = int(pollingStopInterVal)
+							batchNavigation.PickId = nextNode.PickupId
+							batchNavigation.NextStatus = "SD"
+							batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", nextNode.Id, "/START_DROP_OFF?trackingIds=", nextNode.TrackingId)
+						}
+						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+					}
+					log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+
+				}
+			}
 		}
 		if strings.EqualFold(statusCode, "RS") {
 			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
@@ -332,62 +462,72 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 		}
 		if strings.EqualFold(statusCode, "RTS") {
 			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-			nodeIndex := -1
-			for i, po := range batchRes.Nodes {
-				if strings.EqualFold(dropId, po.Id) && strings.EqualFold(po.Type, "DROP") {
-					nodeIndex = i
-					break
-				}
-			}
+			retNode, chkErr := CheckAllOrdersAreDLDFPFOCRTS(batchRes)
+			if chkErr == nil {
 
-			nextIndex := nodeIndex + 1
-
-			//Check the next node exists or not
-			if nextIndex < 0 || nextIndex >= len(batchRes.Nodes) {
-				log.Println(lg.Debug(reqId, ":"), " Next node does not exist")
-				// Handle the index out of bounds error
 				batchNavigation.Polling = int(pollingStopInterVal)
-				batchNavigation.PickId = pickId
-				batchNavigation.NextStatus = "NONE"
-				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/NONE")
+				batchNavigation.PickId = retNode.PickupId
+				batchNavigation.NextStatus = "RS"
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
 			} else {
-
-				isAd := false
-				log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-				for _, po := range batchRes.Nodes {
-					log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-					if strings.EqualFold(dropId, po.Id) && strings.EqualFold(po.Type, "DROP") && strings.EqualFold(po.Status, "AD") {
-						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-						batchNavigation.Polling = int(pollingStopInterVal)
-						batchNavigation.PickId = pickId
-						batchNavigation.NextStatus = "DROP_LIST"
-						batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/DROP_OFF_CHECKLIST?trackingIds=", strings.Join(trackingIds, ","))
-						isAd = true
+				nodeIndex := -1
+				for i, po := range batchRes.Nodes {
+					if strings.EqualFold(dropId, po.Id) && strings.EqualFold(po.Type, "DROP") {
+						nodeIndex = i
 						break
 					}
 				}
-				if !isAd {
+
+				nextIndex := nodeIndex + 1
+
+				//Check the next node exists or not
+				if nextIndex < 0 || nextIndex >= len(batchRes.Nodes) {
+					log.Println(lg.Debug(reqId, ":"), " Next node does not exist")
+					// Handle the index out of bounds error
+					batchNavigation.Polling = int(pollingStopInterVal)
+					batchNavigation.PickId = pickId
+					batchNavigation.NextStatus = "NONE"
+					batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/NONE")
+				} else {
+
+					isAd := false
 					log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-					nextNode := batchRes.Nodes[nextIndex]
-					if strings.EqualFold(nextNode.Type, "PICK") {
+					for _, po := range batchRes.Nodes {
 						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-						batchNavigation.Polling = int(pollingStopInterVal)
-						batchNavigation.PickId = nextNode.PickupId
-						batchNavigation.NextStatus = "PS"
-						batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/START_PICK_UP")
+						if strings.EqualFold(dropId, po.Id) && strings.EqualFold(po.Type, "DROP") && strings.EqualFold(po.Status, "AD") {
+							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+							batchNavigation.Polling = int(pollingStopInterVal)
+							batchNavigation.PickId = pickId
+							batchNavigation.NextStatus = "DROP_LIST"
+							batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/DROP_OFF_CHECKLIST?trackingIds=", strings.Join(trackingIds, ","))
+							isAd = true
+							break
+						}
+					}
+					if !isAd {
+						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+						nextNode := batchRes.Nodes[nextIndex]
+						if strings.EqualFold(nextNode.Type, "PICK") {
+							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+							batchNavigation.Polling = int(pollingStopInterVal)
+							batchNavigation.PickId = nextNode.PickupId
+							batchNavigation.NextStatus = "PS"
+							batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/pickup/", batchNavigation.PickId, "/START_PICK_UP")
 
+						}
+						if strings.EqualFold(nextNode.Type, "DROP") {
+							log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+							batchNavigation.Polling = int(pollingStopInterVal)
+							batchNavigation.PickId = nextNode.PickupId
+							batchNavigation.NextStatus = "SD"
+							batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", nextNode.Id, "/START_DROP_OFF?trackingIds=", nextNode.TrackingId)
+						}
 					}
-					if strings.EqualFold(nextNode.Type, "DROP") {
-						log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
-						batchNavigation.Polling = int(pollingStopInterVal)
-						batchNavigation.PickId = nextNode.PickupId
-						batchNavigation.NextStatus = "SD"
-						batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", nextNode.Id, "/START_DROP_OFF?trackingIds=", nextNode.TrackingId)
-					}
+
+					log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 				}
-
-				log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 			}
+
 			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 
 		}
