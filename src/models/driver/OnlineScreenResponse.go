@@ -216,9 +216,9 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 			}
 
 		}
-		log.Println("Pickup failed scenerio:")
-		if strings.EqualFold(statusCode, "PF") {
 
+		if strings.EqualFold(statusCode, "PF") {
+			log.Println("Pickup failed scenerio:")
 			retNode, chkErr := CheckAllOrdersAreDLDFPFOCRTS(batchRes)
 			if chkErr == nil {
 				//TODO: Initiate Returns
@@ -382,7 +382,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
 			retNode, chkErr := CheckAllOrdersAreDLDFPFOCRTS(batchRes)
 			if chkErr == nil {
-
+				log.Println(lg.Debug(reqId, ":"), lg.Mg(" Initiate Return: ", batchId))
 				batchNavigation.Polling = int(pollingStopInterVal)
 				batchNavigation.PickId = retNode.PickupId
 				batchNavigation.NextStatus = "RS"
@@ -570,7 +570,7 @@ func StatusMapping(code string) int {
 	return val
 }
 
-func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId string, pollingInterVal, pollingStopInterVal int32) (BatchNavigation, error) {
+func GenerateBatchNavigationDataOld(d []order.BatchForDriverApp, batchId, reqId string, pollingInterVal, pollingStopInterVal int32) (BatchNavigation, error) {
 
 	log.Println(lg.Debug(reqId, ": "), lg.Mg("GenerateBatchNavigation: ", batchId))
 	pickId := ""
@@ -633,6 +633,115 @@ func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId str
 
 				}
 			}
+
+			log.Println(lg.Debug(reqId, ": "), lg.Mg("=====Pickup ID: =====", pickId, "========Status code: ====", st, "===dropID===", dropId))
+
+		}
+
+		log.Println(lg.Debug(reqId, ": "), lg.Dl("=====Pickup ID: =====", pickId, "========Status code: ====", st, "===dropID===", dropId))
+
+	} else {
+
+		log.Println(lg.Debug(reqId, ": "), lg.Green("len(ns): ", len(ns)))
+		if len(ns) > 0 {
+			log.Println(lg.Debug(reqId, ": "), lg.Info("==========No avoid pickup======================"))
+			log.Println(lg.Debug(reqId, ": "), lg.Info("Batch navigation: ", pickId))
+
+			ds := lo.Filter(d, func(n order.BatchForDriverApp, i int) bool {
+				return strings.EqualFold(n.Type, "DROPOFF") && strings.EqualFold(n.PickupId, ns[0].Id)
+			})
+
+			for _, ord := range ds {
+
+				for j, od := range ord.Orders {
+
+					log.Println(lg.Debug(reqId, ": "), lg.Info("==============", od.Status, "=================="))
+					ind := StatusMapping(od.Status)
+					log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code before check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
+					if ind > stCode && ind != 8 && ind != 12 {
+						log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code after check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
+						stCode = ind
+						st = od.Status
+						track = od.TrackingId
+						pickId = ord.PickupId
+						dropId = ord.Id
+					}
+					log.Println(lg.Debug(reqId, ": "), lg.Info("==============", j, "=================="))
+				}
+
+			}
+
+			log.Println(lg.Debug(reqId, ": "), lg.Yellow("=====Pickup ID: =====", pickId, "========Status code: ====", st, "===dropID===", dropId))
+
+		}
+	}
+
+	bn := BatchNavigation{}
+	bn.BatchId = batchId
+	bn.DropId = dropId
+	bn.PickId = pickId
+	bn.Status = st
+	bn.TrackingIds = []string{track}
+
+	bnByte, _ := json.Marshal(&bn)
+	log.Println(lg.Green(string(bnByte)))
+
+	return bn, nil
+}
+
+func GenerateBatchNavigationData(d []order.BatchForDriverApp, batchId, reqId string, pollingInterVal, pollingStopInterVal int32) (BatchNavigation, error) {
+
+	log.Println(lg.Debug(reqId, ": "), lg.Mg("GenerateBatchNavigation V2: ", batchId))
+	pickId := ""
+	dropId := ""
+	st := ""
+	stCode := 0
+	track := ""
+
+	ns := lo.Filter(d, func(n order.BatchForDriverApp, i int) bool {
+		return strings.EqualFold(n.Type, "PICKUP")
+	})
+
+	avoidPickups := d[0].AvoidPickups
+	//avoidPickupId := ""
+	if len(avoidPickups) > 0 {
+		// avoidPickup := avoidPickups[len(avoidPickups)-1]
+		// avoidPickupStr := fmt.Sprint("PICK@@@", strings.ToLower(avoidPickup.Name), "@@@", strings.ToLower(avoidPickup.Address))
+		// avoidPickupId = base64.StdEncoding.EncodeToString([]byte(avoidPickupStr))
+
+		log.Println(lg.Debug(reqId, ": "), lg.Green("len(ns): ", len(ns)))
+		//log.Println(lg.Debug(reqId, ": "), lg.Green("Avoid pickup: ", avoidPickupStr))
+		if len(ns) > 0 {
+			log.Println(lg.Debug(reqId, ": "), lg.Info("================================"))
+			log.Println(lg.Info("Batch navigation: ", pickId))
+
+			ds := lo.Filter(d, func(n order.BatchForDriverApp, i int) bool {
+				return strings.EqualFold(n.Type, "DROPOFF")
+			})
+
+			log.Println(lg.Debug(reqId, ": "), lg.Info("============drop count: ", len(ds), "===================="))
+
+			for _, ord := range ds {
+
+				for j, od := range ord.Orders {
+
+					log.Println(lg.Debug(reqId, ": "), lg.Info("==============", od.Status, "=================="))
+					ind := StatusMapping(od.Status)
+					log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code before check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
+					if ind > stCode && ind != 8 && ind != 12 {
+						log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code after check: ", ind, "=========current status: ", ord.Orders[0].Status, "============"))
+						stCode = ind
+						st = od.Status
+						track = od.TrackingId
+						pickId = ord.PickupId
+						dropId = ord.Id
+					}
+					log.Println(lg.Debug(reqId, ": "), lg.Info("==============", j, "=================="))
+				}
+
+			}
+
+			log.Println(lg.Debug(reqId, ": "), lg.Yellow("=====Pickup ID: =====", pickId, "========Status code: ====", st, "===dropID===", dropId))
 
 			log.Println(lg.Debug(reqId, ": "), lg.Mg("=====Pickup ID: =====", pickId, "========Status code: ====", st, "===dropID===", dropId))
 
