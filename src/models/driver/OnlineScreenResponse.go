@@ -824,7 +824,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 
 		}
 		if strings.EqualFold(statusCode, "DF") {
-			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
+			log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$ DF $$$$$$$$$$$: ", batchId))
 			retNode, chkErr := CheckAllOrdersAreDLDFPFOCRTS(batchRes)
 			if chkErr == nil {
 				log.Println(lg.Debug(reqId, ":"), lg.Mg(" Initiate Return: ", batchId))
@@ -857,7 +857,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 				}
 
 				if strings.EqualFold(st, "AD") {
-
+					log.Println(lg.Debug(reqId, ":"), lg.Mg(" Initiate AD: ", batchId))
 					batchNavigation.Polling = int(pollingStopInterVal)
 					batchNavigation.PickId = pickId
 					batchNavigation.NextStatus = "DROP_LIST"
