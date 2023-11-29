@@ -772,7 +772,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 
 						ind := StatusMapping(po.Status)
 						log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code before check: ", ind, "=========current status: ", po.Status, "============"))
-						if ind > stCode && ind != 8 && ind != 12 {
+						if ind > stCode && ind != 8 && ind != 9 && ind != 12 {
 							log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code after check: ", ind, "=========current status: ", po.Status, "============"))
 							stCode = ind
 							st = po.Status
@@ -844,7 +844,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 
 						ind := StatusMapping(po.Status)
 						log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code before check: ", ind, "=========current status: ", po.Status, "============"))
-						if ind > stCode && ind != 8 && ind != 12 {
+						if ind > stCode && ind != 8 && ind != 9 && ind != 12 {
 							log.Println(lg.Debug(reqId, ": "), lg.Info("===========current code after check: ", ind, "=========current status: ", po.Status, "============"))
 							stCode = ind
 							st = po.Status
