@@ -229,7 +229,7 @@ func SetBatchNavigationDataOld(batchId, statusCode, pickId, dropId, reqId string
 				batchNavigation.Polling = int(pollingStopInterVal)
 				batchNavigation.PickId = retNode.PickupId
 				batchNavigation.NextStatus = "RS"
-				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/START_RETURN?trackingIds=", retNode.TrackingId)
 			} else {
 
 				log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
@@ -320,7 +320,7 @@ func SetBatchNavigationDataOld(batchId, statusCode, pickId, dropId, reqId string
 				batchNavigation.Polling = int(pollingStopInterVal)
 				batchNavigation.PickId = retNode.PickupId
 				batchNavigation.NextStatus = "RS"
-				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/START_RETURN?trackingIds=", retNode.TrackingId)
 			} else {
 
 				nodeIndex := -1
@@ -390,7 +390,7 @@ func SetBatchNavigationDataOld(batchId, statusCode, pickId, dropId, reqId string
 				batchNavigation.Polling = int(pollingStopInterVal)
 				batchNavigation.PickId = retNode.PickupId
 				batchNavigation.NextStatus = "RS"
-				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/START_RETURN?trackingIds=", retNode.TrackingId)
 			} else {
 
 				nodeIndex := -1
@@ -472,7 +472,7 @@ func SetBatchNavigationDataOld(batchId, statusCode, pickId, dropId, reqId string
 				batchNavigation.Polling = int(pollingStopInterVal)
 				batchNavigation.PickId = retNode.PickupId
 				batchNavigation.NextStatus = "RS"
-				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/START_RETURN?trackingIds=", retNode.TrackingId)
 			} else {
 				nodeIndex := -1
 				for i, po := range batchRes.Nodes {
@@ -668,7 +668,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 				batchNavigation.Polling = int(pollingStopInterVal)
 				batchNavigation.PickId = retNode.PickupId
 				batchNavigation.NextStatus = "RS"
-				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/START_RETURN?trackingIds=", retNode.TrackingId)
 			} else {
 
 				log.Println(lg.Debug(reqId, ":"), lg.Mg(" $$$$$$$$$$$$$$$$$$$$: ", batchId))
@@ -759,7 +759,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 				batchNavigation.Polling = int(pollingStopInterVal)
 				batchNavigation.PickId = retNode.PickupId
 				batchNavigation.NextStatus = "RS"
-				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/START_RETURN?trackingIds=", retNode.TrackingId)
 			} else {
 
 				stCode := 0
@@ -831,7 +831,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 				batchNavigation.Polling = int(pollingStopInterVal)
 				batchNavigation.PickId = retNode.PickupId
 				batchNavigation.NextStatus = "RS"
-				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/START_RETURN?trackingIds=", retNode.TrackingId)
 			} else {
 
 				stCode := 0
@@ -916,7 +916,7 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 				batchNavigation.Polling = int(pollingStopInterVal)
 				batchNavigation.PickId = retNode.PickupId
 				batchNavigation.NextStatus = "RS"
-				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", retNode.Id, "/START_RETURN?trackingIds=", retNode.TrackingId)
+				batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/START_RETURN?trackingIds=", retNode.TrackingId)
 			} else {
 				nodeIndex := -1
 				for i, po := range batchRes.Nodes {
