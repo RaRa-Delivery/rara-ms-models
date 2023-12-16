@@ -20,6 +20,7 @@ type Report struct {
 	ServiceType         string             `json:"serviceType" bson:"serviceType,omitempty"`
 	ServiceID           int                `json:"serviceId" bson:"serviceId,omitempty"`
 	OrderDistance       float64            `json:"orderDistance" bson:"orderDistance,omitempty"`
+	DriverDistance      float64            `json:"driverDistance" bson:"driverDistance,omitempty"`
 	Status              string             `json:"status" bson:"status,omitempty"`
 	StatusCode          string             `json:"statusCode" bson:"statusCode,omitempty"`
 	Weight              float64            `json:"weight" bson:"weight,omitempty"`
@@ -103,6 +104,7 @@ func (f *Report) GetStructFieldBsonFieldNameMap() map[string]string {
 	m["serviceType"] = "ServiceType"
 	m["serviceId"] = "ServiceID"
 	m["orderDistance"] = "OrderDistance"
+	m["driverDistance"] = "DriverDistance"
 	m["status"] = "Status"
 	m["statusCode"] = "StatusCode"
 	m["weight"] = "Weight"
