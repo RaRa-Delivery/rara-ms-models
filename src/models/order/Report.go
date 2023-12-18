@@ -170,3 +170,27 @@ func (f *Report) GetStructFieldBsonFieldNameMap() map[string]string {
 	m["onTimeDelivery"] = "onTimeDelivery"
 	return m
 }
+
+type ReportFields struct {
+	OrderInfo    OrderInfo         `json:"orderInfo,omitempty" bson:"orderInfo"`
+	PickupInfo   ReportPickupInfo  `json:"pickupInfo,omitempty" bson:"pickupInfo"`
+	DropoffInfo  ReportDropoffInfo `json:"dropoffInfo,omitempty" bson:"dropoffInfo"`
+	OrderJourney OrderJourney      `json:"orderJourney,omitempty" bson:"orderJourney"`
+}
+type Fields struct {
+	Label  string `json:"label,omitempty" bson:"label"`
+	Option string `json:"option,omitempty" bson:"option"`
+}
+
+type OrderInfo struct {
+	Fields []Fields `json:"fields,omitempty" bson:"fields"`
+}
+type ReportPickupInfo struct {
+	Fields []Fields `json:"fields,omitempty" bson:"fields"`
+}
+type ReportDropoffInfo struct {
+	Fields []Fields `json:"fields,omitempty" bson:"fields"`
+}
+type OrderJourney struct {
+	Fields []Fields `json:"fields,omitempty" bson:"fields"`
+}
