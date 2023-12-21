@@ -1,7 +1,6 @@
 package models
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -9,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/RaRa-Delivery/rara-ms-models/src/models/order"
+	"github.com/RaRa-Delivery/rara-ms-models/src/utility"
 	"github.com/RaRa-Delivery/rara-ms-models/src/utility/lg"
 	"github.com/samber/lo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -1036,7 +1036,7 @@ func GenerateBatchNavigationDataOld(d []order.BatchForDriverApp, batchId, reqId 
 	if len(avoidPickups) > 0 {
 		avoidPickup := avoidPickups[len(avoidPickups)-1]
 		avoidPickupStr := fmt.Sprint("PICK@@@", strings.ToLower(avoidPickup.Name), "@@@", strings.ToLower(avoidPickup.Address))
-		avoidPickupId = base64.StdEncoding.EncodeToString([]byte(avoidPickupStr))
+		avoidPickupId = utility.Md5Generate([]byte(avoidPickupStr))
 		s := 0
 		log.Println(lg.Debug(reqId, ": "), lg.Green("len(ns): ", len(ns)))
 		log.Println(lg.Debug(reqId, ": "), lg.Green("Avoid pickup: ", avoidPickupStr))

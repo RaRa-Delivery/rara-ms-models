@@ -2,6 +2,8 @@ package utility
 
 import (
 	"bytes"
+	"crypto/md5"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -206,4 +208,21 @@ func HandlePanic() {
 		err := fmt.Errorf("recovered from panic: %v", e)
 		log.Println(lg.Error("RECOVER_FROM_PANIC", err))
 	}
+}
+
+func Md5Generate(input []byte) string {
+
+	hasher := md5.New()
+
+	// Write the string to the hash object
+	hasher.Write(input)
+
+	// Get the final hash sum
+	hashSum := hasher.Sum(nil)
+
+	// Convert the hash sum to a hexadecimal string
+	hashString := hex.EncodeToString(hashSum)
+
+	return hashString
+
 }
