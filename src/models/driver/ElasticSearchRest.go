@@ -8,6 +8,7 @@ import (
 	"math"
 	"net/http"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -196,6 +197,18 @@ type DriverLocationDto struct {
 	Timestamp           int64  `json:"timestamp" omitempty:"true"`
 }
 
+func (es *ElasticSearchRest) SortByDistance(drivers []DriverLocationDto, targetLocation []float64) []DriverLocationDto {
+
+	sort.Slice(drivers, func(i, j int) bool {
+
+		distI := es.Haversine(drivers[i].LocationObj.Coordinates[0], drivers[i].LocationObj.Coordinates[1], targetLocation[0], targetLocation[1])
+		distJ := es.Haversine(drivers[j].LocationObj.Coordinates[0], drivers[j].LocationObj.Coordinates[1], targetLocation[0], targetLocation[1])
+		return distI < distJ
+	})
+
+	return drivers
+}
+
 func (es *ElasticSearchRest) SearchDriversWithInBoundary(topLeft []float64, bottomRight []float64, onlineOffline string, status string, city string, timeRange string, driverId string) ([]DriverLocationDto, error, bool) {
 	searchQuery := DriverSearchQuery{}
 	dlArr := []DriverLocationDto{}
@@ -309,7 +322,7 @@ func (es *ElasticSearchRest) SearchDriversWithInBoundary(topLeft []float64, bott
 	return dlArr, nil, true
 }
 
-func (es *ElasticSearchRest) SearchDriversWithInHexagonalBoundary(boundary [][]float64, onlineOffline string, status string, city string, timeRange string, driverId string) ([]DriverLocationDto, error, bool) {
+func (es *ElasticSearchRest) SearchDriversWithInHexagonalBoundary(boundary [][]float64, onlineOffline string, status string, city string, timeRange string, driverId string, targetPoint []float64) ([]DriverLocationDto, error, bool) {
 	searchQuery := DriverSearchHexagonQuery{}
 	dlArr := []DriverLocationDto{}
 
@@ -419,6 +432,10 @@ func (es *ElasticSearchRest) SearchDriversWithInHexagonalBoundary(boundary [][]f
 		log.Println(string(bb))
 		json.Unmarshal(bb, &dl)
 		dlArr = append(dlArr, dl)
+	}
+
+	if len(dlArr) > 1 {
+		dlArr = es.SortByDistance(dlArr, targetPoint)
 	}
 
 	return dlArr, nil, true
