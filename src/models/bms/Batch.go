@@ -477,8 +477,8 @@ type PushNotification struct {
 }
 
 type CancellationProcess struct {
-	Batch               Batch               `json:"batch"`
-	DriverDistanceValue DriverDistanceValue `json:"driverDistanceValue"`
-	MilestoneObj        MilestoneObj        `json:"milestoneObj"`
-	PushNotification    PushNotification    `json:"pushNotification"`
+	Batch               Batch                 `json:"batch"`
+	DriverDistanceValue []DriverDistanceValue `json:"driverDistanceValue"`
+	MilestoneObj        MilestoneObj          `json:"milestoneObj"`
+	PushNotification    PushNotification      `json:"pushNotification"`
 }
