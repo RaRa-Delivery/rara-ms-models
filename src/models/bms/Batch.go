@@ -453,3 +453,32 @@ type SpecialHandlingList struct {
 	Tag          string                `json:"tag" bson:"tag"`
 	CustomerInfo order.PersonalDetails `json:"customerInfo" bson:"customerInfo"`
 }
+
+type DriverDistanceValue struct {
+	DriverDistance float64 `json:"driverDistance" bson:"driverDistance"`
+	Id             string  `json:"id" bson:"id"`
+}
+
+type MilestoneObj struct {
+	Status       string `json:"status"`
+	ErrorMessage string `json:"errorMessage"`
+	CreatedAt    string `json:"createdAt"`
+	CreatedBy    string `json:"createdBy"`
+	OrderId      string `json:"orderId"`
+	BatchId      string `json:"batchId"`
+}
+
+type PushNotification struct {
+	FirebaseAuthKey string `json:"firebaseAuthKey"`
+	BatchId         string `json:"batchId"`
+	Time            int64  `json:"time"`
+	TrackingId      string `json:"trackingId"`
+	Bsht            string `json:"bsht"`
+}
+
+type CancellationProcess struct {
+	Batch               Batch               `json:"batch"`
+	DriverDistanceValue DriverDistanceValue `json:"driverDistanceValue"`
+	MilestoneObj        MilestoneObj        `json:"milestoneObj"`
+	PushNotification    PushNotification    `json:"pushNotification"`
+}
