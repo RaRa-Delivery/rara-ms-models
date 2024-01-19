@@ -84,6 +84,7 @@ type OrdersForDriverApp struct {
 		PaymentMethod string  `json:"paymentMethod" bson:"paymentMethod"`
 		Price         float64 `json:"price" bson:"price"`
 	} `json:"paymentDetails" bson:"paymentDetails"`
+	ManualNavigation bool `json:"manualNavigation" bson:"manualNavigation"`
 }
 
 type DriverAppLocationDetails struct {
