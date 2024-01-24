@@ -8,4 +8,5 @@ type DriverSetting struct {
 	MetaLabel string             `json:"metaLabel" bson:"metaLabel"`
 	MetaKey   string             `json:"metaKey" bson:"metaKey"`
 	MetaValue string             `json:"metaValue" bson:"metaValue"`
+	Version   int                `json:"version" bson:"version"`
 }

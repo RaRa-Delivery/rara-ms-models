@@ -32,6 +32,7 @@ type BatchAssignmentActivity struct {
 	OrderCount            int64              `json:"orderCount" bson:"orderCount"`
 	Active                bool               `json:"active" bson:"active" default:"true"`
 	BatchSeen             int64              `json:"batchSeen" bson:"batchSeen"`
+	Version               int                `json:"version" bson:"version"`
 }
 
 type PnZone struct {

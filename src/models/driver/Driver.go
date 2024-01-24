@@ -25,6 +25,7 @@ type Driver struct {
 	StatusDetails          interface{}             `json:"statusDetails" bson:"statusDetails"`
 	LastBatch              string                  `json:"lastBatch" bson:"lastBatch"`
 	Token                  string                  `json:"token" bson:"token"`
+	Version                int                     `json:"version" bson:"version"`
 }
 
 type DriverTrainingAttempt struct {

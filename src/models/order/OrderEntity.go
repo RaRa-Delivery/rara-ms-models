@@ -29,6 +29,7 @@ type NewOrderObject struct {
 	CodAmountDetails    CodAmountDetails    `json:"codAmountDetails" bson:"codAmountDetails"`
 	OperationRegion     OperationRegion     `json:"operationRegion" bson:"operationRegion"`
 	LockedBy            string              `json:"lockedBy" bson:"lockedBy"`
+	Version             int                 `json:"version" bson:"version"`
 }
 
 type CodAmountDetails struct {

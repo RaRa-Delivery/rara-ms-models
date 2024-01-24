@@ -41,6 +41,7 @@ type BatchNavigation struct {
 	Redirect    string   `json:"redirect" bson:"redirect"`
 	CreatedAt   int64    `json:"createdAt" bson:"createdAt"`
 	Polling     int      `json:"polling" bson:"polling"`
+	Version     int      `json:"version" bson:"version"`
 }
 
 type BatchResponse struct {

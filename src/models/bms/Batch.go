@@ -372,6 +372,7 @@ type Batch struct {
 	ActiveDriver       BatchDriver   `json:"activeDriver" bson:"activeDriver"`
 	AvoidPickups       []PickupInfo  `json:"avoidPickups" bson:"avoidPickups"`
 	FirstPickup        string        `json:"firstPickup" bson:"firstPickup"`
+	Version            int           `json:"version" bson:"version"`
 }
 
 type PickupInfo struct {
@@ -435,6 +436,7 @@ type BatchObj struct {
 	LockedBy           string           `json:"lockedBy" bson:"lockedBy"`
 	BatchingStatus     int32            `json:"batchingStatus" bson:"batchingStatus"`
 	ActiveDriver       BatchDriver      `json:"activeDriver" bson:"activeDriver"`
+	Version            int              `json:"version" bson:"version"`
 }
 
 type Batchdata struct {

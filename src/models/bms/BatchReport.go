@@ -54,5 +54,5 @@ type BatchReports struct {
 	DeliveredOrderCount int `json:"deliveredOrderCount" bson:"deliveredOrderCount"` //It can be changed on order delivery of the batch
 
 	UpdatedAt int64 `json:"updatedAt" bson:"updatedAt"` //With every events, it will be updated
-
+	Version   int   `json:"version" bson:"version"`
 }

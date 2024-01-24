@@ -27,6 +27,7 @@ type Bank struct {
 	BankName string             `json:"bank_name" bson:"bank_name"`
 	Status   string             `json:"status" bson:"status"`
 	BankCode string             `json:"bank_code" bson:"bank_code"`
+	Version  int                `json:"version" bson:"version"`
 }
 
 type BankValidator struct {

@@ -12,4 +12,5 @@ type Location struct {
 	CityId            string             `json:"cityId" bson:"cityId"`
 	SearchDistrict    string             `json:"searchDistrict" bson:"searchDistrict"`
 	SearchSubDistrict string             `json:"searchSubDistrict" bson:"searchSubDistrict"`
+	Version           int                `json:"version" bson:"version"`
 }

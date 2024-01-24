@@ -11,4 +11,5 @@ type City struct {
 	CitySlug   string             `json:"citySlug" bson:"citySlug"`
 	CityStatus string             `json:"cityStatus" bson:"cityStatus"`
 	Display    string             `json:"display" bson:"display"`
+	Version    int                `json:"version" bson:"version"`
 }

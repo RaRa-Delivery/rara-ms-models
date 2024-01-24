@@ -11,4 +11,5 @@ type BatchSummaryForDriver struct {
 	TotalDistance float64                       `json:"batchDistance" bson:"batchDistance"`
 	TotalFee      float64                       `json:"finalEarning" bson:"finalEarning"`
 	Orders        []order.OrderSummaryForDriver `json:"batchedOrders" bson:"batchedOrders"`
+	Version       int                           `json:"version" bson:"version"`
 }

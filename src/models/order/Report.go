@@ -84,6 +84,7 @@ type Report struct {
 	DropSla             int64              `json:"dropSla" bson:"dropSla,omitempty"`
 	DeliveryUnix        int64              `json:"deliveryUnix" bson:"deliveryUnix,omitempty"`
 	OnTimeDelivery      bool               `json:"onTimeDelivery" bson:"onTimeDelivery"`
+	Version             int                `json:"version" bson:"version"`
 }
 
 func (f *Report) GetStructFieldBsonFieldNameMap() map[string]string {

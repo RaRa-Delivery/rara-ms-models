@@ -18,6 +18,7 @@ type Exam struct {
 
 	CreatedAt int64 `json:"createdAt" bson:"createdAt"`
 	UpdatedAt int64 `json:"updatedAt" bson:"updatedAt"`
+	Version   int   `json:"version" bson:"version"`
 }
 
 type ExamRequest struct {
