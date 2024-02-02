@@ -785,6 +785,16 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 					}
 				}
 
+				if strings.EqualFold(st, "SD") {
+					log.Println(lg.Debug(reqId, ":"), lg.Mg(" Initiate AD: ", batchId))
+
+					batchNavigation.Polling = int(pollingStopInterVal)
+					batchNavigation.PickId = pickId
+					batchNavigation.NextStatus = "AD"
+					batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/ARRIVED_AT_DROP_OFF?trackingIds=", track)
+
+				}
+
 				if strings.EqualFold(st, "AD") {
 
 					batchNavigation.Polling = int(pollingStopInterVal)
@@ -855,6 +865,16 @@ func SetBatchNavigationData(batchId, statusCode, pickId, dropId, reqId string, t
 						}
 
 					}
+				}
+
+				if strings.EqualFold(st, "SD") {
+					log.Println(lg.Debug(reqId, ":"), lg.Mg(" Initiate AD: ", batchId))
+
+					batchNavigation.Polling = int(pollingStopInterVal)
+					batchNavigation.PickId = pickId
+					batchNavigation.NextStatus = "AD"
+					batchNavigation.Redirect = fmt.Sprint("/batch/", batchId, "/dropoff/", dropId, "/ARRIVED_AT_DROP_OFF?trackingIds=", track)
+
 				}
 
 				if strings.EqualFold(st, "AD") {
