@@ -51,6 +51,7 @@ type BatchForDriverApp struct {
 	GeoLocationDropoffDistanceThreshold int                   `json:"geoLocationDropoffDistanceThreshold" bson:"geoLocationDropoffDistanceThreshold"`
 	AvoidPickups                        []PickupInfo          `json:"avoidPickups" bson:"avoidPickups"`
 	PickupId                            string                `json:"pickupId"`
+	AcceptedGeoPoint                    DriverAppGeoPoint     `json:"acceptedGeoPoint" bson:"acceptedGeoPoint"`
 }
 
 type PickupInfo struct {
