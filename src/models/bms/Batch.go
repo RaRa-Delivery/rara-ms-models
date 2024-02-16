@@ -373,6 +373,7 @@ type Batch struct {
 	AvoidPickups       []PickupInfo  `json:"avoidPickups" bson:"avoidPickups"`
 	FirstPickup        string        `json:"firstPickup" bson:"firstPickup"`
 	Version            int           `json:"version" bson:"version"`
+	ManualNav          bool          `json:"manualNav" bson:"manualNav"`
 }
 
 type PickupInfo struct {
@@ -437,6 +438,7 @@ type BatchObj struct {
 	BatchingStatus     int32            `json:"batchingStatus" bson:"batchingStatus"`
 	ActiveDriver       BatchDriver      `json:"activeDriver" bson:"activeDriver"`
 	Version            int              `json:"version" bson:"version"`
+	ManualNav          bool             `json:"manualNav" bson:"manualNav"`
 }
 
 type Batchdata struct {
