@@ -331,6 +331,13 @@ type BatchNode struct {
 	Sla                int64      `json:"sla" bson:"sla"`
 }
 
+type BatchingTiming struct {
+	TrackingId        string `json:"trackingId" bson:"trackingId"`
+	BatchingStartedAt int64  `json:"batchingStartedAt" bson:"batchingStartedAt"`
+	BatchingEndedAt   int64  `json:"batchingEndedAt" bson:"batchingEndedAt"`
+	BatchingTimeTaken int    `json:"batchingTimeTaken" bson:"batchingTimeTaken"`
+}
+
 type Batch struct {
 	Id          primitive.ObjectID `json:"_id" bson:"_id"`
 	CreatedAt   DateTime           `json:"createdAt" bson:"createdAt"`
@@ -352,28 +359,29 @@ type Batch struct {
 		PostalCodeIn   []string `json:"postalCodeIn" bson:"postCodeIn"`
 		City           string   `json:"city" bson:"city"`
 	} `json:"batchGeo" bson:"batchGeo"`
-	BatchCapacity      int           `json:"batchCapacity" bson:"batchCapacity"`
-	RemainingCapacity  int           `json:"remainingCapacity" bson:"remainingCapacity"`
-	BatchDistance      float64       `json:"batchDistance" bson:"batchDistance"`
-	BatchDuration      float64       `json:"batchDuration" bson:"batchDuration"`
-	Time               float64       `json:"time" bson:"time"`
-	BatchedOrders      []OrderDetail `json:"batchedOrders" bson:"batchedOrders"`
-	CancelledOrders    []OrderDetail `json:"cancelledOrders" bson:"cancelledOrders"`
-	BatchData          Batchdata     `json:"batchData" bson:"batchData"`
-	PickupDateTime     string        `json:"pickupDateTime" bson:"pickupDateTime"`
-	PickupDateTimeUnix int64         `json:"pickupDateTimeUnix" bson:"pickupDateTimeUnix"`
-	BatchIdentifier    string        `json:"batchIdentifier" bson:"batchIdentifier"`
-	Driver             []BatchDriver `json:"driver" bson:"driver"`
-	ActualEarning      float64       `json:"actualEarning" bson:"actualEarning"`
-	FinalEarning       float64       `json:"finalEarning" bson:"finalEarning"`
-	BatchId            string        `json:"batchId" bson:"batchId"`
-	LockedBy           string        `json:"lockedBy" bson:"lockedBy"`
-	BatchingStatus     int32         `json:"batchingStatus" bson:"batchingStatus"`
-	ActiveDriver       BatchDriver   `json:"activeDriver" bson:"activeDriver"`
-	AvoidPickups       []PickupInfo  `json:"avoidPickups" bson:"avoidPickups"`
-	FirstPickup        string        `json:"firstPickup" bson:"firstPickup"`
-	Version            int           `json:"version" bson:"version"`
-	ManualNav          bool          `json:"manualNav" bson:"manualNav"`
+	BatchCapacity      int              `json:"batchCapacity" bson:"batchCapacity"`
+	RemainingCapacity  int              `json:"remainingCapacity" bson:"remainingCapacity"`
+	BatchDistance      float64          `json:"batchDistance" bson:"batchDistance"`
+	BatchDuration      float64          `json:"batchDuration" bson:"batchDuration"`
+	Time               float64          `json:"time" bson:"time"`
+	BatchedOrders      []OrderDetail    `json:"batchedOrders" bson:"batchedOrders"`
+	CancelledOrders    []OrderDetail    `json:"cancelledOrders" bson:"cancelledOrders"`
+	BatchData          Batchdata        `json:"batchData" bson:"batchData"`
+	PickupDateTime     string           `json:"pickupDateTime" bson:"pickupDateTime"`
+	PickupDateTimeUnix int64            `json:"pickupDateTimeUnix" bson:"pickupDateTimeUnix"`
+	BatchIdentifier    string           `json:"batchIdentifier" bson:"batchIdentifier"`
+	Driver             []BatchDriver    `json:"driver" bson:"driver"`
+	ActualEarning      float64          `json:"actualEarning" bson:"actualEarning"`
+	FinalEarning       float64          `json:"finalEarning" bson:"finalEarning"`
+	BatchId            string           `json:"batchId" bson:"batchId"`
+	LockedBy           string           `json:"lockedBy" bson:"lockedBy"`
+	BatchingStatus     int32            `json:"batchingStatus" bson:"batchingStatus"`
+	ActiveDriver       BatchDriver      `json:"activeDriver" bson:"activeDriver"`
+	AvoidPickups       []PickupInfo     `json:"avoidPickups" bson:"avoidPickups"`
+	FirstPickup        string           `json:"firstPickup" bson:"firstPickup"`
+	Version            int              `json:"version" bson:"version"`
+	BatchingTiming     []BatchingTiming `json:"batchingTiming" bson:"batchingTiming"`
+	ManualNav          bool             `json:"manualNav" bson:"manualNav"`
 }
 
 type PickupInfo struct {
@@ -438,6 +446,7 @@ type BatchObj struct {
 	BatchingStatus     int32            `json:"batchingStatus" bson:"batchingStatus"`
 	ActiveDriver       BatchDriver      `json:"activeDriver" bson:"activeDriver"`
 	Version            int              `json:"version" bson:"version"`
+	BatchingTiming     []BatchingTiming `json:"batchingTiming" bson:"batchingTiming"`
 	ManualNav          bool             `json:"manualNav" bson:"manualNav"`
 }
 
