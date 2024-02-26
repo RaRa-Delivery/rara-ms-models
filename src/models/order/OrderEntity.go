@@ -110,7 +110,7 @@ type NewOrderDeliveryDetails struct {
 	OrderDistance   float64     `json:"orderDistance" bson:"orderDistance"`
 	DeliveryFee     float64     `json:"deliveryFee" bson:"deliveryFee"`
 	SpecialHandling string      `json:"specialHandling" bson:"specialHandling"`
-	Linehaul        ApiLinehaul `json:"linehaul" bson:"linehaul"`
+	Linehaul        bool 		`json:"linehaul" bson:"linehaul"`
 	Sla             Sla         `json:"sla" bson:"sla"`
 	Bsht            BshtTag     `json:"bsht" bson:"bsht"`
 }
