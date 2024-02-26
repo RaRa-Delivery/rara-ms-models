@@ -51,7 +51,7 @@ type Piece struct {
 	PieceId         string             `json:"pieceId" bson:"pieceId"`
 	Weight          float64            `json:"weight" bson:"weight"`
 	PieceSize       string             `json:"pieceSize" bson:"pieceSize"`
-	Dimensions      Dimensions         `json:"dimensions" bson:"dimensions"`
+	Dimensions      OrderDimensions         `json:"dimensions" bson:"dimensions"`
 	VolWeight       float64            `json:"volWeight" bson:"volWeight"`
 	BillableWeight  float64            `json:"billableWeight" bson:"billableWeight"`
 	WeightIndex     float64            `json:"weightIndex" bson:"weightIndex"`
@@ -84,7 +84,7 @@ type NewOrderDetails struct {
 	TrackingId    string             `json:"trackingId" bson:"trackingId"`
 	WeightDetails OrderWeightDetails `json:"weightDetails" bson:"weightDetails"`
 	ParcelSize    string             `json:"parcelSize" bson:"parcelSize"`
-	Dimensions    Dimensions         `json:"dimensions" bson:"dimensions"`
+	Dimensions    OrderDimensions         `json:"dimensions" bson:"dimensions"`
 	WeightIndex   float64            `json:"weightIndex" bson:"weightIndex"`
 	PackageId     int64              `json:"packageId" bson:"packageId"`
 
