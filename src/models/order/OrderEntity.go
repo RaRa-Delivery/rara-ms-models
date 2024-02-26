@@ -10,7 +10,7 @@ type NewOrderObject struct {
 	UploadId            string              `json:"uploadId" bson:"uploadId"`
 	TenantToken         string              `json:"tenantToken" bson:"tenantToken"`
 	BusinessDetails     BusinessDetails     `json:"businessDetails" bson:"businessDetails"`
-	OrderDetails        OrderDetails        `json:"orderDetails" bson:"orderDetails"`
+	OrderDetails        NewOrderDeliveryDetails        `json:"orderDetails" bson:"orderDetails"`
 	PickupDetails       PickupDetails       `json:"pickupDetails" bson:"pickupDetails"`
 	DropoffDetails      DropOffDetails      `json:"dropoffDetails" bson:"dropoffDetails"`
 	SourcePickupDetails PickupDetails       `json:"sourcePickupDetails" bson:"sourcePickupDetails"`
@@ -88,7 +88,7 @@ type OrderDetails struct {
 	Dimensions           OrderDimensions         `json:"dimensions" bson:"dimensions"`
 	WeightIndex          float64                 `json:"weightIndex" bson:"weightIndex"`
 	SpecialHandling      string                  `json:"specialHandling" bson:"specialHandling"`
-	OrderDeliveryDetails NewOrderDeliveryDetails `json:"orderDeliveryDetails" bson:"orderDeliveryDetails"`
+	OrderDeliveryDetails OrderDeliveryDetails `json:"orderDeliveryDetails" bson:"orderDeliveryDetails"`
 }
 
 type OrderWeightDetails struct {
@@ -110,9 +110,16 @@ type NewOrderDeliveryDetails struct {
 	OrderDistance   float64     `json:"orderDistance" bson:"orderDistance"`
 	DeliveryFee     float64     `json:"deliveryFee" bson:"deliveryFee"`
 	SpecialHandling string      `json:"specialHandling" bson:"specialHandling"`
-	Linehaul        bool 		`json:"linehaul" bson:"linehaul"`
+	Linehaul        ApiLinehaul 		`json:"linehaul" bson:"linehaul"`
 	Sla             Sla         `json:"sla" bson:"sla"`
 	Bsht            BshtTag     `json:"bsht" bson:"bsht"`
+}
+
+type OrderDeliveryDetails struct {
+	Linehaul      bool    `json:"linehaul" bson:"linehaul"`
+	OrderDate     string  `json:"orderDate" bson:"orderDate"`
+	PickupDate    string  `json:"pickupDate" bson:"pickupDate"`
+	OrderDistance float64 `json:"orderDistance" bson:"orderDistance"`
 }
 
 type BshtTag struct {
