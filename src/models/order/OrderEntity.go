@@ -10,7 +10,7 @@ type NewOrderObject struct {
 	UploadId            string              `json:"uploadId" bson:"uploadId"`
 	TenantToken         string              `json:"tenantToken" bson:"tenantToken"`
 	BusinessDetails     BusinessDetails     `json:"businessDetails" bson:"businessDetails"`
-	OrderDetails        NewOrderDeliveryDetails        `json:"orderDetails" bson:"orderDetails"`
+	OrderDetails        NewOrderDetails        `json:"orderDetails" bson:"orderDetails"`
 	PickupDetails       PickupDetails       `json:"pickupDetails" bson:"pickupDetails"`
 	DropoffDetails      DropOffDetails      `json:"dropoffDetails" bson:"dropoffDetails"`
 	SourcePickupDetails PickupDetails       `json:"sourcePickupDetails" bson:"sourcePickupDetails"`
@@ -77,6 +77,20 @@ type BusinessDetails struct {
 	ServiceID     string `json:"serviceId" bson:"serviceId"`
 	ServiceTypeId int64  `json:"serviceTypeId" bson:"serviceTypeId"`
 }
+
+type NewOrderDetails struct {
+	PieceId       string             `json:"pieceId" bson:"pieceId"`
+	Status        string             `json:"status" bson:"status"`
+	TrackingId    string             `json:"trackingId" bson:"trackingId"`
+	WeightDetails OrderWeightDetails `json:"weightDetails" bson:"weightDetails"`
+	ParcelSize    string             `json:"parcelSize" bson:"parcelSize"`
+	Dimensions    Dimensions         `json:"dimensions" bson:"dimensions"`
+	WeightIndex   float64            `json:"weightIndex" bson:"weightIndex"`
+	PackageId     int64              `json:"packageId" bson:"packageId"`
+
+	OrderDeliveryDetails NewOrderDeliveryDetails `json:"orderDeliveryDetails" bson:"orderDeliveryDetails"`
+}
+
 
 type OrderDetails struct {
 	PieceId              string                  `json:"pieceId" bson:"pieceId"`
