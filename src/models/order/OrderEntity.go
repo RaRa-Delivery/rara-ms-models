@@ -113,7 +113,7 @@ type PickupDetails struct {
 	LocationDetails       LocationDetails `json:"locationDetails" bson:"locationDetails"`
 	ExpectedPuDateAndTime string          `json:"expectedPuDateTime" bson:"expectedPuDateTime"`
 	Slot                  string          `json:"slot" bson:"slot"`
-	PuNote                string          `json:"puNote" bson:"puNote"`
+	Note                string          `json:"note" bson:"note"`
 }
 
 type DropOffDetails struct {
