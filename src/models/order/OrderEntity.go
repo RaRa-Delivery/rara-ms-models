@@ -217,7 +217,7 @@ type ZoneDetails struct {
 }
 
 type Zone struct {
-	Id                  primitive.ObjectID `json:"_id" bson:"_id"`
+	Id                  int64 `json:"_id" bson:"_id"`
 	Type                string             `json:"type" bson:"type"`
 	Name                string             `json:"name" bson:"name"`
 	Status              string             `json:"status" bson:"status"`
