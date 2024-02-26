@@ -32,6 +32,34 @@ type NewOrderObject struct {
 	Version             int                 `json:"version" bson:"version"`
 }
 
+type ApiPayload struct {
+	UploadId        string          `json:"uploadId" bson:"uploadId"`
+	TenantToken     string          `json:"tenantToken" bson:"tenantToken"`
+	BusinessDetails BusinessDetails `json:"businessDetails" bson:"businessDetails"`
+	OrderDetails    OrderDetails    `json:"orderDetails" bson:"orderDetails"`
+	PickupDetails   PickupDetails   `json:"pickupDetails" bson:"pickupDetails"`
+	DropOffDetails  DropOffDetails  `json:"dropoffDetails" bson:"dropoffDetails"`
+	// PackageDetails  PackageDetails  `json:"packageDetails" bson:"packageDetails"`
+	PaymentDetails PaymentDetails `json:"paymentDetails" bson:"paymentDetails"`
+	Pieces         []Piece        `json:"pieces" bson:"pieces"`
+	Source         string         `json:"source" bson:"source"`
+	Webhooks       []Webhook      `json:"webhooks" bson:"webhooks"`
+}
+
+type Piece struct {
+	Id              primitive.ObjectID `json:"Id,omitempty" bson:"Id,omitempty"`
+	PieceId         string             `json:"pieceId" bson:"pieceId"`
+	Weight          float64            `json:"weight" bson:"weight"`
+	PieceSize       string             `json:"pieceSize" bson:"pieceSize"`
+	Dimensions      Dimensions         `json:"dimensions" bson:"dimensions"`
+	VolWeight       float64            `json:"volWeight" bson:"volWeight"`
+	BillableWeight  float64            `json:"billableWeight" bson:"billableWeight"`
+	WeightIndex     float64            `json:"weightIndex" bson:"weightIndex"`
+	Price           float64            `json:"price" bson:"price"`
+	SpecialHandling string             `json:"specialHandling" bson:"specialHandling"`
+	StatusDetails   StatusDetails      `json:"statusDetails" bson:"statusDetails"`
+}
+
 type CodAmountDetails struct {
 	InitialAmount float64 `json:"initialAmount" bson:"initialAmount"`
 	Amount        float64 `json:"amount" bson:"amount"`
@@ -341,3 +369,5 @@ type WebhookProducer struct {
 	Description  string         `json:"description" bson:"description"`
 	RequestId    string         `json:"requestId" bson:"requestId"`
 }
+
+
