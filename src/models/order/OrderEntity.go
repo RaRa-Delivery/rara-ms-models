@@ -287,6 +287,8 @@ type BatchJourneyData struct {
 	OrderReturnedTime         string   `json:"orderReturnedTime" bson:"orderReturnedTime"`
 	BatchProcessingIdentifier string   `json:"batchProcessingIdentifier" bson:"batchProcessingIdentifier"`
 	CreationTimeUnix          int64    `json:"creationTimeUnix" bson:"creationTimeUnix"`
+	PickupDateTime            string   `json:"pickupDateTime" bson:"pickupDateTime"`
+	PickupDateTimeUnix        int64    `json:"pickupDateTimeUnix" bson:"pickupDateTimeUnix"`
 }
 type BatchDetails struct {
 	Current BatchJourneyData   `json:"current" bson:"current"`
