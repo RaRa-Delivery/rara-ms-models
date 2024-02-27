@@ -10,7 +10,7 @@ type NewOrderObject struct {
 	UploadId            string              `json:"uploadId" bson:"uploadId"`
 	TenantToken         string              `json:"tenantToken" bson:"tenantToken"`
 	BusinessDetails     BusinessDetails     `json:"businessDetails" bson:"businessDetails"`
-	OrderDetails        NewOrderDetails        `json:"orderDetails" bson:"orderDetails"`
+	OrderDetails        NewOrderDetails     `json:"orderDetails" bson:"orderDetails"`
 	PickupDetails       PickupDetails       `json:"pickupDetails" bson:"pickupDetails"`
 	DropoffDetails      DropOffDetails      `json:"dropoffDetails" bson:"dropoffDetails"`
 	SourcePickupDetails PickupDetails       `json:"sourcePickupDetails" bson:"sourcePickupDetails"`
@@ -51,7 +51,7 @@ type Piece struct {
 	PieceId         string             `json:"pieceId" bson:"pieceId"`
 	Weight          float64            `json:"weight" bson:"weight"`
 	PieceSize       string             `json:"pieceSize" bson:"pieceSize"`
-	Dimensions      OrderDimensions         `json:"dimensions" bson:"dimensions"`
+	Dimensions      OrderDimensions    `json:"dimensions" bson:"dimensions"`
 	VolWeight       float64            `json:"volWeight" bson:"volWeight"`
 	BillableWeight  float64            `json:"billableWeight" bson:"billableWeight"`
 	WeightIndex     float64            `json:"weightIndex" bson:"weightIndex"`
@@ -84,24 +84,23 @@ type NewOrderDetails struct {
 	TrackingId    string             `json:"trackingId" bson:"trackingId"`
 	WeightDetails OrderWeightDetails `json:"weightDetails" bson:"weightDetails"`
 	ParcelSize    string             `json:"parcelSize" bson:"parcelSize"`
-	Dimensions    OrderDimensions         `json:"dimensions" bson:"dimensions"`
+	Dimensions    OrderDimensions    `json:"dimensions" bson:"dimensions"`
 	WeightIndex   float64            `json:"weightIndex" bson:"weightIndex"`
 	PackageId     int64              `json:"packageId" bson:"packageId"`
 
 	OrderDeliveryDetails NewOrderDeliveryDetails `json:"orderDeliveryDetails" bson:"orderDeliveryDetails"`
 }
 
-
 type OrderDetails struct {
-	PieceId              string                  `json:"pieceId" bson:"pieceId"`
-	Status               string                  `json:"status" bson:"status"`
-	TrackingId           string                  `json:"trackingId" bson:"trackingId"`
-	WeightDetails        OrderWeightDetails      `json:"weightDetails" bson:"weightDetails"`
-	PackageId            int64                   `json:"packageId" bson:"packageId"`
-	ParcelSize           string                  `json:"parcelSize" bson:"parcelSize"`
-	Dimensions           OrderDimensions         `json:"dimensions" bson:"dimensions"`
-	WeightIndex          float64                 `json:"weightIndex" bson:"weightIndex"`
-	SpecialHandling      string                  `json:"specialHandling" bson:"specialHandling"`
+	PieceId              string               `json:"pieceId" bson:"pieceId"`
+	Status               string               `json:"status" bson:"status"`
+	TrackingId           string               `json:"trackingId" bson:"trackingId"`
+	WeightDetails        OrderWeightDetails   `json:"weightDetails" bson:"weightDetails"`
+	PackageId            int64                `json:"packageId" bson:"packageId"`
+	ParcelSize           string               `json:"parcelSize" bson:"parcelSize"`
+	Dimensions           OrderDimensions      `json:"dimensions" bson:"dimensions"`
+	WeightIndex          float64              `json:"weightIndex" bson:"weightIndex"`
+	SpecialHandling      string               `json:"specialHandling" bson:"specialHandling"`
 	OrderDeliveryDetails OrderDeliveryDetails `json:"orderDeliveryDetails" bson:"orderDeliveryDetails"`
 }
 
@@ -124,7 +123,7 @@ type NewOrderDeliveryDetails struct {
 	OrderDistance   float64     `json:"orderDistance" bson:"orderDistance"`
 	DeliveryFee     float64     `json:"deliveryFee" bson:"deliveryFee"`
 	SpecialHandling string      `json:"specialHandling" bson:"specialHandling"`
-	Linehaul        ApiLinehaul 		`json:"linehaul" bson:"linehaul"`
+	Linehaul        ApiLinehaul `json:"linehaul" bson:"linehaul"`
 	Sla             Sla         `json:"sla" bson:"sla"`
 	Bsht            BshtTag     `json:"bsht" bson:"bsht"`
 }
@@ -162,7 +161,7 @@ type PickupDetails struct {
 	LocationDetails       LocationDetails `json:"locationDetails" bson:"locationDetails"`
 	ExpectedPuDateAndTime string          `json:"expectedPuDateTime" bson:"expectedPuDateTime"`
 	Slot                  string          `json:"slot" bson:"slot"`
-	Note                string          `json:"note" bson:"note"`
+	Note                  string          `json:"note" bson:"note"`
 }
 
 type DropOffDetails struct {
@@ -266,12 +265,12 @@ type ZoneDetails struct {
 }
 
 type Zone struct {
-	Id                  int64 `json:"_id" bson:"_id"`
-	Type                string             `json:"type" bson:"type"`
-	Name                string             `json:"name" bson:"name"`
-	Status              string             `json:"status" bson:"status"`
-	Kecamatan           string             `json:"kecamatan" bson:"kecamatan"`
-	SearchableKecamatan string             `json:"searchableKecamatan" bson:"searchableKecamatan"`
+	Id                  int64  `json:"id" bson:"id"`
+	Type                string `json:"type" bson:"type"`
+	Name                string `json:"name" bson:"name"`
+	Status              string `json:"status" bson:"status"`
+	Kecamatan           string `json:"kecamatan" bson:"kecamatan"`
+	SearchableKecamatan string `json:"searchableKecamatan" bson:"searchableKecamatan"`
 }
 
 type BatchJourneyData struct {
@@ -390,5 +389,3 @@ type WebhookProducer struct {
 	Description  string         `json:"description" bson:"description"`
 	RequestId    string         `json:"requestId" bson:"requestId"`
 }
-
-
