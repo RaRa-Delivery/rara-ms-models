@@ -2,7 +2,7 @@ package models
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
-type BatchAssignmentActivity struct {
+type PnAssignment struct {
 	Id                    primitive.ObjectID `json:"_id" bson:"_id"`
 	DriverId              string             `json:"driverId" bson:"driverId"`
 	BatchId               string             `json:"batchId" bson:"batchId"`
@@ -32,7 +32,13 @@ type BatchAssignmentActivity struct {
 	OrderCount            int64              `json:"orderCount" bson:"orderCount"`
 	Active                bool               `json:"active" bson:"active" default:"true"`
 	BatchSeen             int64              `json:"batchSeen" bson:"batchSeen"`
+	PickLat               float64            `json:"pickLat" bson:"pickLat"`
+	PickLng               float64            `json:"pickLng" bson:"pickLng"`
 	Version               int                `json:"version" bson:"version"`
+}
+
+type BatchAssignmentActivity struct {
+	PnAssignment
 }
 
 type PnZone struct {
