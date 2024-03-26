@@ -38,7 +38,7 @@ type PnAssignment struct {
 }
 
 type BatchAssignmentActivity struct {
-	PnAssignment
+	PnAssignment `bson:"inline"`
 }
 
 type PnZone struct {
